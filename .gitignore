@@ -21,9 +21,17 @@ __pycache__/
 Thumbs.db
 
 # Local runtime and generated content
-course/webapp/.pytest_cache/
-course/webapp/__pycache__/
-course/webapp/static/.DS_Store
+.pytest_cache/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+webapp/.pytest_cache/
+webapp/__pycache__/
+webapp/static/.DS_Store
+
+# Extracted Office temp artifacts
+course/_tmp_docx/
 
 # Large local repos and cloned sample content
 course/repos/
