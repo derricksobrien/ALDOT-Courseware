@@ -1,0 +1,29 @@
+# Local courseware artifacts
+*.docx
+*.pdf
+*.pptx
+*.pem
+*.zip
+*.log
+*.tmp
+*.bak
+
+# Python virtual environments
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+
+# Editor / OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local runtime and generated content
+course/webapp/.pytest_cache/
+course/webapp/__pycache__/
+course/webapp/static/.DS_Store
+
+# Large local repos and cloned sample content
+course/repos/

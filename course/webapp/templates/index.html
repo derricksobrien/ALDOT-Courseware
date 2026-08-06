@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero panel">
+  <div>
+    <p class="eyebrow">Web courseware</p>
+    <h1>Browse the modernization course as a living web experience.</h1>
+    <p class="lede">The site renders the course design, the implementation plan, and each lab directly from the markdown sources in this workspace.</p>
+    <div class="action-row">
+      <a class="button primary" href="{{ url_for('labs_index') }}">Open the labs</a>
+      <a class="button secondary" href="{{ url_for('page_detail', slug='course-design') }}">Read the design</a>
+    </div>
+  </div>
+  <aside class="hero-card">
+    <div class="stat"><strong>10</strong><span>lab modules</span></div>
+    <div class="stat"><strong>2 days</strong><span>course flow</span></div>
+    <div class="stat"><strong>Python</strong><span>local server + venv</span></div>
+  </aside>
+</section>
+
+<section class="grid two-up">
+  <a class="tile" href="{{ url_for('page_detail', slug='course-design') }}">
+    <span class="tile-tag">Design</span>
+    <h2>Course architecture and module intent</h2>
+    <p>See the original course structure and curriculum assumptions rendered from the design doc.</p>
+  </a>
+  <a class="tile" href="{{ url_for('page_detail', slug='implementation-plan') }}">
+    <span class="tile-tag">Plan</span>
+    <h2>Implementation and test strategy</h2>
+    <p>Review the rollout model, validation layers, and fallback guidance for each module.</p>
+  </a>
+</section>
+
+<section class="panel">
+  <div class="section-heading">
+    <h2>Labs</h2>
+    <a href="{{ url_for('labs_index') }}">View all</a>
+  </div>
+  <div class="lab-grid">
+    {% for lab in lab_pages %}
+    <a class="lab-card" href="{{ url_for('lab_detail', slug=lab.slug) }}">
+      <span class="lab-index">{{ loop.index }}</span>
+      <div>
+        <h3>{{ lab.title }}</h3>
+        <p>{{ lab.html | striptags | truncate(160, True) }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel subtle">
+  <h2>Source files</h2>
+  <p>The app is backed by the markdown files already created in this workspace, so the web UI stays aligned with the course content.</p>
+  <ul class="inline-list">
+    <li><a href="{{ url_for('page_detail', slug='course-design') }}">Design doc</a></li>
+    <li><a href="{{ url_for('page_detail', slug='implementation-plan') }}">Implementation plan</a></li>
+    <li><a href="{{ url_for('page_detail', slug='missing-items') }}">Missing items</a></li>
+    <li><a href="{{ url_for('page_detail', slug='repo-sources') }}">Repo source status</a></li>
+  </ul>
+</section>
+{% endblock %}

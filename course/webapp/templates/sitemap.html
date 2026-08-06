@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="panel content">
+  <p class="eyebrow">Site map</p>
+  <h1>All pages in the course site</h1>
+  <p class="lede">This view shows every user-facing page, where it comes from, and a short summary of the content so learners can jump to the right place quickly.</p>
+
+  <div class="sitemap-grid">
+    <section class="sitemap-group">
+      <h2>Core pages</h2>
+      {% for page in pages if page.kind == 'course' %}
+      <a class="sitemap-card" href="{{ url_for('page_detail', slug=page.slug) }}">
+        <div class="sitemap-head">
+          <strong>{{ page.title }}</strong>
+          <span>{{ page.relative_path }}</span>
+        </div>
+        <p>{{ page.summary }}</p>
+      </a>
+      {% endfor %}
+    </section>
+
+    <section class="sitemap-group">
+      <h2>Lab pages</h2>
+      {% for page in pages if page.kind == 'lab' %}
+      <a class="sitemap-card" href="{{ url_for('lab_detail', slug=page.slug) }}">
+        <div class="sitemap-head">
+          <strong>{{ page.title }}</strong>
+          <span>{{ page.relative_path }}</span>
+        </div>
+        <p>{{ page.summary }}</p>
+      </a>
+      {% endfor %}
+    </section>
+
+    <section class="sitemap-group">
+      <h2>Navigation pages</h2>
+      {% for page in pages if page.kind == 'nav' %}
+      <a class="sitemap-card" href="{{ page.relative_path }}">
+        <div class="sitemap-head">
+          <strong>{{ page.title }}</strong>
+          <span>{{ page.relative_path }}</span>
+        </div>
+        <p>{{ page.summary }}</p>
+      </a>
+      {% endfor %}
+    </section>
+  </div>
+</section>
+{% endblock %}

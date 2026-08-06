@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="panel">
+  <p class="eyebrow">Labs</p>
+  <h1>All labs</h1>
+  <p class="lede">Each module is exposed as a dedicated page with the same step-by-step structure used in the markdown files.</p>
+  <div class="lab-list">
+    {% for lab in lab_pages %}
+    <a class="lab-row" href="{{ url_for('lab_detail', slug=lab.slug) }}">
+      <span class="lab-index">{{ loop.index }}</span>
+      <div>
+        <h2>{{ lab.title }}</h2>
+        <p>{{ lab.html | striptags | truncate(220, True) }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
