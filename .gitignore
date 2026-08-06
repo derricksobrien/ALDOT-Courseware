@@ -35,3 +35,6 @@ course/_tmp_docx/
 
 # Large local repos and cloned sample content
 course/repos/
+
+# Include published module PDFs
+!course/mvp-delivery/modules/*.pdf
