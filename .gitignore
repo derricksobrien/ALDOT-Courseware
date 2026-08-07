@@ -17,8 +17,11 @@ __pycache__/
 
 # Editor / OS files
 .vscode/
+.idea/
 .DS_Store
 Thumbs.db
+.env
+.env.*
 
 # Local runtime and generated content
 .pytest_cache/
