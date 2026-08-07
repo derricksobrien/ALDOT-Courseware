@@ -15,10 +15,11 @@ Module 7: Kubernetes and OpenShift
 - Access to OpenShift cluster (ARO or sandbox) or AKS for fallback.
 - Container image available in registry.
 - Optional baseline sample in `course/repos/s2i-dotnetcore-ex`.
+- Starter manifests are available in `course/repos/s2i-dotnetcore-ex/k8s/` for the core exercise.
 
 ## Step-by-Step
 1. Create namespace and RBAC bindings for the team.
-2. Apply deployment and service manifests.
+2. Apply the starter deployment, service, and route manifests from `course/repos/s2i-dotnetcore-ex/k8s/`.
 3. Configure ConfigMaps and Secrets for app settings.
 4. Add readiness and liveness probes.
 5. Expose service with OpenShift Route or Kubernetes Ingress.

@@ -12,14 +12,15 @@ Add a SQL-backed API endpoint and validate it end to end.
 ## Prerequisites
 
 - Repository available: `course/repos/eShopOnWeb`
-- Data target available: local SQL or Azure SQL
+- Data target available: local SQL or Azure SQL; if not available, use the in-memory fallback for a local validation pass
 - .NET SDK and SQL tooling installed
+- Preferred path: EF Core; Dapper is optional stretch
 
 ## Steps
 
 1. Add a new API endpoint for a domain entity.
 2. Register services via dependency injection.
-3. Add EF Core or Dapper data access logic.
+3. Add EF Core data access logic (default path) or Dapper as stretch.
 4. Add configuration and secure secret handling.
 5. Add and run integration tests.
 

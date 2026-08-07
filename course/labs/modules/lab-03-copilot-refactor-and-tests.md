@@ -21,12 +21,13 @@ Module 3: GitHub Copilot AI-Assisted C# Development
 3. Refactor for readability, separation of concerns, and null safety.
 4. Prompt Copilot to generate xUnit tests covering happy and unhappy paths.
 5. Add XML documentation for public methods.
-6. Run static analysis and manually review generated code for security issues.
-7. Record prompt patterns that were effective and ineffective.
+6. Run `dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults` from the solution root and save the generated coverage report.
+7. Run static analysis and manually review generated code for security issues.
+8. Record prompt patterns that were effective and ineffective.
 
 ## Validation Checks
 - Refactored class compiles and behavior is preserved.
-- Test project passes with at least 80 percent line coverage for changed code.
+- Test project passes and a coverage report is generated for the changed code.
 - Security review checklist is completed.
 
 ## Deliverables

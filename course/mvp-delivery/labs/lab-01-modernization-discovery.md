@@ -13,10 +13,11 @@ Identify and prioritize modernization candidates in the baseline app.
 
 - Repository available: `course/repos/eShopOnWeb`
 - Tooling: Git, .NET SDK, VS Code
+- If LocalDB is unavailable, use the in-memory fallback via `UseOnlyInMemoryDatabase=true`
 
 ## Steps
 
-1. Open `eShopOnWeb` and run a local build.
+1. Open `eShopOnWeb` and run a local build; if SQL Server is unavailable, start with the in-memory fallback.
 2. Identify major architecture boundaries and high-risk areas.
 3. Record at least 8 modernization candidates.
 4. Tag each item as rehost, refactor, rearchitect, or rebuild.

@@ -13,12 +13,13 @@ Module 4: C# and .NET in the Modern Stack
 
 ## Prerequisites
 - `course/repos/eShopOnWeb` or `course/repos/samples`.
-- Local SQL Server or Azure SQL database.
+- Local SQL Server or Azure SQL database. If neither is available, use the repo's in-memory database option for a local validation pass so the endpoint logic can still be exercised.
+- Prefer EF Core for the core lab path; treat Dapper as a stretch option rather than a parallel starting point.
 
 ## Step-by-Step
 1. Create a new API endpoint for a business entity.
 2. Add dependency injection registrations.
-3. Implement repository pattern using EF Core or Dapper.
+3. Implement repository pattern using EF Core (default path) or Dapper (stretch path).
 4. Add async methods and cancellation tokens.
 5. Add configuration sections for database settings.
 6. Move secrets to environment variables or Key Vault references.
@@ -26,7 +27,7 @@ Module 4: C# and .NET in the Modern Stack
 
 ## Validation Checks
 - Endpoint returns expected responses and error codes.
-- Database writes and reads pass integration tests.
+- Database writes and reads pass integration tests or the local in-memory validation path.
 - No secrets are committed to source control.
 
 ## Deliverables

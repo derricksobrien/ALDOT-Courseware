@@ -13,6 +13,7 @@ Build and run automation suites and define release quality gates.
 
 - Target app from Lab 04
 - Tosca installed and licensed
+- If Tosca is unavailable for the cohort, treat this as an instructor-led demo and keep the test design artifacts.
 
 ## Steps
 

@@ -14,6 +14,7 @@ Module 5: Test Automation with Tricentis Tosca
 ## Prerequisites
 - Tricentis Tosca access.
 - Running test target from Labs 3 and 4.
+- If Tosca is not installed or licensed for the cohort, treat this lab as an instructor-led demo and focus on the test design artifacts.
 
 ## Step-by-Step
 1. Scan the web UI and create reusable Tosca modules.

@@ -14,10 +14,11 @@ Deploy the containerized app to cluster infrastructure and validate reliability.
 - Cluster access available (OpenShift or AKS fallback)
 - Image from Lab 06 available
 - `kubectl` or `oc` installed
+- Starter manifests available from the sample repo for the deployment exercise
 
 ## Steps
 
-1. Create namespace and apply baseline manifests.
+1. Create namespace and apply the provided baseline manifests.
 2. Configure ConfigMaps and Secrets.
 3. Add readiness and liveness probes.
 4. Expose service via route or ingress.

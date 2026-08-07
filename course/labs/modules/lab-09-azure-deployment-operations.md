@@ -12,15 +12,16 @@ Module 9: Azure Cloud Deployment and Operations
 - Enable monitoring and operational dashboards.
 
 ## Prerequisites
-- Azure subscription with contributor permissions.
+- Azure subscription with contributor or owner permissions that can create role assignments.
 - Access to Bicep templates and deployment scripts.
+- If the training role only grants Contributor access, skip the Key Vault role-assignment step and document the prerequisite gap.
 
 ## Step-by-Step
 1. Select target hosting model (App Service, AKS, or Container Apps).
 2. Deploy baseline resources using Bicep templates.
 3. Deploy application image and configure environment settings.
 4. Provision or migrate to Azure SQL and update connection settings.
-5. Enable managed identity and role assignments.
+5. Enable managed identity and role assignments; if role assignment creation is blocked by RBAC, document the gap and continue with the rest of the deployment.
 6. Enable Application Insights and Log Analytics.
 7. Create alerts for error rate, latency, and resource saturation.
 8. Build an operations dashboard and define SLOs.

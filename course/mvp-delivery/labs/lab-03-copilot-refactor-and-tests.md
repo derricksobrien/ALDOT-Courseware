@@ -21,7 +21,8 @@ Refactor one legacy component and generate useful tests with Copilot.
 2. Prompt Copilot for a refactor plan.
 3. Apply the refactor incrementally.
 4. Generate unit tests for happy-path and failure-path behavior.
-5. Run tests and review generated code for quality and security.
+5. Run `dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults` and review the generated coverage report.
+6. Review generated code for quality and security.
 
 ## Validation
 
