@@ -41,3 +41,6 @@ course/repos/
 
 # Include published module PDFs
 !course/mvp-delivery/modules/*.pdf
+
+# Personal account credentials/notes — never commit
+adobe-stock/
