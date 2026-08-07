@@ -26,3 +26,7 @@ This module can be delivered as an optional hands-on track if Tosca provisioning
 ## Success Criteria
 
 - Automated runs execute and publish actionable pass/fail results.
+
+## Further Reading
+
+- [Tosca — Model-Based Test Automation](https://www.tricentis.com/products/automate-continuous-testing-tosca/model-based-test-automation)

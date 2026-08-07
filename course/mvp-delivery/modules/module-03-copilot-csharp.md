@@ -26,3 +26,7 @@ This module converts theory into productivity by using Copilot against a control
 ## Success Criteria
 
 - Refactored code compiles, tests pass, and learner can explain the decisions made.
+
+## Further Reading
+
+- [Best practices for using GitHub Copilot](https://docs.github.com/en/copilot/get-started/best-practices)

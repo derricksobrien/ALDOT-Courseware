@@ -26,3 +26,7 @@ This module is useful for enterprise workflow alignment, but it is optional for 
 ## Success Criteria
 
 - Work item hierarchy is complete and linked to source-control activity.
+
+## Further Reading
+
+- [About work items and work item types — Azure Boards](https://learn.microsoft.com/en-us/azure/devops/boards/work-items/about-work-items?view=azure-devops)

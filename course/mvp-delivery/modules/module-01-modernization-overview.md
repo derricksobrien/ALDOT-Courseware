@@ -26,3 +26,7 @@ This module establishes the course baseline and shared vocabulary. Learners revi
 ## Success Criteria
 
 - Learner completes candidate matrix with at least 8 candidate changes and strategy labels.
+
+## Further Reading
+
+- [Select your cloud migration strategies — Cloud Adoption Framework](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/plan/select-cloud-migration-strategy)

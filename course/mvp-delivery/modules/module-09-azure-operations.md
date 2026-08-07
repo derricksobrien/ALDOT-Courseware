@@ -26,3 +26,7 @@ This module extends the core track into cloud operations. It is optional for MVP
 ## Success Criteria
 
 - Workload is deployed and observable with actionable alerts.
+
+## Further Reading
+
+- [What is Bicep? — Azure Resource Manager](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview)

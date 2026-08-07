@@ -26,3 +26,7 @@ This module creates the first meaningful modernization increment: a production-r
 ## Success Criteria
 
 - Endpoint passes functional and integration checks and follows secure config handling.
+
+## Further Reading
+
+- [APIs overview — ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/apis)

@@ -26,3 +26,7 @@ Containerization is the handoff boundary between development and platform operat
 ## Success Criteria
 
 - Containerized app starts and serves expected responses.
+
+## Further Reading
+
+- [Multi-stage builds — Docker Docs](https://docs.docker.com/build/building/multi-stage/)

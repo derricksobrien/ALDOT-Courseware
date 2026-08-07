@@ -26,3 +26,7 @@ This module connects all prior modules into a delivery pipeline with automated c
 ## Success Criteria
 
 - Pipeline executes end to end and blocks failing quality checks.
+
+## Further Reading
+
+- [Building and testing .NET — GitHub Docs](https://docs.github.com/actions/guides/building-and-testing-net)

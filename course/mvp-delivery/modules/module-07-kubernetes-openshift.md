@@ -26,3 +26,7 @@ This module operationalizes the container image by deploying it into a managed c
 ## Success Criteria
 
 - Workload is reachable and healthy, and can scale under load.
+
+## Further Reading
+
+- [Liveness, Readiness, and Startup Probes — Kubernetes](https://kubernetes.io/docs/concepts/workloads/pods/probes/)
