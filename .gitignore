@@ -32,6 +32,7 @@ Thumbs.db
 webapp/.pytest_cache/
 webapp/__pycache__/
 webapp/static/.DS_Store
+course/mvp-delivery/student-work/
 
 # Extracted Office temp artifacts
 course/_tmp_docx/
