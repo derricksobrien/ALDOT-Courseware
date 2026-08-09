@@ -13,6 +13,8 @@ Assert-PathExists -Path $labFile -Label "Lab file"
 Assert-PathExists -Path $moduleFile -Label "Module file"
 
 Assert-TextInFile -Path $labFile -Pattern "core modules 1, 3, 4, 6, 7, and 8 completed" -Description "capstone entry gate"
+Assert-TextInFile -Path $labFile -Pattern "published MVP artifacts" -Description "artifact fallback"
+Assert-TextInFile -Path $labFile -Pattern "final capstone package" -Description "checkpoint packaging step"
 Assert-TextInFile -Path $labFile -Pattern "Pipeline and deployment evidence are complete" -Description "capstone exit gate"
 
 Finish-Success -LabName "Lab 10"

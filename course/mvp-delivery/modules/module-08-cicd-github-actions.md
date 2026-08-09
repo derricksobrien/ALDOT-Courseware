@@ -12,6 +12,7 @@ Core MVP Module
 ## Narrative
 
 This module connects all prior modules into a delivery pipeline with automated checks and deployment orchestration.
+Learners should fork the training repository into their own account, wire in the required secrets, and use that fork as the workflow target.
 
 ## Supporting Assets
 
