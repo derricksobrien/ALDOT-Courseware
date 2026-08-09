@@ -1,0 +1,6 @@
+[submodule "course/repos/eShopOnWeb"]
+	path = course/repos/eShopOnWeb
+	url = https://github.com/dotnet-architecture/eShopOnWeb.git
+[submodule "course/repos/s2i-dotnetcore-ex"]
+	path = course/repos/s2i-dotnetcore-ex
+	url = https://github.com/redhat-developer/s2i-dotnetcore-ex.git
