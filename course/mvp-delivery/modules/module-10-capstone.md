@@ -12,6 +12,7 @@ Optional or Stretch for MVP
 ## Narrative
 
 The capstone is a synthesis module. In MVP phase one, it should be used only when the core six modules run cleanly with no unresolved provisioning issues.
+If optional modules are unavailable, use the published MVP artifacts and treat the capstone as a packaged checkpoint exercise rather than a fresh setup.
 
 ## Supporting Assets
 

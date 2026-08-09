@@ -12,6 +12,7 @@ Optional MVP Module
 ## Narrative
 
 This module can be delivered as an optional hands-on track if Tosca provisioning is complete, or as an instructor-led demo in MVP phase one.
+Use the account URL and instructor credentials in `tosca-secrets.md` to reach the tenant.
 
 ## Supporting Assets
 

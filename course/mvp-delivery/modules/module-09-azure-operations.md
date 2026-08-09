@@ -12,6 +12,7 @@ Optional MVP Module
 ## Narrative
 
 This module extends the core track into cloud operations. It is optional for MVP when quota or tenant constraints are present.
+Learners should choose a supported hosting model, and if their training role cannot create role assignments, they should document the gap and continue with the rest of the deployment.
 
 ## Supporting Assets
 

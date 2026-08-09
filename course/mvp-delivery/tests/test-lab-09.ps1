@@ -19,7 +19,10 @@ if (-not $az) {
     Write-Host "[OK] Azure CLI detected." -ForegroundColor Green
 }
 
-Assert-TextInFile -Path $labFile -Pattern "Enable logs, metrics, and alerts" -Description "observability step"
+Assert-TextInFile -Path $labFile -Pattern "Contributor or Owner access" -Description "RBAC prerequisite"
+Assert-TextInFile -Path $labFile -Pattern "Select a target hosting model" -Description "hosting model step"
+Assert-TextInFile -Path $labFile -Pattern "Application Insights and Log Analytics" -Description "observability step"
+Assert-TextInFile -Path $labFile -Pattern "SLOs" -Description "SLO requirement"
 Assert-TextInFile -Path $labFile -Pattern "Azure subscription and quota" -Description "cloud prerequisite"
 
 Finish-Success -LabName "Lab 09"
