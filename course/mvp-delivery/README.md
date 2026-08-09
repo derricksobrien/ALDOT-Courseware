@@ -46,6 +46,16 @@ Or run one lab check script at a time:
 .\test-lab-04.ps1
 ```
 
+## Module PDF Rendering
+
+If you update the module markdown files and want refreshed PDFs, run:
+
+```powershell
+python .\tools\render_module_pdfs.py
+```
+
+This regenerates the PDF companion files for all modules in `modules/`.
+
 ## Student Startup and Assessment Helpers
 
 Use the automation helpers in `tools/` to make the lab experience more consistent:
