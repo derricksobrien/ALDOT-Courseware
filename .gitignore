@@ -38,11 +38,9 @@ course/mvp-delivery/student-work/
 course/_tmp_docx/
 
 # Large local repos and cloned sample content
-course/repos/
-!course/repos/
-!course/repos/s2i-dotnetcore-ex/
-!course/repos/s2i-dotnetcore-ex/k8s/
-!course/repos/s2i-dotnetcore-ex/k8s/*
+# These are registered as git submodules - run tools/Setup-LabRepos.ps1 to initialise them
+course/repos/eShop/
+course/repos/samples/
 
 # Include published module PDFs
 !course/mvp-delivery/modules/*.pdf
