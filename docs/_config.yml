@@ -28,3 +28,14 @@ plugins:
 
 # Disable GitHub metadata fetching (avoids API rate-limit failures in CI)
 github: [metadata: false]
+
+# Exclude large binary folders from Jekyll processing
+exclude:
+  - "labs/lab-01-screenshots"
+  - "labs/lab-02-screenshots"
+  - "labs/lab-03-screenshots"
+  - "labs/lab-04-screenshots"
+  - "labs/lab-05-screenshots"
+  - "labs/lab-06-screenshots"
+  - Gemfile
+  - Gemfile.lock
