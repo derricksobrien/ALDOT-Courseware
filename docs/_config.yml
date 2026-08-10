@@ -1,11 +1,10 @@
-title: Software Development Modernization
+﻿title: Software Development Modernization
 description: MVP course delivery pack — labs, modules, and resources for the 10-module app modernization course.
 baseurl: "/ALDOT-Courseware"
 url: "https://derricksobrien.github.io"
 
-theme: just-the-docs
+remote_theme: just-the-docs/just-the-docs@v0.10.0
 
-# Just the Docs settings
 search_enabled: true
 heading_anchors: true
 color_scheme: dark
@@ -23,6 +22,7 @@ aux_links:
 aux_links_new_tab: true
 
 plugins:
+  - jekyll-remote-theme
   - jekyll-seo-tag
   - jekyll-include-cache
 
