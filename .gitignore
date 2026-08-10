@@ -47,3 +47,5 @@ course/repos/samples/
 
 # Personal account credentials/notes — never commit
 adobe-stock/
+openshift-secrets.md
+lab-secrets.md
