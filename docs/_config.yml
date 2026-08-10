@@ -3,7 +3,7 @@ description: MVP course delivery pack — labs, modules, and resources for the 1
 baseurl: "/ALDOT-Courseware"
 url: "https://derricksobrien.github.io"
 
-remote_theme: just-the-docs/just-the-docs@v0.10.0
+theme: just-the-docs
 
 # Just the Docs settings
 search_enabled: true
@@ -23,7 +23,6 @@ aux_links:
 aux_links_new_tab: true
 
 plugins:
-  - jekyll-remote-theme
   - jekyll-seo-tag
   - jekyll-include-cache
 

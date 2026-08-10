@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 gem "jekyll", "~> 3.9"
-gem "jekyll-remote-theme"
+gem "just-the-docs", "~> 0.10.0"
 gem "jekyll-seo-tag"
 gem "jekyll-include-cache"
 gem "kramdown-parser-gfm"
