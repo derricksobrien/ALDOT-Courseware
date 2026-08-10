@@ -73,7 +73,10 @@ The Red Hat Developer Sandbox is a free, 30-day, shared OpenShift cluster that a
 > ⚠️ **Manual approval notice (observed 2026-08-10 during live test):** New Red Hat accounts may receive the message *"Your account needs manual approval from the Developer Sandbox administrators."* This appears to apply to newly created accounts. Approval typically completes within a few hours. **Students must sign up at least 24 hours before Lab 07** to ensure access is available.
 
 6. Once approved, the OpenShift Web Console opens from the sandbox dashboard
-7. The console URL looks like: `https://console-openshift-console.apps.sandbox-m3.1530.p1.openshiftapps.com`
+7. The console URL looks like: `https://console-openshift-console.apps.rm2.thpm.p1.openshiftapps.com`
+   - **Live-tested cluster (2026-08-10):** `https://console-openshift-console.apps.rm2.thpm.p1.openshiftapps.com`
+   - API endpoint: `https://api.rm2.thpm.p1.openshiftapps.com:6443`
+   - Namespace: `<username>-dev`
 
 Each student needs their own Red Hat account. One sandbox per account.
 
@@ -111,12 +114,34 @@ oc expose svc/eshop
 oc get route eshop   # shows the public HTTPS URL
 ```
 
-For the dotnet S2I path (build from source directly in the cluster):
+For the dotnet S2I path (build from source directly in the cluster — **live-tested 2026-08-10, working**):
 
 ```bash
-oc new-app dotnet~https://github.com/<your-fork>/s2i-dotnetcore-ex.git
-oc expose svc/s2i-dotnetcore-ex
+# Deploy and build directly from source using S2I
+oc new-app dotnet:8.0-ubi8~https://github.com/redhat-developer/s2i-dotnetcore-ex.git#dotnet-8.0 \
+  --name=dotnet-ex --context-dir=app
+
+# Follow the build log
+oc logs -f buildconfig/dotnet-ex
+
+# Expose the service as a route (HTTP)
+oc expose service/dotnet-ex
+oc get route dotnet-ex   # shows public URL
+
+# Add a ConfigMap for app configuration
+oc create configmap dotnet-ex-config --from-literal=APP_ENV=sandbox
+
+# Enable autoscaling
+oc autoscale deployment/dotnet-ex --min=1 --max=3 --cpu-percent=70
 ```
+
+**Live test result (2026-08-10):**
+- Build: ✅ Complete (55s — .NET 8 S2I build)
+- Pod: ✅ Running (`1/1`)
+- Route: `dotnet-ex-derricksobrien-dev.apps.rm2.thpm.p1.openshiftapps.com`
+- HTTP 200: ✅ App serving ASP.NET Core MVC home page
+- ConfigMap: ✅ Created
+- HPA: ✅ Created (1–3 replicas, 70% CPU target)
 
 ### Constraints and impact on Lab 07
 
