@@ -61,6 +61,176 @@ For targeted, in-place edits without opening the sidebar: select a block of code
 - Adding XML doc comments to a single method
 - Asking "why does this throw?" on a specific line
 
+## Agents Window — Customizations Panel
+
+When you open the Agents Window (`code --agents` or title bar → "Open in Agents"), the **Customizations** panel on the left gives you control over how the agent thinks, what it knows, and what it can do. Understanding these seven items is the difference between using Copilot as a generic chat tool and using it as a configured teammate for your specific project.
+
+### Mental Model
+
+```
+Instructions  → always-on background context (passive, no switch required)
+Agents        → personas with instructions + scoped tool sets (switchable)
+Skills        → callable reusable capabilities (invoked by agents or directly)
+Tools         → individual capabilities the agent can use (toggleable per session)
+Plugins       → tools contributed by installed VS Code extensions
+MCP Servers   → tools that connect to external systems (GitHub, ADO, databases)
+Hooks         → automatic triggers on agent lifecycle events
+```
+
+---
+
+### 🏠 Overview
+
+The **Overview** is a dashboard showing all your customizations in one place — what's active, what's installed, and quick links to create new ones. Open it first to understand what's available before starting a session.
+
+> **Student tip:** If the agent is not behaving as expected (wrong language, wrong style, missing tools), start here to see if a conflicting instruction or agent is active.
+
+---
+
+### 🤖 Agents
+
+**Agents** are custom personas defined in `.agent.md` Markdown files. Each agent bundles together:
+- A system prompt (role description and behavioral rules)
+- A specific set of allowed tools (e.g., read-only for a planning agent)
+- Optional **handoffs** to other agents at the end of a turn
+
+**File locations:**
+
+| Scope | Location |
+|---|---|
+| Workspace (shared with team) | `.github/agents/*.agent.md` |
+| Personal (all workspaces) | `~/.copilot/agents/*.agent.md` |
+
+**Example agents useful for modernization work:**
+
+| Agent name | What it does |
+|---|---|
+| `planner` | Read-only tools only — researches the codebase and generates an implementation plan without touching files |
+| `reviewer` | Reviews diffs for security issues, code smells, and missing tests |
+| `migrator` | Full tools — executes a migration task autonomously |
+
+To create a custom agent: **Command Palette → "Chat: New Custom Agent"**, or create a `.agent.md` file manually in `.github/agents/`.
+
+> **App modernization connection:** On a real project, you might create a `legacy-auditor` agent that has instructions to look for anti-patterns specific to your organization's legacy stack, and a `cloud-migrator` agent that knows your target Azure architecture. Each specialist agent does one job well, then hands off.
+
+---
+
+### 💡 Skills
+
+**Skills** are reusable, callable capabilities defined in `.skill.md` files — more targeted than a full agent persona. An agent can invoke skills as part of its tool set.
+
+Skills are invoked either:
+- **Automatically** — the agent picks the right skill based on the task description
+- **Directly** — you call it in a prompt: `Use the commit skill to commit my changes`
+- **By agents** — listed in the agent's `tools` frontmatter
+
+**Examples of built-in skills in this session:** `commit` (stages and commits with a generated message), `sync` (pushes to GitHub).
+
+You can write your own: create `~/.copilot/skills/my-skill.skill.md` with a description and instructions.
+
+> **Student tip:** Skills are great for repetitive tasks you do in every project — "run my test suite and summarize failures," "check for hardcoded secrets," "generate a PR description from the diff."
+
+---
+
+### 📖 Instructions
+
+**Instructions** are always-on context files that are injected into *every* chat request automatically. Unlike agents, they don't need to be switched on — they are ambient project knowledge.
+
+**Sources (in priority order):**
+1. `.github/copilot-instructions.md` — workspace-level, shared with the team via Git
+2. User-level instructions (VS Code settings → `github.copilot.chat.codeGeneration.instructions`)
+3. Prompt files (`.github/prompts/*.prompt.md`) — reusable named instructions you invoke on demand
+
+**What to put in instructions:**
+```markdown
+# .github/copilot-instructions.md (example)
+- This project uses .NET 8 with Clean Architecture
+- Always write XML doc comments on all public methods and constructors
+- Never use `var` — always use explicit types
+- Target framework: net8.0 — do not use any API unavailable in .NET 8
+- Test framework: xUnit with FluentAssertions
+```
+
+> **App modernization connection:** Instructions files are how you encode your team's migration standards so the agent enforces them automatically. Instead of repeating "target Azure App Service, not VMs" in every prompt, put it in the instructions file once and every session benefits.
+
+---
+
+### ⚡ Hooks
+
+**Hooks** fire automatically at specific points in the agent lifecycle — before a commit, after a tool runs, when a session starts, when an error occurs. They inject context or enforce rules without requiring the user to ask.
+
+**Common use cases:**
+- Pre-commit hook: "Before committing, check that no hardcoded connection strings are present"
+- Session-start hook: "When a session opens, read `CHANGELOG.md` and summarize recent changes for context"
+- Post-edit hook: "After any file edit, verify the project still builds"
+
+Hooks are defined in agent/skill files using a `hooks` frontmatter key. This feature is newer and still evolving — check the VS Code release notes for the latest supported hook types.
+
+> **Student tip:** Hooks are powerful for enforcing team standards automatically. A `pre-commit` hook that checks for TODO comments or missing tests catches issues before they reach code review.
+
+---
+
+### 🖥️ MCP Servers
+
+**MCP (Model Context Protocol) Servers** extend the agent with connections to external systems. They turn the agent from a local code editor assistant into something that can read and write data across your entire toolchain.
+
+**Configuration:** `.vscode/mcp.json` in your workspace or VS Code user settings.
+
+**Examples relevant to this course:**
+
+| MCP Server | What it enables |
+|---|---|
+| `github` | Read PRs, issues, repos; create branches; comment on PRs |
+| `azure-devops` | Read/write work items, sprints, queries in ADO |
+| `fetch` | Retrieve any web URL as context (docs, APIs, tickets) |
+| `filesystem` | Expanded file operations beyond the workspace |
+| `database` | Query a SQL Server or PostgreSQL schema for context |
+
+**How to add an MCP server:**
+1. Open Agents Window → Customizations → **MCP Servers**
+2. Click **Add MCP Server**
+3. Provide the server URL or install from the marketplace
+4. The server's tools appear in the **Tools** panel automatically
+
+> **App modernization connection:** With an ADO MCP server, the agent can read your sprint backlog, mark tasks done as it completes them, and create new tasks when it discovers scope. With a GitHub MCP server, it can open PRs, respond to review comments, and update issue status — all without leaving VS Code.
+
+---
+
+### 🔌 Plugins
+
+**Plugins** are tools and capabilities contributed by installed VS Code extensions. When an extension registers agent tools, they appear here and can be enabled/disabled per session.
+
+**Examples:**
+- Docker extension → `build image`, `run container`, `check container logs` tools
+- Azure extension → `list resources`, `deploy to App Service` tools
+- Test runner extensions → `run failing tests`, `generate test report` tools
+
+Check this panel if you expect a tool to be available (e.g., "run my tests") but it's not appearing in the agent's tool list — the plugin may be disabled.
+
+---
+
+### 🔧 Tools
+
+**Tools** are the individual capabilities the agent can use in the current session. This is the most granular control level — you can enable or disable specific operations.
+
+**Built-in tool categories:**
+
+| Category | Tools included |
+|---|---|
+| **File operations** | Read file, write file, create file, delete file, list directory |
+| **Terminal** | Run shell command, read terminal output |
+| **Search** | Grep codebase, find files by pattern, semantic search |
+| **Browser** | Open URL, read page, take screenshot, click elements |
+| **Web** | Fetch URL content |
+| **Agent** | Run subagent, invoke skill |
+
+**When to restrict tools:**
+- **Read-only review session:** disable write and terminal tools — the agent can analyze but not change anything
+- **Planning session:** disable all write tools — use with Plan mode for zero-risk exploration
+- **Locked-down environment:** disable browser/web tools to keep the agent working only on local code
+
+> **Student tip:** If you're nervous about an autonomous agent making unwanted changes, disable the file-write and terminal tools before running it. You can then review what it *would* have done by looking at the plan output, then re-enable tools and run again with confidence.
+
 ## Lab Alignment
 
 - Matching lab: `mvp-delivery/labs/lab-03-copilot-refactor-and-tests.md`
@@ -79,3 +249,7 @@ For targeted, in-place edits without opening the sidebar: select a block of code
 - [Use chat in VS Code — Chat surfaces, modes, and context (VS Code docs)](https://code.visualstudio.com/docs/chat/chat-overview)
 - [Agents window — Multi-project orchestration (VS Code docs)](https://code.visualstudio.com/docs/agents/run/agents-window)
 - [Agent mode, Plan mode, Ask mode — GitHub Docs](https://docs.github.com/en/copilot/how-tos/chat-with-copilot/chat-in-ide)
+- [Custom agents in VS Code (.agent.md files)](https://code.visualstudio.com/docs/agent-customization/custom-agents)
+- [Agent skills in VS Code (.skill.md files)](https://code.visualstudio.com/docs/agent-customization/agent-skills)
+- [Custom instructions for Copilot (copilot-instructions.md)](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions)
+- [MCP Servers in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers)
