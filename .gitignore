@@ -45,6 +45,9 @@ course/repos/samples/
 # Include published module PDFs
 !course/mvp-delivery/modules/*.pdf
 
+# Include key course documents
+!"Software Development Modernization.docx"
+
 # Personal account credentials/notes — never commit
 adobe-stock/
 openshift-secrets.md
