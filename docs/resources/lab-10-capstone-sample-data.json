@@ -1,0 +1,102 @@
+{
+  "catalogItems": [
+    {
+      "id": "P-100",
+      "name": "Wireless Mouse",
+      "category": "Peripherals",
+      "price": 29.99,
+      "stock": 18,
+      "status": "active"
+    },
+    {
+      "id": "P-101",
+      "name": "Mechanical Keyboard",
+      "category": "Peripherals",
+      "price": 79.99,
+      "stock": 7,
+      "status": "active"
+    },
+    {
+      "id": "P-102",
+      "name": "USB-C Dock",
+      "category": "Accessories",
+      "price": 119.99,
+      "stock": 3,
+      "status": "low-stock"
+    },
+    {
+      "id": "P-103",
+      "name": "27in Monitor",
+      "category": "Displays",
+      "price": 249.99,
+      "stock": 2,
+      "status": "low-stock"
+    }
+  ],
+  "customers": [
+    {
+      "id": "C-200",
+      "name": "Ava Patel",
+      "tier": "gold",
+      "region": "north"
+    },
+    {
+      "id": "C-201",
+      "name": "Marcus Hill",
+      "tier": "silver",
+      "region": "central"
+    },
+    {
+      "id": "C-202",
+      "name": "Elena Cruz",
+      "tier": "bronze",
+      "region": "south"
+    }
+  ],
+  "orders": [
+    {
+      "id": "O-300",
+      "customerId": "C-200",
+      "itemId": "P-101",
+      "quantity": 1,
+      "orderStatus": "shipped"
+    },
+    {
+      "id": "O-301",
+      "customerId": "C-201",
+      "itemId": "P-102",
+      "quantity": 2,
+      "orderStatus": "processing"
+    },
+    {
+      "id": "O-302",
+      "customerId": "C-202",
+      "itemId": "P-100",
+      "quantity": 3,
+      "orderStatus": "processing"
+    }
+  ],
+  "supportTickets": [
+    {
+      "id": "T-400",
+      "customerId": "C-201",
+      "topic": "dock firmware update",
+      "priority": "high",
+      "status": "open"
+    },
+    {
+      "id": "T-401",
+      "customerId": "C-200",
+      "topic": "shipping delay",
+      "priority": "medium",
+      "status": "resolved"
+    },
+    {
+      "id": "T-402",
+      "customerId": "C-202",
+      "topic": "monitor flicker",
+      "priority": "high",
+      "status": "open"
+    }
+  ]
+}

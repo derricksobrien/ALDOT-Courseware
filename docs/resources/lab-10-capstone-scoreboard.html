@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 10 Capstone Scoreboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        .card {
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(148, 163, 184, 0.22);
+        }
+        .mono {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+        .winner-glow {
+            box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.45), 0 0 28px rgba(250, 204, 21, 0.18);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <section class="mb-8">
+            <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+                <div>
+                    <p class="text-sm uppercase tracking-[0.25em] text-cyan-300">Lab 10 capstone</p>
+                    <h1 class="mt-2 text-4xl font-extrabold text-white">Red Team vs Blue Team Scoreboard</h1>
+                    <p class="mt-3 max-w-3xl text-slate-300">
+                        Score public GitHub repos against the course modernization objectives. The tool reads
+                        <span class="mono">capstone/scorecard.json</span>, validates evidence files, and combines repo-based scoring with a few visible live-verification checks.
+                    </p>
+                </div>
+                <div class="card rounded-2xl px-5 py-4 text-sm">
+                    <div class="font-semibold text-white">Transparent scoring model</div>
+                    <ul class="mt-2 space-y-1 text-slate-300">
+                        <li>Base score: 100</li>
+                        <li>AI bonus: 15</li>
+                        <li>Starter repo must be the same for both teams</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 gap-6 xl:grid-cols-3">
+            <div class="card rounded-2xl p-6 xl:col-span-1">
+                <label for="starterRepo" class="block text-sm font-semibold text-white">Starter repo URL</label>
+                <input id="starterRepo" type="text" class="mt-2 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm text-white" value="https://github.com/dotnet-architecture/eShopOnWeb">
+                <p class="mt-2 text-xs text-slate-400">Used for fairness checks only. The starter repo is not scored.</p>
+
+                <div class="mt-6 grid grid-cols-1 gap-4">
+                    <div class="rounded-xl border border-red-500/30 bg-red-950/20 p-4">
+                        <h2 class="text-lg font-bold text-red-300">Team Red</h2>
+                        <label for="redRepo" class="mt-3 block text-sm font-medium text-slate-200">GitHub repo URL</label>
+                        <input id="redRepo" type="text" placeholder="https://github.com/org/team-red-capstone" class="mt-2 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm text-white">
+                        <div class="mt-4 space-y-2 text-sm text-slate-300">
+                            <label class="flex items-center gap-2"><input id="redDeploymentVerified" type="checkbox" class="rounded"> Live deployment verified</label>
+                            <label class="flex items-center gap-2"><input id="redHealthVerified" type="checkbox" class="rounded"> Health endpoint verified</label>
+                            <label class="flex items-center gap-2"><input id="redAiVerified" type="checkbox" class="rounded"> AI demo verified</label>
+                        </div>
+                    </div>
+
+                    <div class="rounded-xl border border-blue-500/30 bg-blue-950/20 p-4">
+                        <h2 class="text-lg font-bold text-blue-300">Team Blue</h2>
+                        <label for="blueRepo" class="mt-3 block text-sm font-medium text-slate-200">GitHub repo URL</label>
+                        <input id="blueRepo" type="text" placeholder="https://github.com/org/team-blue-capstone" class="mt-2 w-full rounded-lg border border-slate-600 bg-slate-950 px-3 py-2 text-sm text-white">
+                        <div class="mt-4 space-y-2 text-sm text-slate-300">
+                            <label class="flex items-center gap-2"><input id="blueDeploymentVerified" type="checkbox" class="rounded"> Live deployment verified</label>
+                            <label class="flex items-center gap-2"><input id="blueHealthVerified" type="checkbox" class="rounded"> Health endpoint verified</label>
+                            <label class="flex items-center gap-2"><input id="blueAiVerified" type="checkbox" class="rounded"> AI demo verified</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="scoreButton" class="mt-6 w-full rounded-xl bg-cyan-500 px-4 py-3 text-sm font-bold text-slate-950 transition hover:bg-cyan-400">Score teams</button>
+                <p id="statusText" class="mt-3 text-sm text-slate-400">Ready.</p>
+
+                <div class="mt-6 rounded-xl border border-slate-700 bg-slate-950/60 p-4 text-sm text-slate-300">
+                    <div class="font-semibold text-white">Rubric summary</div>
+                    <ul class="mt-3 space-y-1">
+                        <li>Mission and architecture - 10</li>
+                        <li>Feature implementation and sample data - 15</li>
+                        <li>Quality gates - 15</li>
+                        <li>Containerization - 15</li>
+                        <li>Deployment automation and IaC - 15</li>
+                        <li>Observability and reliability - 15</li>
+                        <li>Security modernization - 10</li>
+                        <li>Runbook and retrospective - 5</li>
+                        <li>AI bonus - 15</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="xl:col-span-2 space-y-6">
+                <div id="winnerCard" class="card rounded-2xl p-6">
+                    <h2 class="text-xl font-bold text-white">Winner</h2>
+                    <p class="mt-3 text-slate-300">Run the scorer to compare teams.</p>
+                </div>
+
+                <div class="card rounded-2xl p-6">
+                    <h2 class="text-xl font-bold text-white">Total score comparison</h2>
+                    <div class="mt-4 h-80">
+                        <canvas id="totalsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card rounded-2xl p-6">
+                    <h2 class="text-xl font-bold text-white">Category breakdown</h2>
+                    <div class="mt-4 h-96">
+                        <canvas id="breakdownChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-8 grid grid-cols-1 gap-6 xl:grid-cols-2">
+            <div class="card rounded-2xl p-6">
+                <h2 class="text-xl font-bold text-red-300">Team Red details</h2>
+                <div id="redSummary" class="mt-4 text-sm text-slate-300">No results yet.</div>
+                <div id="redResults" class="mt-4 overflow-x-auto"></div>
+            </div>
+            <div class="card rounded-2xl p-6">
+                <h2 class="text-xl font-bold text-blue-300">Team Blue details</h2>
+                <div id="blueSummary" class="mt-4 text-sm text-slate-300">No results yet.</div>
+                <div id="blueResults" class="mt-4 overflow-x-auto"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const categoryLabels = [
+            "Mission/Architecture",
+            "Feature/Data",
+            "Quality Gates",
+            "Containerization",
+            "Deploy/IaC",
+            "Observability",
+            "Security",
+            "Runbook/Retro",
+            "AI Bonus"
+        ];
+
+        const scoringRules = [
+            { key: "mission", label: "Mission and architecture", max: 10, category: "Mission/Architecture" },
+            { key: "feature", label: "Feature implementation and sample data", max: 15, category: "Feature/Data" },
+            { key: "quality", label: "Quality gates", max: 15, category: "Quality Gates" },
+            { key: "container", label: "Containerization", max: 15, category: "Containerization" },
+            { key: "deploy", label: "Deployment automation and IaC", max: 15, category: "Deploy/IaC" },
+            { key: "ops", label: "Observability and reliability", max: 15, category: "Observability" },
+            { key: "security", label: "Security modernization", max: 10, category: "Security" },
+            { key: "runbook", label: "Runbook and retrospective", max: 5, category: "Runbook/Retro" },
+            { key: "ai", label: "AI bonus", max: 15, category: "AI Bonus" }
+        ];
+
+        let totalsChart;
+        let breakdownChart;
+
+        const githubApiBase = "https://api.github.com";
+
+        function parseRepoUrl(input) {
+            const trimmed = (input || "").trim().replace(/\.git$/, "");
+            if (!trimmed) {
+                throw new Error("Repo URL is required.");
+            }
+
+            const directMatch = trimmed.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/#?]+)/i);
+            if (directMatch) {
+                return { owner: directMatch[1], repo: directMatch[2] };
+            }
+
+            const shortMatch = trimmed.match(/^([^\/]+)\/([^\/]+)$/);
+            if (shortMatch) {
+                return { owner: shortMatch[1], repo: shortMatch[2] };
+            }
+
+            throw new Error("Use a GitHub repo URL like https://github.com/org/repo.");
+        }
+
+        async function fetchJson(url) {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error("Request failed: " + response.status + " for " + url);
+            }
+            return response.json();
+        }
+
+        async function fetchText(url) {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error("Request failed: " + response.status + " for " + url);
+            }
+            return response.text();
+        }
+
+        async function repoContext(repoUrl) {
+            const parsed = parseRepoUrl(repoUrl);
+            const meta = await fetchJson(`${githubApiBase}/repos/${parsed.owner}/${parsed.repo}`);
+            const branch = meta.default_branch;
+            return {
+                owner: parsed.owner,
+                repo: parsed.repo,
+                defaultBranch: branch,
+                rawBase: `https://raw.githubusercontent.com/${parsed.owner}/${parsed.repo}/${branch}`
+            };
+        }
+
+        async function loadManifest(ctx) {
+            const manifestUrl = `${ctx.rawBase}/capstone/scorecard.json`;
+            const manifest = await fetchJson(manifestUrl);
+            return { manifestUrl, manifest };
+        }
+
+        async function readRepoFile(ctx, path, cache) {
+            if (!path) {
+                return null;
+            }
+
+            if (cache.has(path)) {
+                return cache.get(path);
+            }
+
+            const url = `${ctx.rawBase}/${path}`;
+            try {
+                const text = await fetchText(url);
+                cache.set(path, text);
+                return text;
+            } catch (error) {
+                cache.set(path, null);
+                return null;
+            }
+        }
+
+        function keywordHit(content, patterns) {
+            if (!content) {
+                return false;
+            }
+
+            const normalized = content.toLowerCase();
+            return patterns.some((pattern) => normalized.includes(pattern));
+        }
+
+        async function countExistingFiles(ctx, paths, cache) {
+            const items = (paths || []).filter(Boolean);
+            const checks = await Promise.all(items.map(async (path) => ({ path, content: await readRepoFile(ctx, path, cache) })));
+            return checks.filter((item) => item.content !== null);
+        }
+
+        function formatList(paths) {
+            if (!paths || paths.length === 0) {
+                return "none";
+            }
+            return paths.join(", ");
+        }
+
+        async function scoreTeam(teamLabel, repoUrl, starterRepoUrl, manualChecks) {
+            const ctx = await repoContext(repoUrl);
+            const { manifestUrl, manifest } = await loadManifest(ctx);
+            const cache = new Map();
+            const warnings = [];
+
+            if (manifest.starterRepo && starterRepoUrl && manifest.starterRepo !== starterRepoUrl) {
+                warnings.push(`Starter repo mismatch: manifest lists ${manifest.starterRepo}`);
+            }
+
+            const results = [];
+
+            async function pushRule(key, label, max, evaluator) {
+                const result = await evaluator();
+                results.push({
+                    key,
+                    label,
+                    max,
+                    score: result.score,
+                    detail: result.detail
+                });
+            }
+
+            await pushRule("mission", "Mission and architecture", 10, async () => {
+                let score = 0;
+                const details = [];
+                const mission = await readRepoFile(ctx, manifest.missionFile, cache);
+                const architecture = await readRepoFile(ctx, manifest.architectureFile, cache);
+
+                if (mission) {
+                    score += 5;
+                    details.push(`Mission found: ${manifest.missionFile}`);
+                } else {
+                    details.push("Mission file missing.");
+                }
+
+                if (architecture) {
+                    score += 5;
+                    details.push(`Architecture found: ${manifest.architectureFile}`);
+                } else {
+                    details.push("Architecture file missing.");
+                }
+
+                return { score, detail: details.join(" ") };
+            });
+
+            await pushRule("feature", "Feature implementation and sample data", 15, async () => {
+                let score = 0;
+                const details = [];
+                const featureFiles = await countExistingFiles(ctx, manifest.featureFiles, cache);
+                const sampleData = await readRepoFile(ctx, manifest.sampleDataFile, cache);
+
+                if (featureFiles.length > 0) {
+                    score += 10;
+                    details.push(`Feature files found: ${formatList(featureFiles.map((item) => item.path))}.`);
+                } else {
+                    details.push("No feature files found from scorecard.");
+                }
+
+                if (sampleData) {
+                    try {
+                        const parsed = JSON.parse(sampleData);
+                        const hasData = Object.values(parsed).some((value) => Array.isArray(value) && value.length > 0);
+                        if (hasData) {
+                            score += 5;
+                            details.push(`Sample data found: ${manifest.sampleDataFile}.`);
+                        } else {
+                            details.push("Sample data file exists but looks empty.");
+                        }
+                    } catch (error) {
+                        details.push("Sample data file exists but is not valid JSON.");
+                    }
+                } else {
+                    details.push("Sample data file missing.");
+                }
+
+                return { score, detail: details.join(" ") };
+            });
+
+            await pushRule("quality", "Quality gates", 15, async () => {
+                let score = 0;
+                const details = [];
+                const testFiles = await countExistingFiles(ctx, manifest.testFiles, cache);
+                const workflowFiles = await countExistingFiles(ctx, manifest.workflowFiles, cache);
+                const workflowText = workflowFiles.map((item) => item.content || "").join("\n");
+
+                if (testFiles.length > 0) {
+                    score += 7;
+                    details.push(`Tests found: ${formatList(testFiles.map((item) => item.path))}.`);
+                } else {
+                    details.push("No test files found from scorecard.");
+                }
+
+                if (keywordHit(workflowText, ["dotnet test", "npm test", "pytest", "go test", "mvn test"]) &&
+                    keywordHit(workflowText, ["dotnet build", "npm run build", "publish", "restore"])) {
+                    score += 8;
+                    details.push("Workflow shows build and test gates.");
+                } else if (workflowFiles.length > 0) {
+                    details.push("Workflow file exists but build/test gates were not obvious.");
+                } else {
+                    details.push("No workflow files found.");
+                }
+
+                return { score, detail: details.join(" ") };
+            });
+
+            await pushRule("container", "Containerization", 15, async () => {
+                let score = 0;
+                const details = [];
+                const containerFiles = await countExistingFiles(ctx, manifest.containerFiles, cache);
+                const containerText = containerFiles.map((item) => item.content || "").join("\n");
+
+                if (keywordHit(containerText, ["from ", "expose ", "entrypoint", "as build"])) {
+                    score += 8;
+                    details.push("Container build artifact found.");
+                } else {
+                    details.push("Dockerfile-style evidence not found.");
+                }
+
+                if (keywordHit(containerText, ["services:", "docker compose", "image:", "containerport", "ports:"])) {
+                    score += 7;
+                    details.push("Container runtime or compose evidence found.");
+                } else {
+                    details.push("Compose/runtime container evidence not found.");
+                }
+
+                return { score, detail: details.join(" ") };
+            });
+
+            await pushRule("deploy", "Deployment automation and IaC", 15, async () => {
+                let score = 0;
+                const details = [];
+                const deployFiles = await countExistingFiles(ctx, manifest.deployFiles, cache);
+                const workflowFiles = await countExistingFiles(ctx, manifest.workflowFiles, cache);
+                const deployText = deployFiles.map((item) => item.content || "").join("\n");
+                const workflowText = workflowFiles.map((item) => item.content || "").join("\n");
+
+                if (keywordHit(deployText, ["resource ", "param ", "apiversion", "terraform", "helm", "kind:", "azurerm", "oc ", "kubectl "])) {
+                    score += 8;
+                    details.push(`Infra evidence found: ${formatList(deployFiles.map((item) => item.path))}.`);
+                } else if (deployFiles.length > 0) {
+                    details.push("Deploy files exist but IaC keywords were not obvious.");
+                } else {
+                    details.push("No deploy files found.");
+                }
+
+                if (keywordHit(workflowText + "\n" + deployText, ["az webapp", "az deployment", "kubectl apply", "oc apply", "docker push", "azure/login", "webapps-deploy"])) {
+                    score += 7;
+                    details.push("Deployment automation keywords found.");
+                } else {
+                    details.push("Deployment automation keywords not found.");
+                }
+
+                return { score, detail: details.join(" ") };
+            });
+
+            await pushRule("ops", "Observability and reliability", 15, async () => {
+                let score = 0;
+                const details = [];
+                const opsFiles = await countExistingFiles(ctx, manifest.opsFiles, cache);
+                const opsText = opsFiles.map((item) => item.content || "").join("\n");
+
+                if (keywordHit(opsText, ["health", "alert", "monitor", "application insights", "opentelemetry", "dashboard", "probe"])) {
+                    score += 10;
+                    details.push(`Ops evidence found: ${formatList(opsFiles.map((item) => item.path))}.`);
+                } else if (opsFiles.length > 0) {
+                    details.push("Ops files exist but health/telemetry keywords were not obvious.");
+                } else {
+                    details.push("No ops files found.");
+                }
+
+                if (manualChecks.deploymentVerified) {
+                    score += 3;
+                    details.push("Live deployment verified.");
+                } else {
+                    details.push("Live deployment not verified.");
+                }
+
+                if (manualChecks.healthVerified) {
+                    score += 2;
+                    details.push("Health endpoint verified.");
+                } else {
+                    details.push("Health endpoint not verified.");
+                }
+
+                return { score, detail: details.join(" ") };
+            });
+
+            await pushRule("security", "Security modernization", 10, async () => {
+                let score = 0;
+                const details = [];
+                const securityFiles = await countExistingFiles(ctx, manifest.securityFiles, cache);
+                const securityText = securityFiles.map((item) => item.content || "").join("\n");
+
+                if (keywordHit(securityText, ["key vault", "managed identity", "secret", "environment variable", "user-secrets", "azure identity", "connection string"])) {
+                    score += 10;
+                    details.push(`Security evidence found: ${formatList(securityFiles.map((item) => item.path))}.`);
+                } else if (securityFiles.length > 0) {
+                    details.push("Security files exist but modernization keywords were not obvious.");
+                } else {
+                    details.push("No security files found.");
+                }
+
+                return { score, detail: details.join(" ") };
+            });
+
+            await pushRule("runbook", "Runbook and retrospective", 5, async () => {
+                let score = 0;
+                const details = [];
+                const runbook = await readRepoFile(ctx, manifest.runbookFile, cache);
+                const retrospective = await readRepoFile(ctx, manifest.retrospectiveFile, cache);
+
+                if (runbook) {
+                    score += 3;
+                    details.push(`Runbook found: ${manifest.runbookFile}.`);
+                } else {
+                    details.push("Runbook missing.");
+                }
+
+                if (retrospective) {
+                    score += 2;
+                    details.push(`Retrospective found: ${manifest.retrospectiveFile}.`);
+                } else {
+                    details.push("Retrospective missing.");
+                }
+
+                return { score, detail: details.join(" ") };
+            });
+
+            await pushRule("ai", "AI bonus", 15, async () => {
+                let score = 0;
+                const details = [];
+                const aiFiles = await countExistingFiles(ctx, manifest.aiFiles, cache);
+                const aiText = aiFiles.map((item) => item.content || "").join("\n");
+
+                if (aiFiles.length > 0) {
+                    score += 5;
+                    details.push(`AI files found: ${formatList(aiFiles.map((item) => item.path))}.`);
+                } else {
+                    details.push("No AI files found from scorecard.");
+                }
+
+                if (keywordHit(aiText, ["openai", "semantic kernel", "assistant", "prompt", "chat", "embeddings", "rag", "grounding"])) {
+                    score += 5;
+                    details.push("AI keywords suggest a working data-aware feature.");
+                } else if (aiFiles.length > 0) {
+                    details.push("AI files exist but chat/grounding keywords were not obvious.");
+                }
+
+                if (manualChecks.aiVerified) {
+                    score += 5;
+                    details.push("Live AI demo verified.");
+                } else {
+                    details.push("Live AI demo not verified.");
+                }
+
+                return { score, detail: details.join(" ") };
+            });
+
+            const baseScore = results.filter((item) => item.key !== "ai").reduce((sum, item) => sum + item.score, 0);
+            const aiBonus = results.find((item) => item.key === "ai").score;
+            const totalScore = baseScore + aiBonus;
+            const breakdown = {};
+
+            for (const label of categoryLabels) {
+                breakdown[label] = 0;
+            }
+
+            for (const rule of results) {
+                const metadata = scoringRules.find((item) => item.key === rule.key);
+                breakdown[metadata.category] += rule.score;
+            }
+
+            return {
+                teamLabel,
+                ctx,
+                manifest,
+                manifestUrl,
+                warnings,
+                results,
+                baseScore,
+                aiBonus,
+                totalScore,
+                breakdown
+            };
+        }
+
+        function renderSummary(targetId, result) {
+            const warningBlock = result.warnings.length > 0
+                ? `<div class="mt-2 rounded-lg border border-amber-500/40 bg-amber-950/20 p-3 text-amber-200">${result.warnings.join("<br>")}</div>`
+                : "";
+
+            document.getElementById(targetId).innerHTML = `
+                <div class="space-y-2">
+                    <div><span class="font-semibold text-white">Repo:</span> ${result.ctx.owner}/${result.ctx.repo}</div>
+                    <div><span class="font-semibold text-white">Manifest:</span> <span class="mono">${result.manifestUrl}</span></div>
+                    <div><span class="font-semibold text-white">Base score:</span> ${result.baseScore} / 100</div>
+                    <div><span class="font-semibold text-white">AI bonus:</span> ${result.aiBonus} / 15</div>
+                    <div><span class="font-semibold text-white">Total:</span> ${result.totalScore} / 115</div>
+                </div>
+                ${warningBlock}
+            `;
+        }
+
+        function renderTable(targetId, result) {
+            const rows = result.results.map((item) => `
+                <tr class="border-b border-slate-800 align-top">
+                    <td class="px-3 py-3 font-medium text-white">${item.label}</td>
+                    <td class="px-3 py-3 text-center font-bold ${item.score === item.max ? "text-emerald-300" : "text-slate-200"}">${item.score} / ${item.max}</td>
+                    <td class="px-3 py-3 text-slate-300">${item.detail}</td>
+                </tr>
+            `).join("");
+
+            document.getElementById(targetId).innerHTML = `
+                <table class="min-w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700 text-left text-slate-300">
+                            <th class="px-3 py-2">Criterion</th>
+                            <th class="px-3 py-2 text-center">Score</th>
+                            <th class="px-3 py-2">Detail</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            `;
+        }
+
+        function renderWinner(red, blue) {
+            const winnerCard = document.getElementById("winnerCard");
+            const winner = red.totalScore === blue.totalScore
+                ? null
+                : (red.totalScore > blue.totalScore ? red : blue);
+
+            if (!winner) {
+                winnerCard.className = "card rounded-2xl p-6";
+                winnerCard.innerHTML = `
+                    <h2 class="text-xl font-bold text-white">Winner</h2>
+                    <p class="mt-3 text-slate-300">Tie game at ${red.totalScore} points each. Use the published tie-breakers if needed.</p>
+                `;
+                return;
+            }
+
+            const color = winner.teamLabel === "Team Red" ? "text-red-300" : "text-blue-300";
+            winnerCard.className = "card winner-glow rounded-2xl p-6";
+            winnerCard.innerHTML = `
+                <h2 class="text-xl font-bold text-white">Winner</h2>
+                <p class="mt-3 text-3xl font-extrabold ${color}">${winner.teamLabel}</p>
+                <p class="mt-2 text-slate-300">${winner.totalScore} points total (${winner.baseScore} base + ${winner.aiBonus} AI bonus)</p>
+            `;
+        }
+
+        function ensureCharts() {
+            if (!totalsChart) {
+                totalsChart = new Chart(document.getElementById("totalsChart").getContext("2d"), {
+                    type: "bar",
+                    data: {
+                        labels: ["Team Red", "Team Blue"],
+                        datasets: [{
+                            label: "Total score",
+                            data: [0, 0],
+                            backgroundColor: ["rgba(248, 113, 113, 0.75)", "rgba(96, 165, 250, 0.75)"],
+                            borderColor: ["rgba(248, 113, 113, 1)", "rgba(96, 165, 250, 1)"],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 115, ticks: { color: "#cbd5e1" }, grid: { color: "rgba(148,163,184,0.12)" } },
+                            x: { ticks: { color: "#cbd5e1" }, grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { labels: { color: "#e2e8f0" } }
+                        }
+                    }
+                });
+            }
+
+            if (!breakdownChart) {
+                breakdownChart = new Chart(document.getElementById("breakdownChart").getContext("2d"), {
+                    type: "bar",
+                    data: {
+                        labels: categoryLabels,
+                        datasets: [
+                            {
+                                label: "Team Red",
+                                data: new Array(categoryLabels.length).fill(0),
+                                backgroundColor: "rgba(248, 113, 113, 0.75)",
+                                borderColor: "rgba(248, 113, 113, 1)",
+                                borderWidth: 1
+                            },
+                            {
+                                label: "Team Blue",
+                                data: new Array(categoryLabels.length).fill(0),
+                                backgroundColor: "rgba(96, 165, 250, 0.75)",
+                                borderColor: "rgba(96, 165, 250, 1)",
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: { beginAtZero: true, max: 15, ticks: { color: "#cbd5e1" }, grid: { color: "rgba(148,163,184,0.12)" } },
+                            x: { ticks: { color: "#cbd5e1" }, grid: { display: false } }
+                        },
+                        plugins: {
+                            legend: { labels: { color: "#e2e8f0" } }
+                        }
+                    }
+                });
+            }
+        }
+
+        function updateCharts(red, blue) {
+            ensureCharts();
+            totalsChart.data.datasets[0].data = [red.totalScore, blue.totalScore];
+            totalsChart.update();
+
+            breakdownChart.data.datasets[0].data = categoryLabels.map((label) => red.breakdown[label]);
+            breakdownChart.data.datasets[1].data = categoryLabels.map((label) => blue.breakdown[label]);
+            breakdownChart.update();
+        }
+
+        function renderTeamError(summaryId, resultsId, message) {
+            document.getElementById(summaryId).innerHTML = `<div class="rounded-lg border border-amber-500/40 bg-amber-950/20 p-3 text-amber-200">${message}</div>`;
+            document.getElementById(resultsId).innerHTML = "";
+        }
+
+        async function runScoring() {
+            const starterRepo = document.getElementById("starterRepo").value.trim();
+            const redRepo = document.getElementById("redRepo").value.trim();
+            const blueRepo = document.getElementById("blueRepo").value.trim();
+            const statusText = document.getElementById("statusText");
+
+            statusText.textContent = "Scoring in progress...";
+
+            try {
+                const settled = await Promise.allSettled([
+                    scoreTeam("Team Red", redRepo, starterRepo, {
+                        deploymentVerified: document.getElementById("redDeploymentVerified").checked,
+                        healthVerified: document.getElementById("redHealthVerified").checked,
+                        aiVerified: document.getElementById("redAiVerified").checked
+                    }),
+                    scoreTeam("Team Blue", blueRepo, starterRepo, {
+                        deploymentVerified: document.getElementById("blueDeploymentVerified").checked,
+                        healthVerified: document.getElementById("blueHealthVerified").checked,
+                        aiVerified: document.getElementById("blueAiVerified").checked
+                    })
+                ]);
+
+                const redResult = settled[0];
+                const blueResult = settled[1];
+                const red = redResult.status === "fulfilled" ? redResult.value : null;
+                const blue = blueResult.status === "fulfilled" ? blueResult.value : null;
+
+                if (red) {
+                    renderSummary("redSummary", red);
+                    renderTable("redResults", red);
+                } else {
+                    renderTeamError("redSummary", "redResults", redResult.reason.message);
+                }
+
+                if (blue) {
+                    renderSummary("blueSummary", blue);
+                    renderTable("blueResults", blue);
+                } else {
+                    renderTeamError("blueSummary", "blueResults", blueResult.reason.message);
+                }
+
+                if (red && blue) {
+                    renderWinner(red, blue);
+                    updateCharts(red, blue);
+                    statusText.textContent = "Scoring complete.";
+                } else {
+                    document.getElementById("winnerCard").className = "card rounded-2xl p-6";
+                    document.getElementById("winnerCard").innerHTML = `
+                        <h2 class="text-xl font-bold text-white">Winner</h2>
+                        <p class="mt-3 text-slate-300">Both teams must score successfully before a winner can be displayed.</p>
+                    `;
+                    ensureCharts();
+                    totalsChart.data.datasets[0].data = [red ? red.totalScore : 0, blue ? blue.totalScore : 0];
+                    totalsChart.update();
+                    breakdownChart.data.datasets[0].data = categoryLabels.map((label) => red ? red.breakdown[label] : 0);
+                    breakdownChart.data.datasets[1].data = categoryLabels.map((label) => blue ? blue.breakdown[label] : 0);
+                    breakdownChart.update();
+                    statusText.textContent = "Scoring completed with one or more repo errors.";
+                }
+            } catch (error) {
+                statusText.textContent = "Scoring failed.";
+                document.getElementById("winnerCard").className = "card rounded-2xl p-6";
+                document.getElementById("winnerCard").innerHTML = `
+                    <h2 class="text-xl font-bold text-white">Winner</h2>
+                    <p class="mt-3 text-amber-300">${error.message}</p>
+                    <p class="mt-2 text-sm text-slate-400">Make sure both repos are public and each contains capstone/scorecard.json.</p>
+                `;
+            }
+        }
+
+        document.getElementById("scoreButton").addEventListener("click", runScoring);
+        ensureCharts();
+    </script>
+</body>
+</html>

@@ -16,6 +16,17 @@ Optional or Stretch MVP Lab
 ## Goal
 Deliver a high-energy, team-based capstone that proves one full modernization slice from planning through operations, then presents it in a final demo showdown.
 
+## Competition kit
+
+Use the published capstone competition resources when you want to run Lab 10 as a scored Red Team vs Blue Team event:
+
+- `docs/resources/lab-10-capstone-competition-kit.md`
+- `docs/resources/lab-10-capstone-scoreboard.html`
+- `docs/resources/lab-10-capstone-scorecard-template.json`
+- `docs/resources/lab-10-capstone-sample-data.json`
+
+These resources give both teams the same starter expectations, the same sample data, and the same transparent scoring rules.
+
 ## Prerequisites
 
 - Core modules 1, 3, 4, 6, 7, and 8 completed
