@@ -21,3 +21,17 @@ Hands-on exercises for the Software Development Modernization course. Each lab m
 | [Lab 08 — CI/CD GitHub Actions](lab-08-cicd-github-actions) | Core | Working pipeline on every push |
 | [Lab 09 — Azure Deployment](lab-09-azure-deployment-operations) | Supporting | Live Azure deployment + monitoring |
 | [Lab 10 — Capstone](lab-10-capstone-end-to-end) | Capstone | Full end-to-end validated stack |
+
+## Visual Walkthroughs
+
+These pages link to full screenshot walkthroughs hosted in the repository:
+
+- [Lab 01 — Walkthrough](lab-01-walkthrough)
+- [Lab 03 — Walkthrough](lab-03-walkthrough)
+- [Lab 04 — Walkthrough](lab-04-walkthrough)
+- [Lab 05 — Walkthrough](lab-05-walkthrough)
+- [Lab 06 — Walkthrough](lab-06-walkthrough)
+- [Lab 07 — Walkthrough](lab-07-walkthrough)
+- [Lab 08 — Walkthrough](lab-08-walkthrough)
+- [Lab 09 — Walkthrough](lab-09-walkthrough)
+- [Lab 10 — Walkthrough](lab-10-walkthrough)
