@@ -59,10 +59,10 @@ The official lab checklist: hosting model choice, Bicep deployment, managed iden
 
 ## Part 2 — Validate Azure Subscription Context and Hosting Model
 
-![Azure portal Create Web App view showing active tenant/subscription context](lab-09-screenshots/ss02-azure-create-webapp-context.png)
+![Azure portal home view showing active tenant and App Services entry point](lab-09-screenshots/ss02-azure-create-webapp-context.png)
 
 **What you are looking at:**  
-A live Azure context with subscription selected and App Service deployment flow open.
+A live Azure portal context with the correct tenant visible and the App Services entry point available from the home screen.
 
 **Why this matters:**  
 Before deploying templates/artifacts, confirm you are in the correct tenant and subscription to avoid cross-environment drift.
