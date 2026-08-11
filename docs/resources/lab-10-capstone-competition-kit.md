@@ -203,6 +203,18 @@ The scoreboard will:
 
 ---
 
+## Published example repos
+
+- Red Team example: `https://github.com/derricksobrien/lab10-red-team-sample-v2`
+- Blue Team example: `https://github.com/derricksobrien/lab10-blue-team-sample`
+- Starter template: `https://github.com/derricksobrien/lab10-capstone-starter-template`
+
+Shareable matchup URL:
+
+- [Live Red vs Blue matchup](https://derricksobrien.github.io/ALDOT-Courseware/resources/lab-10-capstone-scoreboard.html?starterRepo=https%3A%2F%2Fgithub.com%2Fdotnet-architecture%2FeShopOnWeb&redRepo=https%3A%2F%2Fgithub.com%2Fderricksobrien%2Flab10-red-team-sample-v2&blueRepo=https%3A%2F%2Fgithub.com%2Fderricksobrien%2Flab10-blue-team-sample&redDeploymentVerified=1&redHealthVerified=1&redAiVerified=1&blueDeploymentVerified=1&blueHealthVerified=1&blueAiVerified=0&autoScore=1)
+
+---
+
 ## Recommended instructor script
 
 Use this short script when introducing the capstone:

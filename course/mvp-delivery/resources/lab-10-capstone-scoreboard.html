@@ -77,6 +77,7 @@
                 </div>
 
                 <button id="scoreButton" class="mt-6 w-full rounded-xl bg-cyan-500 px-4 py-3 text-sm font-bold text-slate-950 transition hover:bg-cyan-400">Score teams</button>
+                <button id="shareButton" class="mt-3 w-full rounded-xl border border-cyan-400 px-4 py-3 text-sm font-bold text-cyan-200 transition hover:bg-cyan-500/10">Copy matchup link</button>
                 <p id="statusText" class="mt-3 text-sm text-slate-400">Ready.</p>
 
                 <div class="mt-6 rounded-xl border border-slate-700 bg-slate-950/60 p-4 text-sm text-slate-300">
@@ -687,6 +688,77 @@
             document.getElementById(resultsId).innerHTML = "";
         }
 
+        function getFormState() {
+            return {
+                starterRepo: document.getElementById("starterRepo").value.trim(),
+                redRepo: document.getElementById("redRepo").value.trim(),
+                blueRepo: document.getElementById("blueRepo").value.trim(),
+                redDeploymentVerified: document.getElementById("redDeploymentVerified").checked,
+                redHealthVerified: document.getElementById("redHealthVerified").checked,
+                redAiVerified: document.getElementById("redAiVerified").checked,
+                blueDeploymentVerified: document.getElementById("blueDeploymentVerified").checked,
+                blueHealthVerified: document.getElementById("blueHealthVerified").checked,
+                blueAiVerified: document.getElementById("blueAiVerified").checked
+            };
+        }
+
+        function buildShareUrl() {
+            const state = getFormState();
+            const url = new URL(window.location.href);
+            const params = url.searchParams;
+
+            params.set("starterRepo", state.starterRepo);
+            params.set("redRepo", state.redRepo);
+            params.set("blueRepo", state.blueRepo);
+            params.set("redDeploymentVerified", state.redDeploymentVerified ? "1" : "0");
+            params.set("redHealthVerified", state.redHealthVerified ? "1" : "0");
+            params.set("redAiVerified", state.redAiVerified ? "1" : "0");
+            params.set("blueDeploymentVerified", state.blueDeploymentVerified ? "1" : "0");
+            params.set("blueHealthVerified", state.blueHealthVerified ? "1" : "0");
+            params.set("blueAiVerified", state.blueAiVerified ? "1" : "0");
+            params.set("autoScore", "1");
+
+            return url.toString();
+        }
+
+        function applyQueryState() {
+            const params = new URLSearchParams(window.location.search);
+            const textKeys = ["starterRepo", "redRepo", "blueRepo"];
+
+            for (const key of textKeys) {
+                const value = params.get(key);
+                if (value !== null) {
+                    document.getElementById(key).value = value;
+                }
+            }
+
+            const checkboxKeys = [
+                "redDeploymentVerified",
+                "redHealthVerified",
+                "redAiVerified",
+                "blueDeploymentVerified",
+                "blueHealthVerified",
+                "blueAiVerified"
+            ];
+
+            for (const key of checkboxKeys) {
+                const value = params.get(key);
+                if (value !== null) {
+                    document.getElementById(key).checked = value === "1";
+                }
+            }
+
+            return params.get("autoScore") === "1";
+        }
+
+        async function copyMatchupLink() {
+            const shareUrl = buildShareUrl();
+            const statusText = document.getElementById("statusText");
+
+            await navigator.clipboard.writeText(shareUrl);
+            statusText.textContent = "Matchup link copied.";
+        }
+
         async function runScoring() {
             const starterRepo = document.getElementById("starterRepo").value.trim();
             const redRepo = document.getElementById("redRepo").value.trim();
@@ -758,7 +830,12 @@
         }
 
         document.getElementById("scoreButton").addEventListener("click", runScoring);
+        document.getElementById("shareButton").addEventListener("click", copyMatchupLink);
         ensureCharts();
+
+        if (applyQueryState()) {
+            runScoring();
+        }
     </script>
 </body>
 </html>
