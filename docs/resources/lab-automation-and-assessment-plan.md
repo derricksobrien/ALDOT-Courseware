@@ -71,7 +71,7 @@ These scripts evaluate whether the student completed the lab work and whether th
 
 The assessment script can use an AI model when configured. This is helpful for:
 
-- summarizing the studentâ€™s work in plain language
+- summarizing the student’s work in plain language
 - assessing whether the learner understood the lab goals
 - highlighting missing evidence or weak implementation choices
 - recommending next steps
