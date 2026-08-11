@@ -23,6 +23,17 @@ Execute a full modernization slice from planning through deployment verification
 - Team roles assigned
 - If any optional module is unavailable, use the published artifacts from the remediated MVP labs.
 
+## Azure Ubuntu VM Fallback Path
+
+For this cohort, `vm-ubuntu-sdm-2026-aug10` can serve as the capstone runtime target when platform-specific deployment paths are blocked.
+
+Use it to preserve end-to-end traceability:
+
+- Build and package in CI (Lab 08)
+- Deploy container to VM over SSH
+- Run health verification and smoke checks
+- Attach runtime evidence to capstone package
+
 ## Steps
 
 1. Define acceptance criteria and sprint slice.
@@ -32,6 +43,15 @@ Execute a full modernization slice from planning through deployment verification
 5. Deploy to the target environment.
 6. Validate operations and present outcomes.
 7. Assemble the final capstone package and retrospective notes.
+
+### VM fallback evidence add-on
+
+Include:
+
+- SSH command transcript (`labadmin` on `vm-ubuntu-sdm-2026-aug10`)
+- `docker ps` output for running capstone container
+- Health endpoint result and timestamp
+- Short note describing why VM fallback was used
 
 ## Validation
 
@@ -45,4 +65,4 @@ Execute a full modernization slice from planning through deployment verification
 - Architecture and runbook artifacts
 - Retrospective summary
 - Packaged capstone checkpoint
-
+- VM runtime proof (if fallback path used)
