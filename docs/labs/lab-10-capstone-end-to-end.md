@@ -14,7 +14,7 @@ Module 10 - Capstone End-to-End Modernization
 Optional or Stretch MVP Lab
 
 ## Goal
-Execute a full modernization slice from planning through deployment verification.
+Deliver a high-energy, team-based capstone that proves one full modernization slice from planning through operations, then presents it in a final demo showdown.
 
 ## Prerequisites
 
@@ -22,6 +22,65 @@ Execute a full modernization slice from planning through deployment verification
 - Optional module artifacts from 2, 5, and 9 collected if available
 - Team roles assigned
 - If any optional module is unavailable, use the published artifacts from the remediated MVP labs.
+
+## Capstone Challenge Format (Suggested: 90-120 minutes)
+
+This final lab runs as a timed challenge with a public scorecard and final demo.
+
+### Team roles (3-5 learners per team)
+
+- Delivery Lead: owns scope and acceptance criteria
+- Build Engineer: owns CI pipeline evidence
+- Platform Engineer: owns deployment/runtime verification
+- Ops Analyst: owns monitoring, alerts, and SLO checks
+- Storyteller (optional): owns final demo flow and artifacts
+
+### Mission objective
+
+Ship one thin vertical slice that is:
+
+- Traceable (plan -> code -> pipeline -> deploy -> operate)
+- Reliable (quality gates + health checks)
+- Explainable (clear tradeoffs, not just screenshots)
+
+---
+
+## Round-Based Execution
+
+### Round 1 - Mission Brief (15 min)
+
+1. Define one realistic change request for your app.
+2. Write 3-5 acceptance criteria.
+3. Create ownership tasks in your board/tooling.
+
+**Round output:** scope statement + acceptance criteria + owner map.
+
+### Round 2 - Build and Gate (20 min)
+
+1. Implement the smallest code/config change that satisfies the mission.
+2. Run CI with required checks.
+3. Capture one successful run and one blocked/failing gate scenario.
+
+**Round output:** commit SHA + two run links + gate explanation.
+
+### Round 3 - Deploy and Operate (25 min)
+
+1. Deploy to your target runtime.
+2. Verify app health and runtime behavior.
+3. Capture telemetry/ops evidence and one risk callout.
+
+**Round output:** deploy proof + health proof + operations proof.
+
+### Round 4 - Demo Showdown (20-30 min)
+
+Each team gets 5 minutes:
+
+1. What changed and why
+2. How quality was enforced
+3. How runtime behavior was validated
+4. One lesson learned and one next improvement
+
+**Round output:** final capstone package + live walkthrough.
 
 ## Azure Ubuntu VM Fallback Path
 
@@ -34,7 +93,7 @@ Use it to preserve end-to-end traceability:
 - Run health verification and smoke checks
 - Attach runtime evidence to capstone package
 
-## Steps
+## Steps (Technical Minimum)
 
 1. Define acceptance criteria and sprint slice.
 2. Gather the working artifacts from the remediated MVP labs.
@@ -53,6 +112,24 @@ Include:
 - Health endpoint result and timestamp
 - Short note describing why VM fallback was used
 
+## Scoring Rubric (Instructor)
+
+| Dimension | Points | What earns full credit |
+|---|---:|---|
+| End-to-end traceability | 25 | Clear chain from requirement to runtime evidence |
+| CI/CD quality gates | 25 | Correct required checks and meaningful pass/fail proof |
+| Runtime reliability | 25 | Health, monitoring, and operational readiness demonstrated |
+| Demo clarity | 15 | Crisp narrative, role handoffs, and evidence quality |
+| Retrospective quality | 10 | Honest lessons learned with concrete next actions |
+
+Total: 100 points
+
+### Bonus missions (optional, +10 each)
+
+- Chaos check: intentionally break one dependency and show recovery.
+- Cost check: identify one optimization to reduce cloud/runtime cost.
+- Security check: remove one secret from config via managed identity/secret store pattern.
+
 ## Validation
 
 - Acceptance criteria are met.
@@ -66,3 +143,8 @@ Include:
 - Retrospective summary
 - Packaged capstone checkpoint
 - VM runtime proof (if fallback path used)
+
+## Why this finale works
+
+This format turns Lab 10 into a live delivery simulation, not a documentation exercise.  
+Students finish with momentum because they compete, collaborate, and tell a coherent modernization story under time pressure.

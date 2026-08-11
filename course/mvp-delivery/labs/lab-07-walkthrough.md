@@ -57,8 +57,6 @@ By the end of this lab you will have:
 
 ## Part 1 — Confirm Lab 07 Scope in the Course Site
 
-![Course labs index showing Lab 07: Kubernetes and OpenShift Deployment card](lab-07-screenshots/ss01-course-labs-lab7-card.png)
-
 **What you are looking at:**  
 The course labs index with the Lab 07 card and objective summary. This aligns lab tasks to the modernization sequence.
 
@@ -228,4 +226,3 @@ oc get hpa
 ## Summary
 
 Lab 07 proves the modernization package from Lab 06 is **operationally deployable**: health-managed, externally reachable, and horizontally scalable in a cluster runtime. This is the critical bridge from build artifact to cloud platform operations.
-

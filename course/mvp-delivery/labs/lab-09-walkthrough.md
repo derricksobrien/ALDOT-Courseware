@@ -52,8 +52,6 @@ Lab 09 moves delivery from “deployed” to “operable in production”.
 
 ## Part 1 — Confirm Lab 09 Scope
 
-![Local course Lab 09 page with deployment and observability requirements](lab-09-screenshots/ss01-lab09-local-page.png)
-
 **What you are looking at:**  
 The official lab checklist: hosting model choice, Bicep deployment, managed identity, monitoring, alerting, and SLO definition.
 
@@ -185,4 +183,3 @@ A shared dashboard context where deployment, monitoring, and reliability tasks c
 
 Lab 09 extends modernization into real operations: repeatable cloud infrastructure, identity-safe access, telemetry, and actionable alerting.  
 This is the point where delivery teams shift from project completion to sustainable production stewardship.
-

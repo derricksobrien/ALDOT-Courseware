@@ -2,7 +2,7 @@
 
 **Course:** Software Development Modernization  
 **Module:** 10 — Capstone End-to-End Modernization  
-**Execution path shown:** One complete modernization slice from planning through deploy/ops evidence  
+**Execution path shown:** Capstone Challenge Day with timed rounds and final team demo  
 **Screenshots taken:** 2026-08-10/11 across live course pages, GitHub, Azure, and ADO  
 **Audience:** Students using this as a step-by-step guide or instructor reference  
 **Tier:** Optional or Stretch MVP Lab
@@ -10,31 +10,31 @@
 ---
 
 > **How to use this document**  
-> This walkthrough ties together Labs 01–09 into one capstone delivery flow.  
-> Use it as a final “integration runbook” for team execution and demo preparation.
+> This walkthrough turns Lab 10 into a live challenge format, not a passive wrap-up.  
+> Use it to run a high-energy finale where teams ship, prove, and present one modernization slice.
 
 ---
 
 ## Why This Lab Matters — App Modernization Context
 
-Labs 01–09 built individual capabilities. Lab 10 proves they operate as one delivery system.
+Labs 01–09 built capabilities. Lab 10 proves your team can deliver them under time pressure as one system.
 
 1. **Traceability:** Requirements, code, pipeline, deployment, and operations are linked.
 2. **Reliability:** Quality gates and operational checks are demonstrated, not assumed.
-3. **Reproducibility:** The team can rerun the slice from documented artifacts.
+3. **Communication:** Teams explain technical choices clearly to stakeholders.
 
-> **Key concept:** The capstone is not “new setup.” It is the validated synthesis of prior labs.
+> **Key concept:** The capstone is a delivery simulation with measurable outcomes, not just artifact collection.
 
 ---
 
-## What You Will Build
+## Capstone Challenge Day Format (90-120 minutes)
 
-| Artifact | What it is | Source |
-|---|---|---|
-| Capstone scope | Acceptance criteria + sprint slice | Lab 10 planning step |
-| Delivery chain evidence | Build/test/deploy run links | Labs 08–09 outputs |
-| Runtime evidence | Environment and dashboard proofs | Labs 07/09 outputs |
-| Final package | Demo notes + architecture + runbook + retrospective | Team deliverable |
+| Round | Timebox | Objective | Output |
+|---|---:|---|---|
+| Mission Brief | 15 min | Define one thin vertical slice and ownership model | Criteria + owner map |
+| Build and Gate | 20 min | Prove quality controls in CI | Pass + fail gate evidence |
+| Deploy and Operate | 25 min | Prove runtime health and operability | Deploy + health + ops evidence |
+| Demo Showdown | 20-30 min | Present end-to-end story to class | 5-minute team demo |
 
 ---
 
@@ -44,64 +44,43 @@ Labs 01–09 built individual capabilities. Lab 10 proves they operate as one de
 |---|---|
 | Core labs complete | Labs 1, 3, 4, 6, 7, 8 artifacts exist |
 | Optional artifacts collected | Labs 2, 5, 9 evidence available when possible |
-| Team ownership model | Roles assigned for build/deploy/ops/demo |
+| Team ownership model | Roles assigned for scope/build/platform/ops/demo |
 | Shared artifact location | Repo folder or board links defined |
 
 ---
 
-## Part 1 — Confirm Capstone Scope
-
-![Local Lab 10 page showing capstone goal, steps, validation, and evidence requirements](lab-10-screenshots/ss01-lab10-local-page.png)
+## Round 1 — Mission Brief (15 min)
 
 **What you are looking at:**  
-The authoritative Lab 10 scope and success criteria.
+The capstone objective and boundaries for a single modernization slice.
 
-**Immediate action:**  
-Turn the listed steps into a team task board with owners and due times.
+**Team actions:**
+1. Pick one realistic change request.
+2. Write 3-5 acceptance criteria.
+3. Assign team roles (Delivery, Build, Platform, Ops, Storyteller).
+4. Create a mini board with named owners.
+
+**Exit criteria:**  
+A clearly scoped mission everyone can explain in under 30 seconds.
 
 ---
 
-## Part 2 — Map the Full Lab Sequence
-
-![Course labs index showing the full 1–10 progression including MVP lab set](lab-10-screenshots/ss02-course-labs-index.png)
+## Round 2 — Build and Gate (20 min)
 
 **What you are looking at:**  
-The end-to-end module/lab map your capstone must traverse.
-
-**Capstone framing:**  
-Pick one thin vertical slice that touches planning → code/test → deploy → operate.
-
----
-
-## Part 3 — Pull CI/CD Evidence from Lab 08
-
-![Lab 08 page used as CI/CD quality gate reference for capstone execution](lab-10-screenshots/ss03-lab08-cicd-reference.png)
-
-**What you are looking at:**  
-The workflow and quality-gate requirements that must be visible in capstone evidence.
+The CI/CD controls that validate your slice before release.
 
 **Minimum CI evidence:**
 - Successful run URL
 - Failed gate run URL
 - Required checks enabled
+- Commit SHA that links change to run
 
 ---
 
-## Part 4 — Pull Deployment/Observability Evidence from Lab 09
+## Round 3 — Deploy and Operate (25 min)
 
-![Lab 09 page used as Azure deployment and operations evidence reference](lab-10-screenshots/ss04-lab09-azure-ops-reference.png)
-
-**What you are looking at:**  
-Cloud deployment and observability expectations to include in the capstone package.
-
-**Minimum ops evidence:**
-- Deployment output artifact
-- Monitoring/alert view
-- SLO statement
-
----
-
-## Part 5 — Validate Cloud Deployment Context
+## Part 3.1 — Validate Cloud Deployment Context
 
 ![Azure portal deployment context with active subscription and web app creation flow](lab-10-screenshots/ss05-azure-deploy-context.png)
 
@@ -112,7 +91,7 @@ An active deployment-capable Azure context for the capstone environment.
 
 ---
 
-## Part 6 — Validate Team Delivery Context in ADO
+## Part 3.2 — Validate Team Delivery Context in ADO
 
 ![Azure DevOps team dashboard context used for coordinating capstone work and evidence](lab-10-screenshots/ss06-ado-dashboard-capstone-context.png)
 
@@ -128,7 +107,7 @@ The shared dashboard where tasks and outcomes can be tracked through completion.
 
 ---
 
-## Part 7 — Capture Actions Run History for Traceability
+## Part 3.3 — Capture Actions Run History for Traceability
 
 ![GitHub Actions workflow runs list showing pipeline execution states](lab-10-screenshots/ss07-github-actions-runs.png)
 
@@ -142,7 +121,7 @@ Run history proving the capstone slice moved through automated validation.
 
 ---
 
-## Part 8 — Include Workflow Definition as Reproducibility Evidence
+## Part 3.4 — Include Workflow Definition as Reproducibility Evidence
 
 ![Workflow YAML reference in repository showing automation definition](lab-10-screenshots/ss08-workflow-yaml-reference.png)
 
@@ -154,6 +133,42 @@ The executable workflow definition that makes the capstone repeatable.
 - Trigger conditions
 - Job dependency chain
 - Environment/deploy step references
+
+---
+
+## Round 4 — Demo Showdown (20-30 min)
+
+Each team gets 5 minutes:
+
+1. What changed and why
+2. How quality was enforced
+3. How runtime behavior was validated
+4. One lesson learned and one next improvement
+
+**Judge focus areas:**
+- End-to-end traceability
+- Technical rigor of gates and runtime checks
+- Clarity and confidence of delivery story
+
+---
+
+## Scoring Rubric (Instructor)
+
+| Dimension | Points | Full-credit signal |
+|---|---:|---|
+| End-to-end traceability | 25 | Clean link from criteria -> commit -> pipeline -> deploy -> ops |
+| CI/CD quality gates | 25 | Correct required checks and meaningful failure handling |
+| Runtime reliability | 25 | Health, telemetry, and operational readiness are demonstrated |
+| Demo clarity | 15 | Coherent narrative and role handoffs |
+| Retrospective quality | 10 | Honest lessons and concrete next actions |
+
+Total: 100 points
+
+### Bonus missions (optional, +10 each)
+
+- Chaos check: break one dependency intentionally and demonstrate recovery.
+- Cost check: identify one optimization that reduces runtime/cloud cost.
+- Security check: remove one secret from config using identity/secret-store pattern.
 
 ---
 
@@ -182,6 +197,7 @@ capstone-package/
 - [ ] Pipeline quality gates are demonstrated
 - [ ] Deployment and runtime health are demonstrated
 - [ ] Final package can be reproduced from published artifacts
+- [ ] Team can explain tradeoffs and next-step improvements in the final demo
 
 ---
 
@@ -199,5 +215,4 @@ capstone-package/
 
 ## Summary
 
-Lab 10 completes the course by demonstrating that modernization work is not only implemented, but also governable, testable, deployable, and operable as a single system.
-
+Lab 10 now closes the course as a live capstone challenge: teams ship a real slice, defend technical decisions, and finish with a high-confidence modernization story.

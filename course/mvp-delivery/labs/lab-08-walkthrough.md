@@ -52,8 +52,6 @@ By Lab 07 you can build and run modernized workloads. Lab 08 makes that repeatab
 
 ## Part 1 — Confirm Lab 08 Scope
 
-![Local course Lab 08 page showing goals, steps, validation, and evidence requirements](lab-08-screenshots/ss01-lab08-local-page.png)
-
 **What you are looking at:**  
 The prescriptive Lab 08 checklist: triggers, jobs, quality gates, deploy controls, and branch protection.
 
@@ -206,4 +204,3 @@ Policy controls that require passing checks before merge.
 
 Lab 08 converts your modernization work into a governed, repeatable delivery system.  
 From this point forward, code quality and deployment readiness are enforced automatically rather than manually.
-
