@@ -37,5 +37,4 @@ Learners should fork the training repository into their own account, wire in the
 
 ## Further Reading
 
-- [Building and testing .NET â€” GitHub Docs](https://docs.github.com/actions/guides/building-and-testing-net)
-
+- [Building and testing .NET — GitHub Docs](https://docs.github.com/actions/guides/building-and-testing-net)

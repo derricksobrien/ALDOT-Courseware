@@ -36,5 +36,4 @@ This module is useful for enterprise workflow alignment, but it is optional for 
 
 ## Further Reading
 
-- [About work items and work item types â€” Azure Boards](https://learn.microsoft.com/en-us/azure/devops/boards/work-items/about-work-items?view=azure-devops)
-
+- [About work items and work item types — Azure Boards](https://learn.microsoft.com/en-us/azure/devops/boards/work-items/about-work-items?view=azure-devops)

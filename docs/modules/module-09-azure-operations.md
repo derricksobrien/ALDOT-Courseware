@@ -37,5 +37,4 @@ Learners should choose a supported hosting model, and if their training role can
 
 ## Further Reading
 
-- [What is Bicep? â€” Azure Resource Manager](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview)
-
+- [What is Bicep? — Azure Resource Manager](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview)

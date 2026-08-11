@@ -36,5 +36,4 @@ This module establishes the course baseline and shared vocabulary. Learners revi
 
 ## Further Reading
 
-- [Select your cloud migration strategies â€” Cloud Adoption Framework](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/plan/select-cloud-migration-strategy)
-
+- [Select your cloud migration strategies — Cloud Adoption Framework](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/plan/select-cloud-migration-strategy)

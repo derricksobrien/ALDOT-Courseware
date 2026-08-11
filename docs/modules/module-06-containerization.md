@@ -36,5 +36,4 @@ Containerization is the handoff boundary between development and platform operat
 
 ## Further Reading
 
-- [Multi-stage builds â€” Docker Docs](https://docs.docker.com/build/building/multi-stage/)
-
+- [Multi-stage builds — Docker Docs](https://docs.docker.com/build/building/multi-stage/)

@@ -36,5 +36,4 @@ This module operationalizes the container image by deploying it into a managed c
 
 ## Further Reading
 
-- [Liveness, Readiness, and Startup Probes â€” Kubernetes](https://kubernetes.io/docs/concepts/workloads/pods/probes/)
-
+- [Liveness, Readiness, and Startup Probes — Kubernetes](https://kubernetes.io/docs/concepts/workloads/pods/probes/)

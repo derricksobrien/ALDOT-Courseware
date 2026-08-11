@@ -37,5 +37,4 @@ Use the account URL and instructor credentials in `tosca-secrets.md` to reach th
 
 ## Further Reading
 
-- [Tosca â€” Model-Based Test Automation](https://www.tricentis.com/products/automate-continuous-testing-tosca/model-based-test-automation)
-
+- [Tosca — Model-Based Test Automation](https://www.tricentis.com/products/automate-continuous-testing-tosca/model-based-test-automation)

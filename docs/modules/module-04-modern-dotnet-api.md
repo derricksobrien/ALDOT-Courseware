@@ -36,5 +36,4 @@ This module creates the first meaningful modernization increment: a production-r
 
 ## Further Reading
 
-- [APIs overview â€” ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/apis)
-
+- [APIs overview — ASP.NET Core](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/apis)
