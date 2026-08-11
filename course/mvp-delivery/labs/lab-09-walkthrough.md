@@ -59,7 +59,9 @@ The official lab checklist: hosting model choice, Bicep deployment, managed iden
 
 ## Part 2 — Validate Azure Subscription Context and Hosting Model
 
-![Azure portal home view showing active tenant and App Services entry point](lab-09-screenshots/ss02-azure-create-webapp-context.png)
+![Azure portal home view showing active tenant and App Services entry point](lab-09-screenshots/ss02-azure-create-webapp-context-v2.png)
+
+[Open full-size screenshot](lab-09-screenshots/ss02-azure-create-webapp-context-v2.png)
 
 **What you are looking at:**  
 A live Azure portal context with the correct tenant visible and the App Services entry point available from the home screen.
@@ -143,7 +145,9 @@ Slot-based rollout reduces blast radius and supports fast rollback.
 
 ## Part 8 — Capture Delivery/Ops Evidence in Team Context
 
-![Azure DevOps team dashboard context for tracking operational readiness work](lab-09-screenshots/ss08-ado-ops-dashboard-context.png)
+![Azure DevOps team dashboard context for tracking operational readiness work](lab-09-screenshots/ss08-ado-ops-dashboard-context-v2.png)
+
+[Open full-size screenshot](lab-09-screenshots/ss08-ado-ops-dashboard-context-v2.png)
 
 **What you are looking at:**  
 A shared dashboard context where deployment, monitoring, and reliability tasks can be tracked and reviewed.
