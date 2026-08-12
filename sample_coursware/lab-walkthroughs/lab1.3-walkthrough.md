@@ -14,7 +14,7 @@ Two passing tests is not the same as two tests that actually cover the code. You
 
 ## Step 1 — Create `discount.py`
 
-Same starter function as Lab 1.1. If you already have it from that lab, reuse it.
+Same starter function as Lab 1.1. If you already have it from that lab, reuse it — same file, same folder approach (a new `lab1.3` folder opened via **File → Open Folder…**, then **New File** in Explorer). If you skipped Lab 1.1 or need a refresher on creating a file and folder in VS Code from scratch, see [Lab 1.1 Step 0](lab1.1-walkthrough.md#step-0--before-you-start-setting-up-your-environment) — it covers opening VS Code, the terminal, and file creation in full.
 
 ![VS Code editor showing discount.py](images/01-editor-discount.png)
 
@@ -111,6 +111,20 @@ mutmut run
 ## Step 7 — The fix: run it inside WSL
 
 If you have the Windows Subsystem for Linux available (`wsl --install` from an elevated PowerShell if you don't; a restart may be required), open a WSL terminal, `cd` into the same lab folder, and install the same three packages there instead:
+
+**Never opened WSL before? Here's the full path, click for click:**
+
+1. **Open an elevated PowerShell** (only needed if `wsl --install` hasn't been run yet): click **Start**, type `PowerShell`, then instead of pressing Enter, right-click **Windows PowerShell** in the results and choose **Run as administrator**. Click **Yes** if Windows asks to confirm.
+2. Run `wsl --install` in that window. If it reports WSL is already installed, you're done with this part — close the elevated window, you won't need admin rights again.
+3. If a restart is required, save your work and restart the lab machine, then continue.
+4. To open a WSL terminal going forward, click **Start**, type `Ubuntu` (or `WSL`), and press **Enter** — or in VS Code, click the dropdown arrow next to the **+** in the terminal panel and choose **Ubuntu (WSL)** from the list.
+5. **Find your lab folder from inside WSL.** WSL runs Linux, but it can still see your Windows files — they just live under `/mnt/c/` instead of `C:\`. If your `lab1.1`/`lab1.3` folder is at `C:\Users\you\Documents\lab1.1`, the same folder from WSL is:
+   ```bash
+   cd /mnt/c/Users/you/Documents/lab1.1
+   ```
+   Replace `you` with your actual Windows username, and adjust the rest of the path to match wherever you created the folder in Lab 1.1 Step 0b. Run `pwd` afterward to confirm you landed in the right place — it should print that same `/mnt/c/...` path back to you.
+
+Once you're in the right folder inside WSL, install the same three packages there instead:
 
 ```bash
 python3 -m pip install --user pytest pytest-cov mutmut
