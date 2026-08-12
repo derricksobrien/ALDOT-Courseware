@@ -27,7 +27,42 @@ java -version
 mvn -version
 ```
 
-You should see version output for both — something like `openjdk version "21..."` and `Apache Maven 3.9...`. If either command errors with "not recognized," don't try to install it yourself mid-lab — flag your instructor or ProTech support (see [Lab Access & Credentials](../../docs/ai-software-testing/lab-access.md)). These lab machines should have both preinstalled.
+You should see version output for both — something like `openjdk version "21..."` and `Apache Maven 3.9...`. If both print version numbers, skip straight to **0b**.
+
+**If `java -version` or `mvn -version` errors with "not recognized as an internal or external command"**, one or both tools genuinely aren't installed on this machine. That's happened on some lab machines — it's not something you did wrong, and it's fixable yourself in a few minutes without needing admin help, using Windows' built-in package manager, `winget`.
+
+#### Installing Java (if `java -version` failed)
+
+In the terminal, run:
+
+```powershell
+winget install Microsoft.OpenJDK.21
+```
+
+Type `Y` and press **Enter** if it asks you to accept a license agreement. This installs a free, Microsoft-maintained build of Java 21.
+
+#### Installing Maven (if `mvn -version` failed)
+
+```powershell
+winget install Apache.Maven
+```
+
+Same deal — accept any license prompt with `Y`.
+
+#### Making the new tools show up
+
+Installers update your system's `PATH` (the list of places Windows looks for commands), but a terminal that was already open won't notice until it's restarted:
+
+1. **Close every terminal panel in VS Code** (click the trash-can/bin icon on each, or click into the panel and press Ctrl+Shift+`` ` `` to open a fresh one after closing).
+2. Fully close and reopen VS Code itself — this matters, not just the terminal, since VS Code also caches the PATH it started with.
+3. Reopen your `lab2-shipping` folder, open a new terminal, and re-run both checks:
+   ```powershell
+   java -version
+   mvn -version
+   ```
+   Both should now print version numbers.
+
+**If `winget` itself isn't recognized, or the installs fail:** don't keep troubleshooting solo — flag your instructor or ProTech support (see [Lab Access & Credentials](../../docs/ai-software-testing/lab-access.md)) so they can either fix it or swap you to a working machine. `winget` ships with Windows 10/11 by default, so its absence usually means something unusual about that specific machine's image.
 
 > **Why two separate tools?** Java is the *language* the code is written in — it needs a compiler to turn `.java` files into something the computer can run. Maven is a *build tool* that handles calling that compiler for you, downloads any libraries your code depends on (like JUnit, the testing library this lab uses), and gives you a single command (`mvn test`) that compiles everything and runs the tests in one step. You could do all of this by hand, but nobody does — Maven is the standard way.
 
