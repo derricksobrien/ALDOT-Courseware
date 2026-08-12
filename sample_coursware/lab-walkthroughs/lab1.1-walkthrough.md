@@ -4,6 +4,8 @@
 
 **Original lab:** `sample_coursware/AI-In-Software-Testing-main/1.1-testing-manual-vs-ai.md`
 
+**New to VS Code or Python?** Start with **Step 0** below — it walks through opening VS Code, finding the terminal, checking that Python is installed, and creating your first file, before Step 1 picks up where the original lab begins. If you've used VS Code and a terminal before, skip straight to [Step 1](#step-1--create-discountpy).
+
 ---
 
 ## What you're building toward
@@ -12,7 +14,132 @@ By the end you'll have three separate test files for the same function — one y
 
 ---
 
+## Step 0 — Before You Start: Setting Up Your Environment
+
+If you've never used VS Code, a terminal, or Python before, this step is for you. It covers everything between "logged into the lab machine" and "ready to start Step 1." None of this is in the original lab document — it's assumed knowledge there. If you already know this, skip to Step 1.
+
+### 0a. Open VS Code
+
+Your ProTech lab machine is a Windows desktop. Find **Visual Studio Code** the same way you'd find any other program:
+
+- Click the **Start** button (bottom-left corner of the screen), type `Visual Studio Code`, and press **Enter**.
+- Or double-click the **VS Code** icon on the desktop if one is provided.
+
+VS Code will open to either a blank window or whatever was open last. That's fine either way — the next step fixes it.
+
+### 0b. Create a folder for the lab and open it in VS Code
+
+Everything you create in this lab (`discount.py`, your test files) needs to live in one folder so Python and pytest can find them together. Create that folder first:
+
+1. In VS Code, go to the top menu: **File → Open Folder…**
+2. In the dialog that appears, navigate to somewhere you'll remember — for example `C:\Users\<your username>\Documents`.
+3. Click **New Folder**, name it `lab1.1`, and press **Enter**.
+4. With `lab1.1` selected, click **Select Folder**.
+5. If Windows asks "Do you trust the authors of the files in this folder?", click **Yes, I trust the authors**.
+
+VS Code will reopen with `LAB1.1` shown at the top of the **Explorer** panel on the left (a blank panel, since the folder is empty). Everything you create from here on should go inside this folder.
+
+> **Why does the folder matter?** `pytest` and Python's `import` statement both work relative to "where you are" when you run a command. If `discount.py` and `test_discount_manual.py` end up in different folders, the import in Step 3 (`from discount import calculate_discounted_price`) will fail with `ModuleNotFoundError`. One folder, all files in it, no exceptions.
+
+### 0c. Open the integrated terminal
+
+The **terminal** is where you type commands like `pip install pytest` and `pytest test_discount_manual.py -v` — it's a text-based way to run programs, instead of clicking icons. VS Code has one built in, so you never have to leave the editor:
+
+1. Top menu: **Terminal → New Terminal**.
+2. A panel opens at the bottom of the window with a blinking cursor next to a prompt (something like `PS C:\Users\you\Documents\lab1.1>`). This is PowerShell — Windows' default command-line shell.
+
+Keep this terminal panel open for the rest of the lab. Every `pip` and `pytest` command in the steps below gets typed here, then run by pressing **Enter**.
+
+> **If you accidentally close it:** repeat **Terminal → New Terminal**. VS Code always opens new terminals in the folder you have open, so you don't need to navigate anywhere first.
+
+### 0d. Confirm Python is installed
+
+Type the following into the terminal and press **Enter**:
+
+```powershell
+python --version
+```
+
+You should see output like `Python 3.11.x`. If instead you see an error (`python is not recognized...`), try:
+
+```powershell
+py --version
+```
+
+If **neither** command works, Python isn't installed or isn't on your `PATH`. Flag your instructor or ProTech support (contact info in [Lab Access & Credentials](../../docs/ai-software-testing/lab-access.md)) rather than trying to install it yourself mid-lab — the lab machines should have it preinstalled.
+
+> **What is Python, exactly?** It's the programming language this whole course uses. When you type `python` in the terminal, you're telling Windows "run the Python program." The `--version` flag just asks it to print its version number and exit, so you can confirm it's there without actually running any code yet.
+
+### 0e. What `pip` is (you'll use it in Step 2)
+
+`pip` is Python's package installer — it downloads and installs libraries other people wrote, like `pytest`, so you can use them in your own code. You don't need to do anything with it yet; Step 2 has the exact command. It's mentioned here just so `pip install pytest` doesn't come out of nowhere.
+
+### 0f. Create your first file: `discount.py`
+
+This is the file Step 1 asks you to create. Here's how to actually do that in VS Code, click for click:
+
+1. In the **Explorer** panel on the left (where your `LAB1.1` folder is shown), hover over the folder name until a row of small icons appears to the right of it.
+2. Click the **New File** icon (a page with a `+` on it — the first icon in that row).
+3. Type the filename exactly: `discount.py`, then press **Enter**.
+4. The file opens automatically in the editor area, empty and ready for text.
+
+> **Why does the `.py` matter?** The `.py` extension is what tells VS Code (and Python) "this is a Python file." Get the extension wrong (`discount.txt`, `discount` with no extension) and Python won't recognize it as code to run, and VS Code won't offer Python-specific help like syntax highlighting.
+
+### 0g. Paste in the starter code and save
+
+Copy the exact function below (this is the starter code the original lab provides) and paste it into your empty `discount.py`:
+
+```python
+def calculate_discounted_price(price, customer_type, coupon_code=None, is_holiday=False):
+    """
+    Calculate the final discounted price for a customer.
+
+    Business rules:
+    - premium customers receive 20% off
+    - standard customers receive 10% off
+    - guests receive no customer discount
+    - coupon code SAVE10 gives an additional 10% off
+    - coupon code SAVE20 gives an additional 20% off, but only for premium customers
+    - holiday promotion gives an additional 5% off
+    - discounts are applied sequentially
+    - final price is rounded to 2 decimal places
+    - price must be greater than or equal to 0
+    - unknown customer types are treated as guests
+    - unknown coupon codes are ignored
+    """
+
+    if price < 0:
+        raise ValueError("price cannot be negative")
+
+    customer_type = customer_type.lower()
+
+    if customer_type == "premium":
+        price = price * 0.8
+    elif customer_type == "standard":
+        price = price * 0.9
+
+    if coupon_code == "SAVE10":
+        price = price * 0.9
+    elif coupon_code == "SAVE20" and customer_type == "premium":
+        price = price * 0.8
+
+    if is_holiday:
+        price = price * 0.95
+
+    return round(price, 2)
+```
+
+Then **save the file**: press **Ctrl+S**, or use **File → Save**. Look at the tab at the top of the editor — if the filename has a dot (`● discount.py`) instead of an X, it isn't saved yet. Always save before running anything; Python and pytest only ever see what's on disk, not what's on screen.
+
+> **A quick sanity check before moving on:** in the terminal, run `python discount.py`. Nothing should happen — no output, no error, just a new blank prompt. That's expected: the file only *defines* a function, it doesn't *call* it. If you get an error instead, re-check the paste for missing indentation (Python is strict about it) and save again.
+
+You're now caught up to where the original lab — and Step 1 below — begins.
+
+---
+
 ## Step 1 — Create `discount.py`
+
+*(Already done if you completed Step 0 — skim this for the "why," then continue to Step 2.)*
 
 Create a new file named `discount.py` and paste in the starter function exactly as given.
 
@@ -42,7 +169,7 @@ pip install pytest
 
 ## Step 3 — Write your manual tests, *before* touching any AI tool
 
-Create `test_discount_manual.py`. The lab gives you one example test to start from:
+Create `test_discount_manual.py` the same way you created `discount.py` in Step 0 (hover the folder in Explorer → **New File** icon → type the name → **Enter**). It needs to sit in the same `lab1.1` folder, right next to `discount.py`, not in a subfolder. The lab gives you one example test to start from:
 
 ```python
 from discount import calculate_discounted_price
