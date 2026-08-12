@@ -18,6 +18,7 @@ Everything below was verified by actually running it — real Python/Java code e
 If software testing isn't your main role — you came from development, product, design, or somewhere else entirely — start here before Lab 1.1. It's not Microsoft-specific; it's the standard vocabulary and concepts the testing field itself uses.
 
 - [Testing Fundamentals for Newcomers](testing-fundamentals) — what testing actually is, the vocabulary the course assumes you know, the testing pyramid, test design basics, and free resources (ISTQB, Ministry of Testing, Martin Fowler, Guru99) to go deeper
+- [Free GitHub Copilot Walkthrough](free-github-copilot-walkthrough) — never used GitHub or Copilot before? Start here to get a free GitHub account and Copilot Free running in VS Code before Lab 1.1, no credit card required
 
 ## Lab Walkthroughs
 
