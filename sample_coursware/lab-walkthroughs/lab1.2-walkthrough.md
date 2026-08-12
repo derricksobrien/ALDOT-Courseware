@@ -54,11 +54,13 @@ $mvnBin = "$env:LOCALAPPDATA\Programs\apache-maven-3.9.16\bin"
 
 Line by line: the first downloads the official Maven zip straight from the Apache Software Foundation; the second unzips it into your personal (no-admin-needed) apps folder; the third and fourth permanently add Maven's `bin` folder to **your** PATH — not the whole machine's, so no admin rights are required for this one.
 
-#### Making the new tools show up — without restarting anything
+#### Making the new tools show up
 
-This is the part that trips people up: closing and reopening the terminal panel, or even closing and reopening VS Code, **often isn't enough**, because VS Code (and everything it launches) inherited its copy of PATH when *it* started, and Windows doesn't push updates into programs that are already running. Restarting VS Code only helps if the underlying Windows session had already refreshed — which it usually hasn't.
+This is the part that trips people up: just closing and reopening the *terminal panel* isn't enough, because VS Code itself (and everything it launches) still holds the old copy of PATH from when it started, and Windows doesn't push live updates into programs that are already running.
 
-The reliable fix is to force the *current* terminal to re-read PATH from Windows directly, with no restart at all:
+**Option A — fully quit and reopen VS Code (confirmed to work, and the simplest option):** close every VS Code window completely (not just the terminal panel — the whole application), then reopen it and your `lab2-shipping` folder. This was confirmed in practice: after installing Java and Maven, a full quit-and-reopen of VS Code was enough for both `java -version` and `mvn -version` to pass in a brand-new terminal, no extra commands needed. Try this first.
+
+**Option B — refresh PATH without closing anything, if you'd rather not restart VS Code:**
 
 ```powershell
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -71,11 +73,11 @@ java -version
 mvn -version
 ```
 
-Both should now print version numbers, in the exact same terminal, with nothing closed or restarted. This was verified working end-to-end: install Java, install Maven, run that one PATH-refresh line, `mvn -version` succeeds immediately.
+Both should now print version numbers, in the exact same terminal, with nothing closed or restarted. This was also verified working end-to-end: install Java, install Maven, run that one PATH-refresh line, `mvn -version` succeeds immediately.
 
-> **Why does this one-liner work when restarting didn't?** `$env:Path` only controls *this specific terminal's* copy of PATH. The command above throws that copy away and rebuilds it fresh from the two places Windows actually stores it permanently (the Machine-wide list, updated by the Java installer, and your User-specific list, updated by the Maven step above). Every *new* terminal you open from now on will also pick up both automatically — this manual refresh is only needed once, for the terminal that was already open during the install.
+> **Why does either of these work?** `$env:Path` only controls *this specific terminal's* copy of PATH — Option B throws that copy away and rebuilds it fresh from the two places Windows actually stores it permanently (the Machine-wide list, updated by the Java installer, and your User-specific list, updated by the Maven step above). A full restart (Option A) gets the same result a different way — the new VS Code process, and every terminal it opens, reads PATH fresh at launch instead of reusing a stale copy. Either way, every terminal you open *after* the fix will pick up both tools automatically, with no further steps.
 
-**If you still see "not recognized" after the refresh line above:** double-check the install commands actually completed without an error further up in your terminal's scrollback (scroll up) before re-running the PATH refresh. If they did complete and it's still not working, flag your instructor or ProTech support (see [Lab Access & Credentials](../../docs/ai-software-testing/lab-access.md)) rather than continuing to troubleshoot solo.
+**If neither option works** — you still see "not recognized" after both a full VS Code restart *and* the PATH-refresh line — double-check the install commands actually completed without an error further up in your terminal's scrollback (scroll up) before retrying. If they did complete and it's still not working, flag your instructor or ProTech support (see [Lab Access & Credentials](../../docs/ai-software-testing/lab-access.md)) rather than continuing to troubleshoot solo.
 
 > **Why two separate tools?** Java is the *language* the code is written in — it needs a compiler to turn `.java` files into something the computer can run. Maven is a *build tool* that handles calling that compiler for you, downloads any libraries your code depends on (like JUnit, the testing library this lab uses), and gives you a single command (`mvn test`) that compiles everything and runs the tests in one step. You could do all of this by hand, but nobody does — Maven is the standard way.
 
