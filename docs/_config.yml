@@ -1,0 +1,31 @@
+﻿title: Software Development Modernization
+description: MVP course delivery pack — labs, modules, and resources for the 10-module app modernization course.
+baseurl: "/ALDOT-Courseware"
+url: "https://derricksobrien.github.io"
+
+remote_theme: just-the-docs/just-the-docs@v0.10.0
+
+search_enabled: true
+heading_anchors: true
+color_scheme: dark
+back_to_top: true
+back_to_top_text: "Back to top"
+
+footer_content: "Software Development Modernization Course &mdash; MVP Delivery Pack"
+
+aux_links:
+  "GitHub Repo":
+    - "https://github.com/derricksobrien/ALDOT-Courseware"
+  "ADO Project":
+    - "https://dev.azure.com/iis-labs/Software_Dev_Mod"
+
+aux_links_new_tab: true
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-include-cache
+
+exclude:
+  - Gemfile
+  - Gemfile.lock

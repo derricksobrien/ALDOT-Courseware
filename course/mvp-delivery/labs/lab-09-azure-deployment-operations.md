@@ -16,6 +16,14 @@ Deploy to Azure and establish baseline observability.
 - Deployment templates and parameter files ready
 - App artifact available
 - If the role only grants Contributor, skip any Key Vault role-assignment step and document the access gap
+
+## VM Fallback Scope Clarification
+
+The Ubuntu VM helps with runtime hosting fallback, but does not replace core Lab 09 Azure operations outcomes.
+
+- Useful fallback: run app on `vm-ubuntu-sdm-2026-aug10` if App Service deployment blocks progress
+- Still required: observability evidence, alerting design, and documented Azure operations workflow
+- Document any deviation from App Service/ACA/AKS as a temporary MVP fallback
  
 ## Step-by-Step
 
@@ -27,6 +35,8 @@ Deploy to Azure and establish baseline observability.
 6. Enable Application Insights and Log Analytics.
 7. Create alerts for error rate, latency, and resource saturation.
 8. Build an operations dashboard and define SLOs.
+
+9. If using VM fallback, capture VM deployment evidence and map monitoring equivalents.
 
 ## Validation
 
@@ -40,3 +50,4 @@ Deploy to Azure and establish baseline observability.
 - Bicep parameter file or deployment output
 - Dashboard screenshots
 - Alert rule proof
+- If VM fallback is used: SSH/deployment output plus fallback rationale note

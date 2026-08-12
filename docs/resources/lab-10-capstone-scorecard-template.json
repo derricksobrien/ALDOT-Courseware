@@ -1,0 +1,38 @@
+{
+  "teamName": "Team Red",
+  "starterRepo": "https://github.com/your-org/lab10-capstone-starter",
+  "missionFile": "capstone/mission.md",
+  "architectureFile": "capstone/architecture.md",
+  "runbookFile": "capstone/runbook.md",
+  "retrospectiveFile": "capstone/retrospective.md",
+  "sampleDataFile": "data/lab10-sample-data.json",
+  "featureFiles": [
+    "src/Web/Pages/Catalog.cshtml.cs"
+  ],
+  "testFiles": [
+    "tests/FunctionalTests/PublicApi/CatalogBrandsListEndpointTest.cs"
+  ],
+  "workflowFiles": [
+    ".github/workflows/capstone.yml"
+  ],
+  "containerFiles": [
+    "src/Web/Dockerfile",
+    "docker-compose.yml"
+  ],
+  "deployFiles": [
+    "infra/main.bicep"
+  ],
+  "opsFiles": [
+    "ops/observability.md",
+    "ops/alerts.md"
+  ],
+  "securityFiles": [
+    "ops/security-notes.md"
+  ],
+  "aiFiles": [
+    "src/Web/AI/ChatController.cs",
+    "capstone/ai-notes.md"
+  ],
+  "deploymentUrl": "https://team-red.example.com",
+  "healthUrl": "https://team-red.example.com/health"
+}
