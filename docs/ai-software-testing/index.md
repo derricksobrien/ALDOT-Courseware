@@ -13,6 +13,12 @@ Everything below was verified by actually running it — real Python/Java code e
 
 ---
 
+## New to Testing?
+
+If software testing isn't your main role — you came from development, product, design, or somewhere else entirely — start here before Lab 1.1. It's not Microsoft-specific; it's the standard vocabulary and concepts the testing field itself uses.
+
+- [Testing Fundamentals for Newcomers](testing-fundamentals) — what testing actually is, the vocabulary the course assumes you know, the testing pyramid, test design basics, and free resources (ISTQB, Ministry of Testing, Martin Fowler, Guru99) to go deeper
+
 ## Lab Walkthroughs
 
 Click-for-click guides with real screenshots and a "why" explanation at every step — usable as a standalone resource even without access to a lab machine.
