@@ -151,13 +151,15 @@ You're now set up to create `ShippingCalculator.java` in Step 1, inside `src/mai
 
 ## Step 1 — Read the code yourself first, before any AI tool
 
-Create the Maven project structure and paste in `ShippingCalculator.java` exactly as given.
+Create the Maven project structure and paste in `ShippingCalculator.java` exactly as given. **File location matters here — put it inside `src/main/java`, not the project root.** In the Explorer panel, expand `src → main → java`, hover over that innermost `java` folder specifically (not `lab2-shipping` at the top), click **New File**, and name it `ShippingCalculator.java` there.
 
 ![VS Code editor showing ShippingCalculator.java](images/01-editor-shippingcalculator.png)
 
 > **Why does the lab insist on a manual read first?** Because the entire second half of this lab depends on you having a "before" state to compare against. If you let AI explain this code first, you'll never know which parts you genuinely couldn't follow versus which parts you'd have eventually worked out yourself. The variable names (`b`, `r`, `z`, `wt`, `xpr`, `cust`) are abbreviated on purpose — this is what actual inherited code looks like, and the discomfort of reading it cold is part of the exercise.
 >
 > Before moving on, try to answer honestly: what does `z` represent? What happens if `dest` is `"ca"` instead of `"CA"`? Don't look ahead — that second question is the whole lab.
+>
+> **A trap worth knowing about now, confirmed by actually testing it:** if `ShippingCalculator.java` ends up in the wrong folder (the project root, or directly under `src`), Maven does **not** show an error yet. Run `mvn test` at this stage and it reports **`BUILD SUCCESS`** with zero tests run — no warning that anything's missing, because as far as Maven's concerned, there's simply nothing to compile. The real error only shows up later, once `ShippingCalculatorTest.java` exists in Step 4 and tries to reference a class Maven never compiled — see the callout there for the exact message. If `mvn test` ever reports success suspiciously fast with no test output, that's the tell — go check where your `.java` files actually landed.
 
 ---
 
@@ -183,11 +185,20 @@ A more targeted prompt, asking specifically for problems rather than an explanat
 
 ## Step 4 — Generate tests, including one that targets the case-sensitivity gap directly
 
-Create `ShippingCalculatorTest.java`. Alongside the usual zone/weight/discount tests, include one that compares uppercase and lowercase input directly against each other:
+Create `ShippingCalculatorTest.java` **inside `src/test/java`** — the sibling folder to `src/main/java`, not inside it and not in the project root. Same click path as Step 1, just the other `java` folder: expand `src → test → java`, hover that folder, **New File**. Alongside the usual zone/weight/discount tests, include one that compares uppercase and lowercase input directly against each other:
 
 ![VS Code editor showing ShippingCalculatorTest.java](images/04-editor-test-class.png)
 
 > **Why write `testLowercaseDestinationShouldMatchUppercaseResult` as a comparison between two calls, instead of hard-coding an expected dollar amount?** Because the test's whole point is to check a *relationship* — "the same package to the same place should cost the same regardless of how the state code was typed" — not a specific number. A test that just asserts `calculateShipping("ca", ...) == 9.99` would require you to already know the correct answer, which defeats the purpose of using the test to *discover* that the two calls disagree.
+>
+> **This is where the Step 1 file-placement trap actually surfaces, confirmed by testing it.** If `ShippingCalculator.java` is still sitting in the wrong folder from Step 1, `mvn test` now fails for real, with:
+> ```
+> [ERROR] COMPILATION ERROR :
+> [ERROR] .../ShippingCalculatorTest.java:[7,25] cannot find symbol
+>   symbol:   variable ShippingCalculator
+>   location: class ShippingCalculatorTest
+> ```
+> Read that as: "your test file compiled fine, but it references a class Maven never found." The fix is exactly what it sounds like — move `ShippingCalculator.java` into `src/main/java` (drag it there in the Explorer panel, or cut and paste), then re-run `mvn test`. This is the same underlying issue as the silent `BUILD SUCCESS` from Step 1 — it just took a test file trying to *use* the missing class for Maven to finally say something about it.
 
 ---
 
