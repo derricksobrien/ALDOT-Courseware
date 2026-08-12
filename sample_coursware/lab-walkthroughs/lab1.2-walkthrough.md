@@ -29,40 +29,53 @@ mvn -version
 
 You should see version output for both — something like `openjdk version "21..."` and `Apache Maven 3.9...`. If both print version numbers, skip straight to **0b**.
 
-**If `java -version` or `mvn -version` errors with "not recognized as an internal or external command"**, one or both tools genuinely aren't installed on this machine. That's happened on some lab machines — it's not something you did wrong, and it's fixable yourself in a few minutes without needing admin help, using Windows' built-in package manager, `winget`.
+**If `java -version` or `mvn -version` errors with "not recognized as an internal or external command"**, one or both tools genuinely aren't installed on this machine. That's happened on some lab machines — it's not something you did wrong, and it's fixable yourself in a few minutes. Everything below was tested end-to-end on a clean machine with neither tool installed, so follow it exactly.
 
 #### Installing Java (if `java -version` failed)
 
-In the terminal, run:
+Java installs cleanly through Windows' built-in package manager, `winget`. In the terminal, run:
 
 ```powershell
-winget install Microsoft.OpenJDK.21
+winget install --id Microsoft.OpenJDK.21 --accept-package-agreements --accept-source-agreements
 ```
 
-Type `Y` and press **Enter** if it asks you to accept a license agreement. This installs a free, Microsoft-maintained build of Java 21.
+This downloads and installs a free, Microsoft-maintained build of Java 21. It may pop up a UAC prompt ("Do you want to allow this app to make changes to your device?") — click **Yes**. **If you don't have permission to click Yes on this lab machine, stop here and flag your instructor** rather than retrying; the install needs that one-time elevation.
 
 #### Installing Maven (if `mvn -version` failed)
 
+Maven is **not available through `winget`** — that was tried and confirmed absent (`winget install Apache.Maven` returns "No package found"). Install it manually instead, which is only four commands:
+
 ```powershell
-winget install Apache.Maven
+Invoke-WebRequest -Uri "https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.zip" -OutFile "$env:TEMP\maven.zip"
+Expand-Archive -Path "$env:TEMP\maven.zip" -DestinationPath "$env:LOCALAPPDATA\Programs" -Force
+$mvnBin = "$env:LOCALAPPDATA\Programs\apache-maven-3.9.16\bin"
+[System.Environment]::SetEnvironmentVariable("Path", [System.Environment]::GetEnvironmentVariable("Path","User") + ";" + $mvnBin, "User")
 ```
 
-Same deal — accept any license prompt with `Y`.
+Line by line: the first downloads the official Maven zip straight from the Apache Software Foundation; the second unzips it into your personal (no-admin-needed) apps folder; the third and fourth permanently add Maven's `bin` folder to **your** PATH — not the whole machine's, so no admin rights are required for this one.
 
-#### Making the new tools show up
+#### Making the new tools show up — without restarting anything
 
-Installers update your system's `PATH` (the list of places Windows looks for commands), but a terminal that was already open won't notice until it's restarted:
+This is the part that trips people up: closing and reopening the terminal panel, or even closing and reopening VS Code, **often isn't enough**, because VS Code (and everything it launches) inherited its copy of PATH when *it* started, and Windows doesn't push updates into programs that are already running. Restarting VS Code only helps if the underlying Windows session had already refreshed — which it usually hasn't.
 
-1. **Close every terminal panel in VS Code** (click the trash-can/bin icon on each, or click into the panel and press Ctrl+Shift+`` ` `` to open a fresh one after closing).
-2. Fully close and reopen VS Code itself — this matters, not just the terminal, since VS Code also caches the PATH it started with.
-3. Reopen your `lab2-shipping` folder, open a new terminal, and re-run both checks:
-   ```powershell
-   java -version
-   mvn -version
-   ```
-   Both should now print version numbers.
+The reliable fix is to force the *current* terminal to re-read PATH from Windows directly, with no restart at all:
 
-**If `winget` itself isn't recognized, or the installs fail:** don't keep troubleshooting solo — flag your instructor or ProTech support (see [Lab Access & Credentials](../../docs/ai-software-testing/lab-access.md)) so they can either fix it or swap you to a working machine. `winget` ships with Windows 10/11 by default, so its absence usually means something unusual about that specific machine's image.
+```powershell
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+```
+
+Run that one line, then immediately re-check:
+
+```powershell
+java -version
+mvn -version
+```
+
+Both should now print version numbers, in the exact same terminal, with nothing closed or restarted. This was verified working end-to-end: install Java, install Maven, run that one PATH-refresh line, `mvn -version` succeeds immediately.
+
+> **Why does this one-liner work when restarting didn't?** `$env:Path` only controls *this specific terminal's* copy of PATH. The command above throws that copy away and rebuilds it fresh from the two places Windows actually stores it permanently (the Machine-wide list, updated by the Java installer, and your User-specific list, updated by the Maven step above). Every *new* terminal you open from now on will also pick up both automatically — this manual refresh is only needed once, for the terminal that was already open during the install.
+
+**If you still see "not recognized" after the refresh line above:** double-check the install commands actually completed without an error further up in your terminal's scrollback (scroll up) before re-running the PATH refresh. If they did complete and it's still not working, flag your instructor or ProTech support (see [Lab Access & Credentials](../../docs/ai-software-testing/lab-access.md)) rather than continuing to troubleshoot solo.
 
 > **Why two separate tools?** Java is the *language* the code is written in — it needs a compiler to turn `.java` files into something the computer can run. Maven is a *build tool* that handles calling that compiler for you, downloads any libraries your code depends on (like JUnit, the testing library this lab uses), and gives you a single command (`mvn test`) that compiles everything and runs the tests in one step. You could do all of this by hand, but nobody does — Maven is the standard way.
 
