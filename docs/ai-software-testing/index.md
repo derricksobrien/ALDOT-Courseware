@@ -41,3 +41,4 @@ Click-for-click guides with real screenshots and a "why" explanation at every st
 - [E2E Test Report](e2e-test-report) — Full findings from testing all 7 labs, including defects found and fixed in the original lab text
 - [Original Labs vs. Walkthroughs and C# Migration Plan](original-vs-walkthrough-csharp-migration) — machine-verified gaps, student trip hazards, and a C#/.NET with Visual Studio delivery path
 - [Day 2 Instructor Note: Tool Transitions](day2-instructor-note-tool-transitions) — plain-language explanations, first examples, and fallback guidance for the new tools introduced in Labs 2.1 through 2.4
+- [Java, Selenium, and Cucumber Setup](java-selenium-cucumber-setup) — beginner installation and first browser-test guide for Java/Maven students

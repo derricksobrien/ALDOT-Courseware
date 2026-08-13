@@ -20,6 +20,10 @@ nav_order: 3
 
 [**Browse screenshots folder on GitHub →**](https://github.com/derricksobrien/ALDOT-Courseware/tree/main/sample_coursware/lab-walkthroughs/images)
 
+## Related Browser Testing Setup
+
+If you are continuing from Java unit testing into browser automation, read the [Beginner Setup: Java, Maven, Selenium, and Cucumber](java-selenium-cucumber-setup.html) guide before adding Selenium or Cucumber to a project.
+
 ---
 
 *Return to [AI in Software Testing index](../ai-software-testing/) to select another lab.*
