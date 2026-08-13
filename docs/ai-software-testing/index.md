@@ -38,3 +38,4 @@ Click-for-click guides with real screenshots and a "why" explanation at every st
 
 - [MS Learn Resource Mapping](ms-learn-resources) — Microsoft Learn content mapped to each of the 7 course modules, plus starting points for students new to Python or new to AWS
 - [E2E Test Report](e2e-test-report) — Full findings from testing all 7 labs, including defects found and fixed in the original lab text
+- [Original Labs vs. Walkthroughs and C# Migration Plan](original-vs-walkthrough-csharp-migration) — machine-verified gaps, student trip hazards, and a C#/.NET with Visual Studio delivery path
