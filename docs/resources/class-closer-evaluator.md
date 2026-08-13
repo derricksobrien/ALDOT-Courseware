@@ -9,8 +9,8 @@ nav_order: 8
 
 Use the evaluator at the end of the AI-assisted software testing course to turn completed labs into a personal testing field note.
 
-- [Open the Class Closer Evaluator](../../course/mvp-delivery/resources/class-closer-evaluator.html)
-- [Open the sample responses](../../course/mvp-delivery/resources/class-closer-sample.json)
+- [Open the Class Closer Evaluator](class-closer-evaluator.html)
+- [Open the sample responses](class-closer-sample.json)
 
 The evaluator is local-first: notes are stored in the browser, no account or cloud service is required, and learners can print a finish card or copy a closing note. Its five lab checkpoints cover coverage and mutation, exploratory edge cases, synthetic data, CI quality gates, and TDD with an agent.
 
@@ -23,7 +23,7 @@ The evaluator is local-first: notes are stored in the browser, no account or clo
 5. Write the testing moment that surprised you and the quality move you would make next.
 6. Click **Make my finish card**. You can print it or copy the closing note.
 
-To see how it works before entering your own notes, click **Load sample**. The sample responses are also available as [class-closer-sample.json](../../course/mvp-delivery/resources/class-closer-sample.json).
+To see how it works before entering your own notes, click **Load sample**. The sample responses are also available as [class-closer-sample.json](class-closer-sample.json).
 
 ## Suggested close-out
 
