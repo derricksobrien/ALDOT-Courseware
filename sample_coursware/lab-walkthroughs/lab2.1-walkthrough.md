@@ -78,6 +78,18 @@ pytest test_register.py -v -s -k "long_name or unicode or sql or xss or name_as"
 
 ---
 
+> **Verified local result:** all 11 exploratory checks passed against the starter API, including whitespace-only names, ages 999 and 9999, a bare `alice@` email, and a 10,000-character name. These are test assertions about the current behavior, not evidence that the inputs are acceptable.
+
+### Mitigations to discuss
+
+- Reject whitespace-only names with `not isinstance(name, str) or not name.strip()`.
+- Reject booleans before integer validation: `isinstance(age, bool) or not isinstance(age, int)`.
+- Add an explicit maximum age only if the product rule requires one.
+- Validate name and email types, maximum lengths, and email structure with a request schema or validation library.
+- Add tests that assert the desired 400 responses so the fixes cannot silently regress.
+
+---
+
 ## Discussion questions (for your own notes, or the group)
 
 1. Before running anything, how many of these 19 test results would you have predicted correctly?

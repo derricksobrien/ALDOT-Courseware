@@ -95,6 +95,18 @@ The checks that mattered at 10 rows matter more at 10,000 — run them again:
 
 ---
 
+> **Verified on this machine:** the local SQLite/Faker path generated 1,000 customers, 50 products, and 10,000 orders. Duplicate-email, null-field, and orphan-record checks returned zero; `/products` returned 200 with 50 products; an unknown customer's orders returned 404; and placing a valid order returned 201. FastAPI's test client also emitted a Starlette deprecation warning about the installed `httpx` version, so pin compatible dependency versions in the lab requirements.
+
+### Mitigations and validation gaps
+
+- Enable SQLite foreign keys on every application connection, not only while creating the schema.
+- Validate that `customer_id` exists before inserting an order.
+- Check country, category, price, date-range, duplicate, null, and referential-integrity distributions in the validation script.
+- Use deterministic seeds for reproducible teaching runs and a separate random mode for exploratory testing.
+- Pin `fastapi`, `starlette`, `httpx`, `uvicorn`, and `faker` versions to avoid test-client compatibility warnings.
+
+---
+
 ## Discussion questions (for your own notes, or the group)
 
 1. At 10 rows, could you have caught a bad distribution (e.g., every customer from the same country) just by reading the INSERT statements? At 10,000?

@@ -121,6 +121,17 @@ Watching the PR's checks after the agent's commit lands doesn't show a rerun hap
 
 ---
 
+> **Verified local fallback:** the acceptance tests can run without GitHub or Copilot Agent. A local implementation satisfying the seven criteria passed all 7 tests, including same-account transfers, insufficient funds, non-positive and boolean amounts, balance mutation, transaction details, and two-decimal rounding. Use this local run to validate the specification before opening the PR.
+
+### Environment limits and mitigations
+
+- GitHub repository access, Actions, pull requests, internet access, and Copilot Agent entitlement are required for the full exercise.
+- Add `.gitignore` before the first commit so agent runs cannot accidentally commit `__pycache__` files.
+- Keep `test_bank.py` protected from agent edits and review the entire pull request diff.
+- Add tests for malformed accounts, missing keys, non-numeric values, and rounding boundaries; passing the initial seven tests is not proof of complete input validation.
+
+---
+
 ## Discussion questions (for your own notes, or the group)
 
 1. The setup-verification step in Step 1 shows red before you've written any code. If you didn't know that in advance, what would you have assumed was wrong?
