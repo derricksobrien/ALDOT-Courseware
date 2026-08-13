@@ -28,13 +28,13 @@ The evaluator is local-first: notes are stored in the browser, no account or clo
 
 The evaluator expects honest evidence, not memorized wording. Students should use their own terminal output, test files, screenshots, pull requests, AI conversations, and documented machine limitations. Each lab card has an **Open walkthrough** link with the expected process and reference findings:
 
-- [Lab 1.1: Manual versus AI testing](../ai-software-testing/lab1.1-walkthrough.md)
-- [Lab 1.2: Reverse engineering legacy code](../ai-software-testing/lab1.2-walkthrough.md)
-- [Lab 1.3: Coverage and mutation](../ai-software-testing/lab1.3-walkthrough.md)
-- [Lab 2.1: Exploratory edge cases](../ai-software-testing/lab2.1-walkthrough.md)
-- [Lab 2.2: Synthetic test data](../ai-software-testing/lab2.2-walkthrough.md)
-- [Lab 2.3: CI quality gates](../ai-software-testing/lab2.3-walkthrough.md)
-- [Lab 2.4: TDD with an agent](../ai-software-testing/lab2.4-walkthrough.md)
+- [Lab 1.1: Manual versus AI testing](../ai-software-testing/lab1.1-walkthrough.html)
+- [Lab 1.2: Reverse engineering legacy code](../ai-software-testing/lab1.2-walkthrough.html)
+- [Lab 1.3: Coverage and mutation](../ai-software-testing/lab1.3-walkthrough.html)
+- [Lab 2.1: Exploratory edge cases](../ai-software-testing/lab2.1-walkthrough.html)
+- [Lab 2.2: Synthetic test data](../ai-software-testing/lab2.2-walkthrough.html)
+- [Lab 2.3: CI quality gates](../ai-software-testing/lab2.3-walkthrough.html)
+- [Lab 2.4: TDD with an agent](../ai-software-testing/lab2.4-walkthrough.html)
 
 To see a complete example before entering personal notes, click **Load sample**. The sample responses are also available as [class-closer-sample.json](class-closer-sample.json).
 
