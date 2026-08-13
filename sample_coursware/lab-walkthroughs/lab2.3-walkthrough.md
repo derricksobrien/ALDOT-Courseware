@@ -13,6 +13,34 @@
 A CI pipeline doesn't add new tests — it makes the tests you already have impossible to bypass. You'll wire lint, test, and coverage checks into a real GitHub Actions workflow, then deliberately break the pipeline four different ways to see exactly what each category of failure looks like in practice.
 
 ---
+## What is it? YAML, GitHub Actions, lint, and coverage
+
+This lab moves testing from your computer into an automated service:
+
+- **YAML** is a readable text format used here to describe a workflow. Indentation matters.
+- **GitHub Actions** runs that workflow on GitHub-hosted machines after a push or pull request.
+- **Linting** checks source code style and catches some mistakes before tests run. This lab uses `flake8`.
+- **Coverage** measures which lines or branches ran while tests executed. It does not prove that the assertions were strong.
+- A **quality gate** is a rule that makes the workflow fail when a required check fails, such as coverage dropping below 80 percent.
+
+A tiny GitHub Actions workflow looks like this:
+
+```yaml
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+	test:
+		runs-on: ubuntu-latest
+		steps:
+			- uses: actions/checkout@v4
+			- run: python -m pytest
+```
+
+The workflow checks out the repository and runs pytest on a fresh Linux machine. A local command such as `pytest` proves your current computer can run the tests; a GitHub Actions run proves the repository contains enough setup for another machine to repeat them.
+
+---
 
 ## Step 1 — Create the files and confirm they pass locally
 

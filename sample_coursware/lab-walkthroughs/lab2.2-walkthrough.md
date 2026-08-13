@@ -11,6 +11,39 @@
 You need realistic data to test an e-commerce platform before peak season, and production data is off-limits for privacy reasons. AI can generate synthetic data quickly — the point of this lab is that "quickly" and "trustworthy" are different properties, and you validate the second one before you rely on it in a test suite.
 
 ---
+## What is it? SQLite, FastAPI, Uvicorn, Faker, SQL, and curl
+
+This lab introduces several tools that work together:
+
+- **SQLite** is a small file-based database. The database is the `ecommerce.db` file; there is no separate database server to administer.
+- **SQL** is the language used to create tables, insert rows, and query data.
+- **FastAPI** is a Python web framework that turns Python functions into HTTP API endpoints and generates browser-based API documentation.
+- **Uvicorn** is the server process that runs the FastAPI application so another program can send it requests.
+- **Faker** is a Python library that creates realistic-looking synthetic names, emails, cities, and other test values. It does not copy production data.
+- **curl** is a command-line HTTP client. It is a quick way to call an API from a terminal.
+
+The smallest useful sequence looks like this:
+
+```sql
+CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT NOT NULL);
+INSERT INTO products VALUES (1, 'Keyboard');
+```
+
+Start a FastAPI app with Uvicorn:
+
+```bash
+uvicorn app:app --reload
+```
+
+Then ask the running API for data with curl:
+
+```bash
+curl http://localhost:8000/products
+```
+
+Read `app:app` as "load the `app` object from the Python file named `app.py`." The `--reload` option restarts the development server when you save a code change. It is useful for class exercises, but it is not a production hosting configuration.
+
+---
 
 ## Step 1 — Create `app.py` and the schema
 

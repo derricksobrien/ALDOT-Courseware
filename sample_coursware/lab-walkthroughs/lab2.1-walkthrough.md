@@ -11,6 +11,33 @@
 The developer of this registration endpoint says all inputs are validated. Your job is to find out whether that's actually true — not by reading the code, but by throwing a systematic set of nasty inputs at it and watching what comes back. By the end, you'll have a concrete list of inputs that silently pass when they shouldn't, which is a more dangerous failure mode than a crash.
 
 ---
+## What is it? Flask, pytest, and an API client
+
+This lab introduces three tools:
+
+- **Flask** is a small Python web framework. It turns a Python function into an HTTP endpoint such as `POST /register`.
+- **pytest** runs Python tests and reports which checks passed or failed.
+- A **test client** sends requests to the Flask app in memory. It lets you test the endpoint without opening a browser or deploying a real server.
+
+The smallest Flask route looks like this:
+
+```python
+@app.get("/hello")
+def hello():
+	return {"message": "hello"}
+```
+
+A pytest client test can call that route without starting Flask on a port:
+
+```python
+def test_hello(client):
+	response = client.get("/hello")
+	assert response.status_code == 200
+```
+
+In this lab, `client.post("/register", ...)` is the tester's hand-controlled input pipe. The response status code and JSON body are the evidence.
+
+---
 
 ## Step 1 — Create `app.py`
 
