@@ -36,7 +36,7 @@ jobs:
 
 ## Before Step 1: GitHub and GitHub Actions primer
 
-If GitHub, Git branches, commits, pull requests, or Actions are new to you, read the [GitHub and GitHub Actions Primer](../../docs/ai-software-testing/github-actions-primer.html) first. It explains the vocabulary and shows the smallest working `git push` and workflow examples.
+If GitHub, Git branches, commits, pull requests, or Actions are new to you, read the [GitHub and GitHub Actions Primer](https://derricksobrien.github.io/ALDOT-Courseware/ai-software-testing/github-actions-primer.html) first. It explains the vocabulary and shows the smallest working `git push` and workflow examples.
 
 The short version is:
 
