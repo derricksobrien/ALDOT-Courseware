@@ -17,11 +17,6 @@ A CI pipeline doesn't add new tests — it makes the tests you already have impo
 
 This lab moves testing from your computer into an automated service:
 
-- **YAML** is a readable text format used here to describe a workflow. Indentation matters.
-- **GitHub Actions** runs that workflow on GitHub-hosted machines after a push or pull request.
-- **Linting** checks source code style and catches some mistakes before tests run. This lab uses `flake8`.
-- **Coverage** measures which lines or branches ran while tests executed. It does not prove that the assertions were strong.
-- A **quality gate** is a rule that makes the workflow fail when a required check fails, such as coverage dropping below 80 percent.
 
 A tiny GitHub Actions workflow looks like this:
 
@@ -38,7 +33,18 @@ jobs:
 			- run: python -m pytest
 ```
 
-The workflow checks out the repository and runs pytest on a fresh Linux machine. A local command such as `pytest` proves your current computer can run the tests; a GitHub Actions run proves the repository contains enough setup for another machine to repeat them.
+
+## Before Step 1: GitHub and GitHub Actions primer
+
+If GitHub, Git branches, commits, pull requests, or Actions are new to you, read the [GitHub and GitHub Actions Primer](../../docs/ai-software-testing/github-actions-primer.html) first. It explains the vocabulary and shows the smallest working `git push` and workflow examples.
+
+The short version is:
+
+```text
+edit files -> commit a snapshot -> push to GitHub -> Actions runs the workflow -> inspect the result
+```
+
+Use your own fork or a disposable repository for this exercise. The courseware repository is a reference copy, not the place to push student experiments.
 
 ---
 

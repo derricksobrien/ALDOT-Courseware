@@ -33,6 +33,7 @@ Click-for-click guides with real screenshots and a "why" explanation at every st
 | [Lab 2.2](lab2.2-walkthrough) | AI-Generated Test Data |
 | [Lab 2.3](lab2.3-walkthrough) | Automated Testing in a CI/CD Pipeline |
 | [Lab 2.4](lab2.4-walkthrough) | TDD with a GitHub Copilot Agent |
+- [GitHub and GitHub Actions Primer](github-actions-primer) — beginner vocabulary and first commands for the GitHub workflow in Lab 2.3
 
 ## Reference
 
