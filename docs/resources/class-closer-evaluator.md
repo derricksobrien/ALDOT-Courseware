@@ -21,7 +21,8 @@ The evaluator is local-first: notes are stored in the browser, no account or clo
 3. Check a lab only when you have a test result, file, screenshot, pull request, AI-assisted analysis, or documented limitation to point to.
 4. Type a short phrase in the evidence box on each checked lab.
 5. Write the testing moment that surprised you and the quality move you would make next.
-6. Click **Make my finish card**. You can print it or copy the closing note.
+6. Click **Make my finish card**.
+7. Choose **Print finish card** to open the browser print dialog, or choose **Download finish card** if the browser blocks print dialogs. You can open the downloaded HTML file and print it normally.
 
 To see how it works before entering your own notes, click **Load sample**. The sample responses are also available as [class-closer-sample.json](class-closer-sample.json).
 
