@@ -12,13 +12,13 @@ Use the evaluator at the end of the AI-assisted software testing course to turn 
 - [Open the Class Closer Evaluator](class-closer-evaluator.html)
 - [Open the sample responses](class-closer-sample.json)
 
-The evaluator is local-first: notes are stored in the browser, no account or cloud service is required, and learners can print a finish card or copy a closing note. Its five lab checkpoints cover coverage and mutation, exploratory edge cases, synthetic data, CI quality gates, and TDD with an agent.
+The evaluator is local-first: notes are stored in the browser, no account or cloud service is required, and learners can print a finish card or copy a closing note. Its seven lab checkpoints cover manual versus AI testing, legacy-code reverse engineering, coverage and mutation, exploratory edge cases, synthetic data, CI quality gates, and TDD with an agent.
 
 ## Beginner instructions
 
 1. Open the evaluator link.
 2. Enter your name or team name.
-3. Check a lab only when you have a test result, file, screenshot, pull request, AI-assisted analysis, or documented limitation to point to.
+3. Check a lab only when you have a test result, file, screenshot, pull request, AI-assisted analysis, or documented limitation to point to. The sequence is Labs 1.1, 1.2, 1.3, 2.1, 2.2, 2.3, and 2.4.
 4. Type a short phrase in the evidence box on each checked lab.
 5. Write the testing moment that surprised you and the quality move you would make next.
 6. Click **Make my finish card**.

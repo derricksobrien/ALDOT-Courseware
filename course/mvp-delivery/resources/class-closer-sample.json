@@ -3,6 +3,14 @@
   "breakthrough": "100% coverage still did not prove that the tests would catch every mutant. The missing boundary test mattered more than another happy-path test.",
   "nextMove": "Add a boundary-focused regression test and make the CI quality gate run on every pull request.",
   "labs": {
+    "1.1": {
+      "done": true,
+      "evidence": "Compared manual, quick-prompt AI, and improved-prompt AI test suites"
+    },
+    "1.2": {
+      "done": true,
+      "evidence": "Found lowercase destination input changed shipping price from the uppercase result"
+    },
     "1.3": {
       "done": true,
       "evidence": "26 tests passed; 100% line and branch coverage; mutmut required WSL"
