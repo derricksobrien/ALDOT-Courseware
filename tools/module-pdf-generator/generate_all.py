@@ -14,6 +14,8 @@ from build_module_pdfs import (
     PAGE_W, PAGE_H, OUT_DIR, img,
     title_slide, section_slide, bullet_slide, cards_slide, quiz_slide,
     diagram_slide, code_slide, sources_slide,
+    icon_rocket, icon_gear, icon_grid, icon_cycle,
+    icon_chart_up, icon_document, icon_person, icon_check,
 )
 
 MODULES = [
@@ -45,6 +47,7 @@ MODULES = [
                 ("REARCHITECT", "Redesign for scale — e.g. monolith to microservices"),
                 ("REBUILD", "Full redevelopment on cloud-native tech"),
             ],
+            icons=[icon_cycle, icon_gear, icon_grid, icon_rocket],
         ),
         field_facts=dict(
             title="From the Docs: The Full Migration Framework",
@@ -132,6 +135,7 @@ MODULES = [
                 ("USER STORY", "Customer-valued requirement"),
                 ("TASK", "Sprint-level unit of work"),
             ],
+            icons=[icon_chart_up, icon_document, icon_person, icon_check],
         ),
         field_facts=dict(
             title="From the Docs: How Work Items Really Link",
@@ -1010,7 +1014,7 @@ def build_module_pdf(mod):
 
     d = mod["diagram"]
     diagram_slide(c, page, "Concept Map", mod["kicker"], d["caption"], d["steps"],
-                  kind=d.get("kind", "flow"), bottom=d.get("bottom"))
+                  kind=d.get("kind", "flow"), bottom=d.get("bottom"), icons=d.get("icons"))
     page += 1
 
     ff = mod["field_facts"]

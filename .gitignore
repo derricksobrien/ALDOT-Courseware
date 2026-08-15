@@ -22,6 +22,12 @@ __pycache__/
 Thumbs.db
 .env
 .env.*
+adobe.env
+course/adobe.env
+
+# Raw stock-photo sourcing staged for module PDFs — final assets live in
+# tools/module-pdf-generator/images_v2/, this is just scratch source material
+course/mvp-delivery/images/
 
 # Local runtime and generated content
 .pytest_cache/

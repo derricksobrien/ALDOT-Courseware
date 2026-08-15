@@ -9,7 +9,9 @@ suggested Adobe Stock search phrase so real licensed images can be
 dropped in later.
 """
 
+import math
 import os
+from pathlib import Path
 from reportlab.lib.pagesizes import landscape
 from reportlab.lib.units import inch
 from reportlab.lib.colors import HexColor, white, black
@@ -44,7 +46,8 @@ FONT = "Helvetica"
 FONT_B = "Helvetica-Bold"
 FONT_I = "Helvetica-Oblique"
 
-OUT_DIR = r"E:\Code\ALDOT\course\mvp-delivery\modules"
+ROOT = Path(__file__).resolve().parents[2]
+OUT_DIR = str(ROOT / "course" / "mvp-delivery" / "modules")
 IMAGES_V2_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "images_v2")
 
 
@@ -152,6 +155,200 @@ def draw_image_box(c, x, y, w, h, img_path):
         draw_image_cover(c, img_path, x, y, w, h)
     else:
         draw_missing_image_fallback(c, x, y, w, h, img_path)
+
+
+# ----------------------------------------------------------------------
+# Vector icon glyphs — flat line-art drawn with primitives so diagram
+# slides don't depend on any licensed icon set or external image asset.
+# Each icon_* fn draws within a circle of radius r centered at (cx, cy).
+# ----------------------------------------------------------------------
+def icon_document(c, cx, cy, r, color):
+    w, h = r * 1.1, r * 1.5
+    x, y = cx - w / 2, cy - h / 2
+    c.setStrokeColor(color)
+    c.setLineWidth(1.6)
+    c.setFillColor(color)
+    fold = w * 0.32
+    p = c.beginPath()
+    p.moveTo(x, y)
+    p.lineTo(x, y + h)
+    p.lineTo(x + w - fold, y + h)
+    p.lineTo(x + w, y + h - fold)
+    p.lineTo(x + w, y)
+    p.close()
+    c.drawPath(p, stroke=1, fill=0)
+    c.line(x + w - fold, y + h, x + w - fold, y + h - fold)
+    c.line(x + w - fold, y + h - fold, x + w, y + h - fold)
+    for i in range(3):
+        ly = y + h * 0.62 - i * h * 0.18
+        c.line(x + w * 0.16, ly, x + w * 0.8, ly)
+
+
+def icon_person(c, cx, cy, r, color):
+    c.setStrokeColor(color)
+    c.setLineWidth(1.4)
+    head_r = r * 0.32
+    c.circle(cx, cy + r * 0.32, head_r, stroke=1, fill=0)
+    c.arc(cx - r * 0.62, cy - r * 0.95, cx + r * 0.62, cy + r * 0.05, 0, 180)
+
+
+def icon_people(c, cx, cy, r, color):
+    icon_person(c, cx - r * 0.28, cy - r * 0.05, r * 0.78, color)
+    icon_person(c, cx + r * 0.28, cy - r * 0.05, r * 0.78, color)
+
+
+def icon_gear(c, cx, cy, r, color):
+    c.setStrokeColor(color)
+    c.setFillColor(color)
+    c.setLineWidth(1.4)
+    outer, inner, hole = r * 0.62, r * 0.62, r * 0.24
+    teeth = 8
+    for i in range(teeth):
+        ang = 2 * math.pi * i / teeth
+        tx, ty = cx + math.cos(ang) * outer, cy + math.sin(ang) * outer
+        c.saveState()
+        c.translate(tx, ty)
+        c.rotate(math.degrees(ang))
+        c.rect(-r * 0.09, -r * 0.14, r * 0.18, r * 0.28, stroke=0, fill=1)
+        c.restoreState()
+    c.circle(cx, cy, inner, stroke=1, fill=0)
+    c.setFillColor(white)
+    c.circle(cx, cy, hole, stroke=0, fill=1)
+    c.setStrokeColor(color)
+    c.circle(cx, cy, hole, stroke=1, fill=0)
+
+
+def icon_chip_ai(c, cx, cy, r, color):
+    c.setStrokeColor(color)
+    c.setFillColor(color)
+    c.setLineWidth(1.4)
+    s = r * 1.0
+    c.roundRect(cx - s / 2, cy - s / 2, s, s, 2, stroke=1, fill=0)
+    pin = s * 0.16
+    for i in (-1, 0, 1):
+        c.line(cx + i * s * 0.28, cy - s / 2, cx + i * s * 0.28, cy - s / 2 - pin)
+        c.line(cx + i * s * 0.28, cy + s / 2, cx + i * s * 0.28, cy + s / 2 + pin)
+        c.line(cx - s / 2, cy + i * s * 0.28, cx - s / 2 - pin, cy + i * s * 0.28)
+        c.line(cx + s / 2, cy + i * s * 0.28, cx + s / 2 + pin, cy + i * s * 0.28)
+    c.setFont(FONT_B, r * 0.62)
+    c.drawCentredString(cx, cy - r * 0.2, "AI")
+
+
+def icon_chart_up(c, cx, cy, r, color):
+    c.setStrokeColor(color)
+    c.setFillColor(color)
+    c.setLineWidth(1.4)
+    base_x, base_y = cx - r * 0.6, cy - r * 0.5
+    bars = [0.35, 0.6, 0.95]
+    bw = r * 0.32
+    for i, bh in enumerate(bars):
+        bx = base_x + i * (bw + r * 0.14)
+        c.rect(bx, base_y, bw, r * bh, stroke=0, fill=1)
+    p = c.beginPath()
+    p.moveTo(base_x - r * 0.05, base_y + r * 0.4)
+    p.lineTo(cx + r * 0.55, cy + r * 0.35)
+    c.setLineWidth(1.6)
+    c.drawPath(p, stroke=1, fill=0)
+    ax, ay = cx + r * 0.55, cy + r * 0.35
+    arrow = c.beginPath()
+    arrow.moveTo(ax, ay)
+    arrow.lineTo(ax - r * 0.22, ay - r * 0.02)
+    arrow.moveTo(ax, ay)
+    arrow.lineTo(ax - r * 0.08, ay - r * 0.22)
+    c.drawPath(arrow, stroke=1, fill=0)
+
+
+def icon_hourglass(c, cx, cy, r, color):
+    c.setStrokeColor(color)
+    c.setFillColor(color)
+    c.setLineWidth(1.4)
+    w, h = r * 0.9, r * 1.2
+    p = c.beginPath()
+    p.moveTo(cx - w / 2, cy + h / 2)
+    p.lineTo(cx + w / 2, cy + h / 2)
+    p.lineTo(cx, cy)
+    p.lineTo(cx + w / 2, cy - h / 2)
+    p.lineTo(cx - w / 2, cy - h / 2)
+    p.lineTo(cx, cy)
+    p.close()
+    c.drawPath(p, stroke=1, fill=0)
+    c.line(cx - w / 2, cy + h / 2, cx + w / 2, cy + h / 2)
+    c.line(cx - w / 2, cy - h / 2, cx + w / 2, cy - h / 2)
+
+
+def icon_check(c, cx, cy, r, color):
+    c.setStrokeColor(color)
+    c.setLineWidth(2.0)
+    c.circle(cx, cy, r * 0.62, stroke=1, fill=0)
+    p = c.beginPath()
+    p.moveTo(cx - r * 0.28, cy)
+    p.lineTo(cx - r * 0.06, cy - r * 0.22)
+    p.lineTo(cx + r * 0.32, cy + r * 0.26)
+    c.drawPath(p, stroke=1, fill=0)
+
+
+def icon_grid(c, cx, cy, r, color):
+    c.setStrokeColor(color)
+    c.setLineWidth(1.3)
+    w, h = r * 1.1, r * 1.1
+    x, y = cx - w / 2, cy - h / 2
+    c.rect(x, y, w, h, stroke=1, fill=0)
+    for i in (1, 2):
+        c.line(x, y + h * i / 3, x + w, y + h * i / 3)
+        c.line(x + w * i / 3, y, x + w * i / 3, y + h)
+
+
+def icon_cycle(c, cx, cy, r, color):
+    c.setStrokeColor(color)
+    c.setFillColor(color)
+    c.setLineWidth(1.6)
+    rad = r * 0.58
+    c.arc(cx - rad, cy - rad, cx + rad, cy + rad, 20, 250)
+    ang = math.radians(270)
+    ax, ay = cx + rad * math.cos(ang), cy + rad * math.sin(ang)
+    p = c.beginPath()
+    p.moveTo(ax, ay)
+    p.lineTo(ax - r * 0.2, ay + r * 0.05)
+    p.moveTo(ax, ay)
+    p.lineTo(ax - r * 0.05, ay + r * 0.2)
+    c.drawPath(p, stroke=1, fill=0)
+
+
+def icon_rocket(c, cx, cy, r, color):
+    c.setStrokeColor(color)
+    c.setFillColor(color)
+    c.setLineWidth(1.4)
+    nose_y = cy + r * 0.7
+    body_w = r * 0.5
+    p = c.beginPath()
+    p.moveTo(cx, nose_y)
+    p.lineTo(cx - body_w / 2, cy + r * 0.05)
+    p.lineTo(cx + body_w / 2, cy + r * 0.05)
+    p.close()
+    c.drawPath(p, stroke=1, fill=0)
+    c.rect(cx - body_w / 2, cy - r * 0.55, body_w, cy + r * 0.05 - (cy - r * 0.55), stroke=1, fill=0)
+    fin = c.beginPath()
+    fin.moveTo(cx - body_w / 2, cy - r * 0.3)
+    fin.lineTo(cx - body_w / 2 - r * 0.24, cy - r * 0.55)
+    fin.lineTo(cx - body_w / 2, cy - r * 0.55)
+    fin.close()
+    c.drawPath(fin, stroke=1, fill=1)
+    fin2 = c.beginPath()
+    fin2.moveTo(cx + body_w / 2, cy - r * 0.3)
+    fin2.lineTo(cx + body_w / 2 + r * 0.24, cy - r * 0.55)
+    fin2.lineTo(cx + body_w / 2, cy - r * 0.55)
+    fin2.close()
+    c.drawPath(fin2, stroke=1, fill=1)
+    c.setFillColor(white)
+    c.circle(cx, cy + r * 0.1, r * 0.13, stroke=0, fill=1)
+    c.setStrokeColor(color)
+    c.circle(cx, cy + r * 0.1, r * 0.13, stroke=1, fill=0)
+
+
+def draw_icon_badge(c, cx, cy, r, icon_fn, bg_color, fg_color):
+    c.setFillColor(bg_color)
+    c.circle(cx, cy, r, stroke=0, fill=1)
+    icon_fn(c, cx, cy, r * 0.62, fg_color)
 
 
 def draw_bullets(c, x, y_top, w, bullets, size=13, leading=1.32, gap=0.14 * inch):
@@ -356,8 +553,11 @@ def quiz_slide(c, page, module_label, question, options, img_path, reveal_index=
 # ----------------------------------------------------------------------
 # Diagram primitives (real vector graphics, not photos)
 # ----------------------------------------------------------------------
-def draw_flow_diagram(c, x, y, w, h, steps):
-    """steps: list of (title, subtitle) drawn as a left-to-right arrow chain."""
+def draw_flow_diagram(c, x, y, w, h, steps, icons=None):
+    """steps: list of (title, subtitle) drawn as a left-to-right arrow chain.
+    icons: optional list of icon_* fns (same length as steps) — when given,
+    each box gets a larger icon badge and the title/subtitle shift down to
+    make room, matching the sample deck's icon-led step-card density."""
     n = len(steps)
     gap = 0.32 * inch
     box_w = (w - gap * (n - 1)) / n
@@ -378,10 +578,17 @@ def draw_flow_diagram(c, x, y, w, h, steps):
         c.setFont(FONT_B, 10)
         c.drawCentredString(bx + 0.24 * inch, box_y + box_h - 0.405 * inch, str(i + 1))
 
+        if icons:
+            icon_cy = box_y + box_h - 0.72 * inch
+            draw_icon_badge(c, bx + box_w / 2, icon_cy, 0.28 * inch, icons[i], LIGHT_GRAY, DARK_RED)
+            title_top = icon_cy - 0.42 * inch
+        else:
+            title_top = box_y + box_h - 0.72 * inch
+
         c.setFillColor(TEXT)
         c.setFont(FONT_B, 11.5)
         title_lines = wrap_text(c, title, FONT_B, 11.5, box_w - 0.28 * inch)
-        ty = box_y + box_h - 0.72 * inch
+        ty = title_top
         for ln in title_lines[:2]:
             c.drawCentredString(bx + box_w / 2, ty, ln)
             ty -= 14
@@ -460,7 +667,131 @@ def draw_converge_diagram(c, x, y, w, h, top_items, bottom_title, bottom_sub):
         c.drawPath(p, stroke=0, fill=1)
 
 
-def diagram_slide(c, page, title, kicker, caption, steps, kind="flow", bottom=None):
+def draw_compare_diagram(c, x, y, w, h, left, right, center_label=None):
+    """Two-column before/after workflow comparison: numbered, icon-led step
+    cards per column, an outcome band at the bottom of each, and an optional
+    connector callout in the gap between columns."""
+    col_gap = 0.55 * inch
+    col_w = (w - col_gap) / 2
+    left_x, right_x = x, x + col_w + col_gap
+    num_col_w = 0.32 * inch
+
+    header_h = 0.56 * inch
+    top = y + h
+    header_y = top - header_h
+    outcome_h = 0.6 * inch
+
+    def draw_header_box(cx, header, subheader, accent):
+        c.setFillColor(accent)
+        c.roundRect(cx, header_y, col_w, header_h, 7, stroke=0, fill=1)
+        c.setFillColor(white)
+        c.setFont(FONT_B, 12.5)
+        c.drawCentredString(cx + col_w / 2, header_y + header_h - 0.24 * inch, header)
+        if subheader:
+            c.setFont(FONT, 9)
+            c.drawCentredString(cx + col_w / 2, header_y + header_h - 0.42 * inch, subheader)
+
+    def draw_outcome_box(cx, icon_fn, text, accent):
+        c.setFillColor(LIGHT_GRAY)
+        c.roundRect(cx, y, col_w, outcome_h, 7, stroke=0, fill=1)
+        badge_cx = cx + 0.34 * inch
+        badge_cy = y + outcome_h / 2
+        if icon_fn:
+            draw_icon_badge(c, badge_cx, badge_cy, 0.2 * inch, icon_fn, white, accent)
+        tx = cx + 0.62 * inch
+        tw = col_w - 0.78 * inch
+        c.setFillColor(accent)
+        c.setFont(FONT_B, 9.3)
+        c.drawString(tx, badge_cy + 0.1 * inch, "OUTCOME:")
+        c.setFillColor(TEXT)
+        c.setFont(FONT, 9.3)
+        lines = wrap_text(c, text, FONT, 9.3, tw)
+        ty = badge_cy - 0.06 * inch
+        for ln in lines[:2]:
+            c.drawString(tx, ty, ln)
+            ty -= 11.5
+
+    def draw_column(cx, col, mid_ys):
+        draw_header_box(cx, col["header"], col.get("subheader"), col["accent"])
+        steps = col["steps"]
+        n = len(steps)
+        steps_top = header_y - 0.14 * inch
+        steps_bottom = y + outcome_h + 0.16 * inch
+        step_gap = 0.1 * inch
+        step_h = (steps_top - steps_bottom - step_gap * (n - 1)) / n
+        card_x = cx + num_col_w
+        card_w = col_w - num_col_w
+        prev_num_center = None
+        for i, (icon_fn, title, desc) in enumerate(steps):
+            card_top = steps_top - i * (step_h + step_gap)
+            card_y = card_top - step_h
+            c.setFillColor(LIGHT_GRAY)
+            c.roundRect(card_x, card_y, card_w, step_h, 6, stroke=0, fill=1)
+
+            num_cx = cx + num_col_w / 2
+            num_cy = card_y + step_h / 2
+            if prev_num_center is not None:
+                c.setStrokeColor(MID_GRAY)
+                c.setLineWidth(0.8)
+                c.setDash(2, 2)
+                c.line(num_cx, prev_num_center - 0.14 * inch, num_cx, num_cy + 0.14 * inch)
+                c.setDash()
+            c.setFillColor(col["accent"])
+            c.circle(num_cx, num_cy, 0.14 * inch, stroke=0, fill=1)
+            c.setFillColor(white)
+            c.setFont(FONT_B, 9.5)
+            c.drawCentredString(num_cx, num_cy - 0.05 * inch, str(i + 1))
+            prev_num_center = num_cy
+            mid_ys.append(num_cy)
+
+            badge_cx = card_x + 0.28 * inch
+            badge_cy = card_y + step_h / 2
+            draw_icon_badge(c, badge_cx, badge_cy, 0.19 * inch, icon_fn, white, col["accent"])
+
+            tx = card_x + 0.54 * inch
+            tw = card_w - 0.68 * inch
+            c.setFillColor(TEXT)
+            c.setFont(FONT_B, 10.2)
+            c.drawString(tx, badge_cy + 0.14 * inch, title)
+            c.setFillColor(GRAY)
+            c.setFont(FONT, 8.6)
+            for j, ln in enumerate(wrap_text(c, desc, FONT, 8.6, tw)[:2]):
+                c.drawString(tx, badge_cy - 0.02 * inch - j * 10.5, ln)
+
+        draw_outcome_box(cx, col.get("outcome_icon"), col.get("outcome", ""), col["accent"])
+
+    left_mids, right_mids = [], []
+    draw_column(left_x, left, left_mids)
+    draw_column(right_x, right, right_mids)
+
+    if center_label:
+        cy = sum(left_mids + right_mids) / len(left_mids + right_mids)
+        box_w, box_h = min(1.55 * inch, col_gap + 1.1 * inch), 0.6 * inch
+        cx0 = x + col_w + col_gap / 2
+        c.setFillColor(white)
+        c.setStrokeColor(RED)
+        c.setLineWidth(1.2)
+        c.roundRect(cx0 - box_w / 2, cy - box_h / 2, box_w, box_h, 6, stroke=1, fill=1)
+        c.setFillColor(RED)
+        c.setFont(FONT_B, 9)
+        lines = wrap_text(c, center_label, FONT_B, 9, box_w - 0.22 * inch)
+        ty = cy + (len(lines) - 1) * 5.5
+        for ln in lines[:3]:
+            c.drawCentredString(cx0, ty, ln)
+            ty -= 11
+        for direction in (-1, 1):
+            tip = cx0 + direction * (box_w / 2 + 0.13 * inch)
+            base = cx0 + direction * (box_w / 2 + 0.02 * inch)
+            c.setFillColor(RED)
+            p = c.beginPath()
+            p.moveTo(tip, cy)
+            p.lineTo(base, cy + 5)
+            p.lineTo(base, cy - 5)
+            p.close()
+            c.drawPath(p, stroke=0, fill=1)
+
+
+def diagram_slide(c, page, title, kicker, caption, steps=None, kind="flow", bottom=None, compare=None, icons=None):
     c.setFillColor(white)
     c.rect(0, 0, PAGE_W, PAGE_H, stroke=0, fill=1)
     rule_y = draw_header(c, title, kicker=kicker)
@@ -478,10 +809,13 @@ def diagram_slide(c, page, title, kicker, caption, steps, kind="flow", bottom=No
     area_w = PAGE_W - BAR_W - 0.3 * inch - MARGIN
     area_y = 0.5 * inch
     area_h = y - area_y
-    if kind == "converge":
+    if kind == "compare":
+        draw_compare_diagram(c, area_x, area_y, area_w, area_h,
+                              compare["left"], compare["right"], compare.get("center_label"))
+    elif kind == "converge":
         draw_converge_diagram(c, area_x, area_y, area_w, area_h, steps, bottom[0], bottom[1])
     else:
-        draw_flow_diagram(c, area_x, area_y, area_w, area_h, steps)
+        draw_flow_diagram(c, area_x, area_y, area_w, area_h, steps, icons=icons)
 
     draw_chrome(c, page)
     c.showPage()
