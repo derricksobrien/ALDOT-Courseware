@@ -13,6 +13,40 @@
 A CI pipeline doesn't add new tests — it makes the tests you already have impossible to bypass. You'll wire lint, test, and coverage checks into a real GitHub Actions workflow, then deliberately break the pipeline four different ways to see exactly what each category of failure looks like in practice.
 
 ---
+## What is it? YAML, GitHub Actions, lint, and coverage
+
+This lab moves testing from your computer into an automated service:
+
+
+A tiny GitHub Actions workflow looks like this:
+
+```yaml
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+	test:
+		runs-on: ubuntu-latest
+		steps:
+			- uses: actions/checkout@v4
+			- run: python -m pytest
+```
+
+
+## Before Step 1: GitHub and GitHub Actions primer
+
+If GitHub, Git branches, commits, pull requests, or Actions are new to you, read the [GitHub and GitHub Actions Primer](https://derricksobrien.github.io/ALDOT-Courseware/ai-software-testing/github-actions-primer.html) first. It explains the vocabulary and shows the smallest working `git push` and workflow examples.
+
+The short version is:
+
+```text
+edit files -> commit a snapshot -> push to GitHub -> Actions runs the workflow -> inspect the result
+```
+
+Use your own fork or a disposable repository for this exercise. The courseware repository is a reference copy, not the place to push student experiments.
+
+---
 
 ## Step 1 — Create the files and confirm they pass locally
 
@@ -26,6 +60,12 @@ pytest --cov=discount -v
 ```
 
 Confirm this passes locally before you push anything — a red pipeline caused by something you never verified locally is a much more frustrating debugging session than one you triggered on purpose.
+
+---
+
+> **Verified local CI-equivalent check:** the Lab 1.3 discount suite passed with 26 tests and 100% line and branch coverage on Windows. The same check exposed formatting failures before a CI run: missing final newlines and tab indentation. Run `flake8` locally and fix its output before pushing the workflow.
+
+> **Machine limitation:** local pytest and coverage do not prove that GitHub Actions is configured. The workflow step still requires a GitHub repository, Actions enabled, network access, and permission to push or open pull requests. Use a fork or disposable training repository rather than the read-only courseware clone.
 
 ---
 
@@ -100,6 +140,10 @@ Work through the remaining rounds the same way — break something specific, pus
 > **Rounds 2 and 3 behave exactly as the lab describes** — a wrong assertion fails the Test step; deleting three tests drops coverage below 80% and fails the Coverage step; both restore to green once fixed.
 >
 > **Round 4 is worth reading carefully, because the real result doesn't match the lab's framing.** The lab describes this round as one where "the pipeline may fail even with all your tests in place." On this exact starter code, enforcing `--cov-branch --cov-fail-under=75` does **not** produce a failure — the five given tests already reach 92.9% branch coverage, comfortably above the 75% threshold. If you were expecting to see a red pipeline here and getting a green one instead, that's not something you did wrong — the round simply doesn't reproduce the failure it describes, on this starter code, at this threshold. The concept (branch coverage is a stricter and more meaningful metric than line coverage) is still correct; the demonstration of the pipeline actually blocking a merge over it just doesn't trigger here.
+
+---
+
+> **Mitigation for reproducible teaching:** record the actual baseline branch percentage before setting the threshold. If the intended exercise must fail, choose a threshold above that baseline or remove the tests that cover the target branch, then restore them and verify the green result.
 
 ---
 

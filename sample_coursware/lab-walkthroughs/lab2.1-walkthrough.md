@@ -11,6 +11,33 @@
 The developer of this registration endpoint says all inputs are validated. Your job is to find out whether that's actually true — not by reading the code, but by throwing a systematic set of nasty inputs at it and watching what comes back. By the end, you'll have a concrete list of inputs that silently pass when they shouldn't, which is a more dangerous failure mode than a crash.
 
 ---
+## What is it? Flask, pytest, and an API client
+
+This lab introduces three tools:
+
+- **Flask** is a small Python web framework. It turns a Python function into an HTTP endpoint such as `POST /register`.
+- **pytest** runs Python tests and reports which checks passed or failed.
+- A **test client** sends requests to the Flask app in memory. It lets you test the endpoint without opening a browser or deploying a real server.
+
+The smallest Flask route looks like this:
+
+```python
+@app.get("/hello")
+def hello():
+	return {"message": "hello"}
+```
+
+A pytest client test can call that route without starting Flask on a port:
+
+```python
+def test_hello(client):
+	response = client.get("/hello")
+	assert response.status_code == 200
+```
+
+In this lab, `client.post("/register", ...)` is the tester's hand-controlled input pipe. The response status code and JSON body are the evidence.
+
+---
 
 ## Step 1 — Create `app.py`
 
@@ -75,6 +102,18 @@ pytest test_register.py -v -s -k "long_name or unicode or sql or xss or name_as"
 > **Read the color-coding in that output as two different categories of finding, because they're not the same severity.** The 10,000-character name and the `email='alice@'` case (both flagged) are real, bounded gaps — no length limit, no real email-format check — worth fixing but low drama. The SQL-injection and XSS strings passing as plain string content (shown but not flagged) are *correct* behavior for this API specifically, per the lab's own note: there's no database and no HTML rendering here, so these strings do no actual harm in this sandbox — the point is only to confirm the API doesn't do anything *unexpected* with them, which it doesn't.
 >
 > **The two flagged results at the bottom aren't anywhere in the lab's own answer key.** `name` accepts an integer and accepts a JSON array, both returning 201 — because unlike `age`, `name` is never run through an `isinstance()` check at all. It's the exact same class of bug the lab spends the whole exercise teaching you to look for, just in a spot the lab's own "API Weaknesses Revealed" table doesn't mention. Worth adding to your own notes as a reminder that an answer key is a floor, not a ceiling.
+
+---
+
+> **Verified local result:** all 11 exploratory checks passed against the starter API, including whitespace-only names, ages 999 and 9999, a bare `alice@` email, and a 10,000-character name. These are test assertions about the current behavior, not evidence that the inputs are acceptable.
+
+### Mitigations to discuss
+
+- Reject whitespace-only names with `not isinstance(name, str) or not name.strip()`.
+- Reject booleans before integer validation: `isinstance(age, bool) or not isinstance(age, int)`.
+- Add an explicit maximum age only if the product rule requires one.
+- Validate name and email types, maximum lengths, and email structure with a request schema or validation library.
+- Add tests that assert the desired 400 responses so the fixes cannot silently regress.
 
 ---
 

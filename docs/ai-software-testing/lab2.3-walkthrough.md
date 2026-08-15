@@ -20,6 +20,10 @@ nav_order: 7
 
 [**Browse screenshots folder on GitHub →**](https://github.com/derricksobrien/ALDOT-Courseware/tree/main/sample_coursware/lab-walkthroughs/images)
 
+## Before You Begin
+
+New to GitHub or GitHub Actions? Read the [GitHub and GitHub Actions Primer](github-actions-primer.html) before starting this lab. It explains repositories, commits, branches, pushes, pull requests, workflows, runs, jobs, and steps with beginner-sized examples.
+
 ---
 
 *Return to [AI in Software Testing index](../ai-software-testing/) to select another lab.*

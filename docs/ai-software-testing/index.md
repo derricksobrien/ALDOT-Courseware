@@ -33,8 +33,12 @@ Click-for-click guides with real screenshots and a "why" explanation at every st
 | [Lab 2.2](lab2.2-walkthrough) | AI-Generated Test Data |
 | [Lab 2.3](lab2.3-walkthrough) | Automated Testing in a CI/CD Pipeline |
 | [Lab 2.4](lab2.4-walkthrough) | TDD with a GitHub Copilot Agent |
+- [GitHub and GitHub Actions Primer](github-actions-primer) — beginner vocabulary and first commands for the GitHub workflow in Lab 2.3
 
 ## Reference
 
 - [MS Learn Resource Mapping](ms-learn-resources) — Microsoft Learn content mapped to each of the 7 course modules, plus starting points for students new to Python or new to AWS
 - [E2E Test Report](e2e-test-report) — Full findings from testing all 7 labs, including defects found and fixed in the original lab text
+- [Original Labs vs. Walkthroughs and C# Migration Plan](original-vs-walkthrough-csharp-migration) — machine-verified gaps, student trip hazards, and a C#/.NET with Visual Studio delivery path
+- [Day 2 Instructor Note: Tool Transitions](day2-instructor-note-tool-transitions) — plain-language explanations, first examples, and fallback guidance for the new tools introduced in Labs 2.1 through 2.4
+- [Java, Selenium, and Cucumber Setup](java-selenium-cucumber-setup) — beginner installation and first browser-test guide for Java/Maven students

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Testing Field Note</title>
+    <style>
+        :root {
+            --ink: #17212b;
+            --paper: #f5f1e8;
+            --paper-deep: #e9e1d2;
+            --red: #bb3e31;
+            --red-dark: #7d2926;
+            --gold: #d69b2d;
+            --blue: #1e6070;
+            --green: #356b59;
+            --muted: #687078;
+            --line: rgba(23, 33, 43, 0.18);
+            --shadow: 0 18px 50px rgba(35, 29, 19, 0.13);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            color: var(--ink);
+            background:
+                linear-gradient(135deg, rgba(187, 62, 49, 0.08), transparent 32%),
+                radial-gradient(circle at 90% 8%, rgba(214, 155, 45, 0.17), transparent 22%),
+                var(--paper);
+            font-family: Georgia, 'Times New Roman', serif;
+        }
+
+        button, input, select, textarea { font: inherit; }
+        button { cursor: pointer; }
+        .shell { width: min(1180px, calc(100% - 36px)); margin: 0 auto; }
+        .masthead { padding: 34px 0 20px; border-bottom: 1px solid var(--line); }
+        .masthead-inner { display: flex; justify-content: space-between; gap: 28px; align-items: end; }
+        .kicker { margin: 0 0 10px; color: var(--red); font: 700 0.78rem/1.2 'Trebuchet MS', sans-serif; letter-spacing: 0.18em; text-transform: uppercase; }
+        h1, h2, h3, p { margin-top: 0; }
+        h1 { max-width: 720px; margin-bottom: 12px; font-size: clamp(2.6rem, 7vw, 5.9rem); line-height: 0.92; letter-spacing: -0.04em; font-weight: 700; }
+        .dek { max-width: 650px; margin-bottom: 0; color: #4d565b; font-size: 1.13rem; line-height: 1.5; }
+        .stamp { min-width: 180px; padding: 14px; border: 1px solid var(--ink); transform: rotate(2deg); font: 700 0.76rem/1.5 'Trebuchet MS', sans-serif; letter-spacing: 0.08em; text-align: center; text-transform: uppercase; }
+
+        .progress-wrap { padding: 18px 0; }
+        .progress-meta { display: flex; justify-content: space-between; margin-bottom: 8px; color: var(--muted); font: 700 0.72rem 'Trebuchet MS', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+        .progress { height: 9px; overflow: hidden; background: var(--paper-deep); }
+        .progress-bar { width: 0; height: 100%; background: var(--red); transition: width 250ms ease; }
+
+        .layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.75fr); gap: 28px; padding: 12px 0 60px; }
+        .section { padding: 28px 0; border-top: 1px solid var(--line); }
+        .section:first-child { border-top: 0; }
+        .section-heading { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; }
+        h2 { margin-bottom: 8px; font-size: 2rem; line-height: 1; }
+        h3 { margin-bottom: 7px; font-size: 1.15rem; }
+        .section-note { color: var(--muted); font-size: 0.97rem; line-height: 1.5; }
+        .field { margin-bottom: 18px; }
+        label { display: block; margin-bottom: 7px; font: 700 0.78rem 'Trebuchet MS', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+        input[type='text'], textarea, select { width: 100%; padding: 12px 13px; border: 1px solid var(--line); border-radius: 0; color: var(--ink); background: rgba(255, 255, 255, 0.45); }
+        textarea { min-height: 108px; resize: vertical; line-height: 1.45; }
+        input:focus, textarea:focus, select:focus { outline: 3px solid rgba(30, 96, 112, 0.22); border-color: var(--blue); }
+
+        .lab-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .lab-card { position: relative; min-height: 192px; padding: 17px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.42); transition: border-color 180ms ease, background 180ms ease, transform 180ms ease; }
+        .lab-card:hover { transform: translateY(-2px); border-color: var(--red); }
+        .lab-card.is-done { border-color: var(--green); background: rgba(53, 107, 89, 0.11); }
+        .lab-card.is-done::after { content: 'READY TO TELL'; position: absolute; top: 13px; right: 13px; color: var(--green); font: 700 0.62rem 'Trebuchet MS', sans-serif; letter-spacing: 0.08em; }
+        .lab-card input[type='checkbox'] { width: 18px; height: 18px; accent-color: var(--green); }
+        .lab-top { display: flex; gap: 10px; align-items: start; }
+        .lab-number { color: var(--red); font: 700 0.74rem 'Trebuchet MS', sans-serif; letter-spacing: 0.1em; }
+        .lab-title { margin: 2px 0 10px; font-size: 1.2rem; }
+        .lab-result { margin: 0; color: var(--muted); font-size: 0.91rem; line-height: 1.4; }
+        .lab-guide { display: inline-block; margin-top: 11px; color: var(--blue); font: 700 0.68rem 'Trebuchet MS', sans-serif; letter-spacing: 0.07em; text-transform: uppercase; }
+        .lab-guide:hover { color: var(--red); }
+        .lab-detail { display: none; margin-top: 15px; }
+        .lab-card.is-done .lab-detail { display: block; }
+        .lab-detail label { margin-bottom: 4px; font-size: 0.65rem; }
+        .lab-detail input[type='text'] { padding: 8px 9px; font-size: 0.88rem; }
+
+        .score-rail { position: sticky; top: 18px; align-self: start; }
+        .score-panel { padding: 24px; border: 1px solid var(--ink); background: var(--ink); color: var(--paper); box-shadow: var(--shadow); }
+        .score-panel h2 { color: #fff8e9; }
+        .score-panel p { color: #c6d0d1; line-height: 1.45; }
+        .score-number { margin: 24px 0 6px; color: #fff8e9; font: 700 clamp(4rem, 9vw, 6rem)/0.85 Georgia, serif; letter-spacing: -0.08em; }
+        .score-label { color: #e4b14b; font: 700 0.76rem 'Trebuchet MS', sans-serif; letter-spacing: 0.15em; text-transform: uppercase; }
+        .score-rule { display: flex; justify-content: space-between; padding: 12px 0; border-top: 1px solid rgba(255, 248, 233, 0.2); color: #d7dfe0; font-size: 0.9rem; }
+        .score-rule strong { color: #fff8e9; }
+        .profile { margin-top: 22px; padding-top: 20px; border-top: 1px solid rgba(255, 248, 233, 0.2); }
+        .profile h3 { color: #e4b14b; }
+        .profile p { margin-bottom: 0; font-size: 0.96rem; }
+        .button-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+        .button { padding: 12px 15px; border: 1px solid var(--red); background: var(--red); color: #fff8e9; font: 700 0.78rem 'Trebuchet MS', sans-serif; letter-spacing: 0.07em; text-transform: uppercase; }
+        .button:hover { background: var(--red-dark); }
+        .button.secondary { border-color: #9eafb0; background: transparent; color: #dce7e6; }
+        .button.secondary:hover { background: rgba(255, 255, 255, 0.1); }
+
+        .finish-card { display: none; margin-top: 22px; padding: 22px; border: 2px solid var(--red); background: #fff8e9; box-shadow: var(--shadow); }
+        .finish-card.is-visible { display: block; animation: rise 420ms ease both; }
+        .finish-eyebrow { color: var(--red); font: 700 0.72rem 'Trebuchet MS', sans-serif; letter-spacing: 0.15em; text-transform: uppercase; }
+        .finish-card h2 { max-width: 680px; margin-top: 10px; font-size: clamp(2rem, 5vw, 3.4rem); }
+        .finish-card blockquote { margin: 18px 0; padding-left: 16px; border-left: 4px solid var(--gold); font-size: 1.2rem; line-height: 1.45; }
+        .finish-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+        .finish-meta div { padding-top: 10px; border-top: 1px solid var(--line); }
+        .finish-meta span { display: block; color: var(--muted); font: 700 0.66rem 'Trebuchet MS', sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+        .finish-meta strong { display: block; margin-top: 5px; font-size: 1.05rem; }
+        .warning { display: none; margin: 14px 0 0; padding: 10px 12px; border-left: 3px solid var(--gold); color: #694b11; background: rgba(214, 155, 45, 0.12); font-size: 0.9rem; }
+        .warning.is-visible { display: block; }
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+        @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 820px) {
+            .masthead-inner, .section-heading { display: block; }
+            .stamp { width: max-content; margin-top: 22px; }
+            .layout { grid-template-columns: 1fr; }
+            .score-rail { position: static; order: -1; }
+        }
+        @media (max-width: 560px) {
+            .shell { width: min(100% - 24px, 1180px); }
+            .lab-grid, .finish-meta { grid-template-columns: 1fr; }
+            h1 { font-size: 3.5rem; }
+        }
+        @media print {
+            body { background: #fff; }
+            .masthead, .progress-wrap, .layout, .button-row { display: none !important; }
+            .finish-card { display: block; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="masthead">
+        <div class="shell masthead-inner">
+            <div>
+                <p class="kicker">AI-assisted software testing / closing field note</p>
+                <h1>Your testing judgment has a shape.</h1>
+                <p class="dek">Turn the course into a clear handoff: what you tested, what AI helped you see, what the machine taught you, and what quality signal you will carry forward.</p>
+            </div>
+            <div class="stamp">Course<br>complete<br>with evidence</div>
+        </div>
+    </header>
+
+    <div class="shell progress-wrap" aria-live="polite">
+        <div class="progress-meta"><span id="progressLabel">Field notes started</span><span id="progressPercent">0%</span></div>
+        <div class="progress"><div id="progressBar" class="progress-bar"></div></div>
+    </div>
+
+    <main class="shell layout">
+        <div>
+            <section class="section">
+                <div class="section-heading">
+                    <div>
+                        <p class="kicker">01 / Put your name on it</p>
+                        <h2>Who is leaving the room?</h2>
+                    </div>
+                </div>
+                <p class="section-note">This is a private reflection by default. Nothing is uploaded anywhere; your notes stay in this browser until you clear them.</p>
+                <div class="field">
+                    <label for="learnerName">Name or team name</label>
+                    <input id="learnerName" type="text" placeholder="e.g. Jordan / Team Northstar" autocomplete="name">
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="section-heading">
+                    <div>
+                        <p class="kicker">02 / Evidence, not vibes</p>
+                        <h2>What did you actually test?</h2>
+                    </div>
+                </div>
+                <p class="section-note">Check a lab when you can point to a test run, artifact, screenshot, pull request, AI-assisted analysis, or documented limitation. Add one phrase you could use to prove it.</p>
+                <div id="labGrid" class="lab-grid"></div>
+                <p id="labWarning" class="warning">Mark at least one lab, then add evidence for it. A limitation you can name is still useful evidence.</p>
+            </section>
+
+            <section class="section">
+                <div class="section-heading">
+                    <div>
+                        <p class="kicker">03 / The useful surprise</p>
+                        <h2>What changed your mind about testing?</h2>
+                    </div>
+                </div>
+                <p class="section-note">The best closing answer is usually not “everything worked.” It is the moment where the system contradicted an assumption.</p>
+                <div class="field">
+                    <label for="breakthrough">The testing moment I will remember</label>
+                    <textarea id="breakthrough" placeholder="Mutation testing stopped on Windows. 100% coverage still missed mutant behavior. The API accepted whitespace as a valid name..."></textarea>
+                </div>
+                <div class="field">
+                    <label for="nextMove">The quality move I would make next</label>
+                    <textarea id="nextMove" placeholder="Add a boundary test, validate generated data, create a CI quality gate, or make the agent prove its change..."></textarea>
+                </div>
+            </section>
+
+            <section id="finishCard" class="finish-card" aria-live="polite">
+                <div class="finish-eyebrow">Field note complete</div>
+                <h2 id="finishTitle">You leave with a point of view.</h2>
+                <blockquote id="finishQuote"></blockquote>
+                <div class="finish-meta">
+                    <div><span>Profile</span><strong id="finishProfile"></strong></div>
+                    <div><span>Evidence</span><strong id="finishEvidence"></strong></div>
+                    <div><span>Next move</span><strong id="finishNext"></strong></div>
+                </div>
+                <div class="button-row">
+                    <button class="button" id="printButton" type="button">Print finish card</button>
+                    <button class="button secondary" id="downloadButton" type="button">Download finish card</button>
+                    <button class="button secondary" id="copyButton" type="button">Copy closing note</button>
+                </div>
+            </section>
+        </div>
+
+        <aside class="score-rail">
+            <div class="score-panel">
+                <p class="kicker" style="color: #e4b14b;">A transparent readout</p>
+                <h2>AI testing profile</h2>
+                <p>Your score is not a grade. It is a conversation starter for the last ten minutes of class.</p>
+                <div id="scoreNumber" class="score-number">--</div>
+                <div class="score-label">field readiness</div>
+                <div style="margin-top: 23px;">
+                    <div class="score-rule"><span>Evidence logged</span><strong id="evidenceScore">0 / 40</strong></div>
+                    <div class="score-rule"><span>Labs touched</span><strong id="labScore">0 / 25</strong></div>
+                    <div class="score-rule"><span>Reflection</span><strong id="reflectionScore">0 / 20</strong></div>
+                    <div class="score-rule"><span>Specific next move</span><strong id="nextScore">0 / 15</strong></div>
+                </div>
+                <div class="profile">
+                    <h3 id="profileTitle">Start anywhere</h3>
+                    <p id="profileCopy">The score will become useful once you connect your work to evidence and a next move.</p>
+                </div>
+                <div class="button-row">
+                    <button id="finishButton" class="button" type="button">Make my finish card</button>
+                    <button id="sampleButton" class="button secondary" type="button">Load sample</button>
+                    <button id="clearButton" class="button secondary" type="button">Clear notes</button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        const labs = [
+            { id: '1.1', title: 'Manual versus AI testing', result: 'You compared human-written tests with AI-generated tests and learned why prompt quality changes test quality.', guide: '../ai-software-testing/lab1.1-walkthrough.html' },
+            { id: '1.2', title: 'Reverse engineering legacy code', result: 'You used explanation, defect-finding, and tests to expose a quiet case-sensitivity pricing bug.', guide: '../ai-software-testing/lab1.2-walkthrough.html' },
+            { id: '1.3', title: 'Coverage and mutation', result: 'You learned that executed code is not necessarily challenged code.', guide: '../ai-software-testing/lab1.3-walkthrough.html' },
+            { id: '2.1', title: 'Exploratory edge cases', result: 'You found validation gaps hiding between “has a check” and “does the right thing.”', guide: '../ai-software-testing/lab2.1-walkthrough.html' },
+            { id: '2.2', title: 'Synthetic test data', result: 'You made plausible AI-generated data earn its way into a test suite through validation.', guide: '../ai-software-testing/lab2.2-walkthrough.html' },
+            { id: '2.3', title: 'CI quality gates', result: 'You turned local confidence into a repeatable push-time testing signal.', guide: '../ai-software-testing/lab2.3-walkthrough.html' },
+            { id: '2.4', title: 'TDD with an agent', result: 'You saw tests become the specification and human review remain essential.', guide: '../ai-software-testing/lab2.4-walkthrough.html' }
+        ];
+        const storageKey = 'aldot-class-closer-v1';
+        const state = JSON.parse(localStorage.getItem(storageKey) || '{}');
+        const labGrid = document.getElementById('labGrid');
+
+        labs.forEach((lab) => {
+            const saved = state.labs?.[lab.id] || {};
+            const card = document.createElement('article');
+            card.className = 'lab-card' + (saved.done ? ' is-done' : '');
+            card.dataset.lab = lab.id;
+            card.innerHTML = `
+                <div class="lab-top">
+                    <input id="lab-${lab.id}" type="checkbox" ${saved.done ? 'checked' : ''} aria-label="Mark Lab ${lab.id} complete">
+                    <div>
+                        <div class="lab-number">LAB ${lab.id}</div>
+                        <h3 class="lab-title">${lab.title}</h3>
+                        <p class="lab-result">${lab.result}</p>
+                        <a class="lab-guide" href="${lab.guide}" target="_blank" rel="noreferrer">Open walkthrough</a>
+                    </div>
+                </div>
+                <div class="lab-detail">
+                    <label for="evidence-${lab.id}">Evidence or limitation</label>
+                    <input id="evidence-${lab.id}" type="text" value="${escapeHtml(saved.evidence || '')}" placeholder="e.g. 26 passed / WSL required / PR reviewed">
+                </div>`;
+            labGrid.appendChild(card);
+            card.querySelector('input[type="checkbox"]').addEventListener('change', (event) => {
+                card.classList.toggle('is-done', event.target.checked);
+                saveState();
+                updateReadout();
+            });
+            card.querySelector('input[type="text"]').addEventListener('input', () => {
+                saveState();
+                updateReadout();
+            });
+        });
+
+        ['learnerName', 'breakthrough', 'nextMove'].forEach((id) => {
+            const element = document.getElementById(id);
+            element.value = state[id] || '';
+            element.addEventListener('input', () => { saveState(); updateReadout(); });
+        });
+
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;' }[character]));
+        }
+
+        function getState() {
+            const labsState = {};
+            document.querySelectorAll('.lab-card').forEach((card) => {
+                labsState[card.dataset.lab] = {
+                    done: card.querySelector('input[type="checkbox"]').checked,
+                    evidence: card.querySelector('input[type="text"]').value.trim()
+                };
+            });
+            return {
+                learnerName: document.getElementById('learnerName').value.trim(),
+                breakthrough: document.getElementById('breakthrough').value.trim(),
+                nextMove: document.getElementById('nextMove').value.trim(),
+                labs: labsState
+            };
+        }
+
+        function saveState() { localStorage.setItem(storageKey, JSON.stringify(getState())); }
+
+        function calculate() {
+            const current = getState();
+            const completed = Object.values(current.labs).filter((lab) => lab.done);
+            const evidenced = completed.filter((lab) => lab.evidence.length > 0);
+            const evidence = Math.round((evidenced.length / labs.length) * 40);
+            const labTouch = Math.round((completed.length / labs.length) * 25);
+            const reflection = Math.min(20, (current.breakthrough.length >= 35 ? 12 : current.breakthrough.length > 0 ? 6 : 0) + (current.learnerName ? 4 : 0) + (current.nextMove.length >= 35 ? 4 : current.nextMove.length > 0 ? 2 : 0));
+            const next = current.nextMove.length >= 35 ? 15 : current.nextMove.length > 0 ? 8 : 0;
+            return { current, completed, evidenced, evidence, labTouch, reflection, next, total: Math.min(100, evidence + labTouch + reflection + next) };
+        }
+
+        function profileFor(score, completed) {
+            if (score >= 85) return ['The testing skeptic', 'You can use AI to widen the search without handing over judgment. You ask for evidence, inspect the surprise, and make the quality signal repeatable.'];
+            if (score >= 65) return ['The evidence builder', 'You have concrete tests and observations to point at. Your next leap is making the evidence easier for another tester to trust and repeat.'];
+            if (completed >= 2) return ['The edge-case hunter', 'You have started asking the system better questions. Choose one surprising result and turn it into a durable test or quality gate.'];
+            return ['The test apprentice', 'You have a starting point. Name one AI-assisted experiment you can run next week and the signal that would tell you it worked.'];
+        }
+
+        function updateReadout() {
+            const result = calculate();
+            document.getElementById('scoreNumber').textContent = result.total;
+            document.getElementById('evidenceScore').textContent = `${result.evidence} / 40`;
+            document.getElementById('labScore').textContent = `${result.labTouch} / 25`;
+            document.getElementById('reflectionScore').textContent = `${result.reflection} / 20`;
+            document.getElementById('nextScore').textContent = `${result.next} / 15`;
+            const profile = profileFor(result.total, result.completed.length);
+            document.getElementById('profileTitle').textContent = profile[0];
+            document.getElementById('profileCopy').textContent = profile[1];
+            const progress = Math.min(100, Math.round((result.completed.length * 12 + result.evidenced.length * 8 + (result.current.breakthrough ? 10 : 0) + (result.current.nextMove ? 10 : 0) + (result.current.learnerName ? 10 : 0))));
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressPercent').textContent = `${progress}%`;
+            document.getElementById('progressLabel').textContent = progress >= 90 ? 'Field note complete' : `${result.completed.length} of ${labs.length} labs marked`;
+        }
+
+        function makeFinishCard() {
+            const result = calculate();
+            const warning = document.getElementById('labWarning');
+            warning.classList.toggle('is-visible', result.completed.length === 0 || result.evidenced.length < result.completed.length);
+            if (result.completed.length === 0) return;
+            const name = result.current.learnerName || 'Modernizer';
+            const profile = profileFor(result.total, result.completed.length);
+            document.getElementById('finishTitle').textContent = `${name}, you leave with a point of view.`;
+            document.getElementById('finishQuote').textContent = result.current.breakthrough || 'The work is not finished when the code runs. It is finished when the evidence can travel.';
+            document.getElementById('finishProfile').textContent = profile[0];
+            document.getElementById('finishEvidence').textContent = `${result.evidenced.length} lab${result.evidenced.length === 1 ? '' : 's'} evidenced`;
+            document.getElementById('finishNext').textContent = result.current.nextMove || 'Choose one next experiment';
+            document.getElementById('finishCard').classList.add('is-visible');
+            document.getElementById('finishCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        async function loadSample() {
+            const response = await fetch('class-closer-sample.json');
+            if (!response.ok) throw new Error('Sample file could not be loaded.');
+            const sample = await response.json();
+            document.getElementById('learnerName').value = sample.learnerName;
+            document.getElementById('breakthrough').value = sample.breakthrough;
+            document.getElementById('nextMove').value = sample.nextMove;
+            Object.entries(sample.labs).forEach(([labId, lab]) => {
+                const card = document.querySelector(`[data-lab="${labId}"]`);
+                if (!card) return;
+                card.querySelector('input[type="checkbox"]').checked = lab.done;
+                card.querySelector('input[type="text"]').value = lab.evidence;
+                card.classList.toggle('is-done', lab.done);
+            });
+            saveState();
+            updateReadout();
+            makeFinishCard();
+        }
+
+        function printFinishCard() {
+            if (!document.getElementById('finishCard').classList.contains('is-visible')) {
+                makeFinishCard();
+            }
+            window.setTimeout(() => window.print(), 50);
+        }
+
+        function downloadFinishCard() {
+            const result = calculate();
+            const name = result.current.learnerName || 'Modernizer';
+            const profile = profileFor(result.total, result.completed.length);
+            const quote = result.current.breakthrough || 'The work is not finished when the code runs. It is finished when the evidence can travel.';
+            const next = result.current.nextMove || 'Choose one next experiment';
+            const documentText = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>${escapeHtml(name)} - AI testing field note</title><style>body{margin:48px;color:#17212b;background:#fff8e9;font:18px Georgia,serif}main{max-width:760px;margin:auto;border:2px solid #bb3e31;padding:32px}small{color:#bb3e31;font:bold 12px Arial,sans-serif;letter-spacing:.15em;text-transform:uppercase}h1{font-size:42px;line-height:1;margin:18px 0}blockquote{margin:24px 0;padding-left:18px;border-left:4px solid #d69b2d;line-height:1.45}.meta{border-top:1px solid #bbb;padding-top:14px;margin-top:20px}.meta strong{display:block;margin-top:5px}</style></head><body><main><small>AI-assisted software testing / field note</small><h1>${escapeHtml(name)}, you leave with a point of view.</h1><blockquote>${escapeHtml(quote)}</blockquote><div class="meta"><small>Profile</small><strong>${escapeHtml(profile[0])}</strong><br><small>Evidence</small><strong>${result.evidenced.length} labs evidenced</strong><br><small>Next move</small><strong>${escapeHtml(next)}</strong></div></main></body></html>`;
+            const blob = new Blob([documentText], { type: 'text/html' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${name.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() || 'ai-testing'}-field-note.html`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(link.href);
+        }
+
+        document.getElementById('finishButton').addEventListener('click', makeFinishCard);
+        document.getElementById('sampleButton').addEventListener('click', () => loadSample().catch((error) => {
+            document.getElementById('profileCopy').textContent = error.message;
+        }));
+        document.getElementById('printButton').addEventListener('click', printFinishCard);
+        document.getElementById('downloadButton').addEventListener('click', downloadFinishCard);
+        document.getElementById('copyButton').addEventListener('click', async () => {
+            const result = calculate();
+            const name = result.current.learnerName || 'Modernizer';
+            const text = `${name} completed a modernization field note with a readiness score of ${result.total}/100. Breakthrough: ${result.current.breakthrough || 'not recorded yet'}. Next move: ${result.current.nextMove || 'choose one next experiment'}.`;
+            await navigator.clipboard.writeText(text);
+            document.getElementById('copyButton').textContent = 'Copied';
+            setTimeout(() => { document.getElementById('copyButton').textContent = 'Copy closing note'; }, 1600);
+        });
+        document.getElementById('clearButton').addEventListener('click', () => {
+            localStorage.removeItem(storageKey);
+            window.location.reload();
+        });
+        updateReadout();
+    </script>
+</body>
+</html>

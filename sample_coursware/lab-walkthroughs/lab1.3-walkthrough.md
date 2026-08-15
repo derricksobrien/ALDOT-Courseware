@@ -81,6 +81,10 @@ pytest --cov=discount --cov-report=term-missing --cov-branch -v
 
 ---
 
+> **Verified on a Windows lab machine:** the expanded local suite reached 100% line and branch coverage with all 26 discount tests passing. A flake8 check also found missing final newlines and tab indentation in the starter test files. Add a formatting check before the CI step, fix those issues, and add a `.gitignore` for `.coverage`, `.pytest_cache`, `__pycache__`, and mutation artifacts.
+
+---
+
 ## Step 6 — Install mutmut and hit the wall
 
 ```bash
@@ -143,6 +147,10 @@ mutmut show discount.x_calculate_discounted_price__mutmut_2
 > **Why WSL and not "just install Java-style, from the Microsoft Store" or similar?** `mutmut` needs to fork the Python process to isolate each mutant's test run, and that's a Unix-specific mechanism the Windows native Python build doesn't support the same way. WSL gives you a real Linux kernel underneath your Windows machine, which is exactly what the tool needs — it's not a workaround so much as the actual supported path.
 >
 > **What the output above is telling you:** 44 small changes ("mutants") were introduced into `discount.py`, one at a time. Your test suite caught 36 of them (killed) and missed 8 (survived). Every "survived" line is a place where your tests would not notice if that specific bug were introduced into the real code. The `mutmut show` output at the bottom is the actual diff for one specific survivor: `if price < 0:` mutated to `if price <= 0:`.
+
+---
+
+> **Machine limitation and mitigation:** on native Windows, `mutmut run` stops before creating a mutation report. Use WSL 2 with an installed Ubuntu distribution, a Linux lab machine, or an EC2/Linux environment for the mutation step. Keep the coverage run as the local Windows fallback, but label it clearly: 100% coverage does not replace mutation testing.
 
 ---
 

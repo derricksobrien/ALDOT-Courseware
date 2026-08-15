@@ -13,6 +13,34 @@
 You write the failing tests. An AI agent writes the implementation. CI confirms the result. The point of this lab isn't "can AI write code" — it's learning to write a specification (as tests) precise enough that a wrong implementation genuinely can't sneak past it, and then reviewing what comes back instead of trusting it blindly.
 
 ---
+## What is it? TDD, branches, pull requests, CI, and the Copilot Agent
+
+This lab combines several workflow ideas:
+
+- **TDD**, or test-driven development, starts with a failing test, adds the smallest implementation that makes it pass, and then refactors while keeping the tests green.
+- A **Git branch** is a separate line of work. It lets students develop a feature without changing `main` immediately.
+- A **pull request** is a request to merge one branch into another. It provides a place for discussion, code review, and automated checks.
+- **CI**, or continuous integration, is an automated build and test run triggered by repository activity.
+- The **GitHub Copilot coding agent** is an AI service that can inspect a repository, edit files, and propose commits. It is not the same as Copilot Chat suggesting text in the editor.
+
+The smallest TDD loop looks like this:
+
+```text
+write a test that fails -> implement the behavior -> run the test -> refactor safely
+```
+
+A small branch and pull request flow looks like this:
+
+```bash
+git switch -c feature/transfer-funds
+git add bank.py test_bank.py
+git commit -m "add transfer tests"
+git push -u origin feature/transfer-funds
+```
+
+The tests are the specification in this exercise. The agent may write the implementation, but the student still owns the acceptance criteria, the review, and the decision to merge.
+
+---
 
 ## Step 1 — Create the stub, empty tests, and CI workflow
 
@@ -118,6 +146,17 @@ Watching the PR's checks after the agent's commit lands doesn't show a rerun hap
 ![Terminal showing the workflow stuck in action_required, and a failed API approval attempt](images/10-terminal-manual-approval.png)
 
 > **This is a real, confirmed gap between the lab text and how GitHub actually behaves.** The lab says "CI will rerun automatically" once the agent pushes. In practice, **every** workflow run triggered by a commit from the Copilot coding agent is gated behind a manual "Approve and run workflow" click — there's no way around it via the command line or API (the standard fork-PR-approval endpoint explicitly rejects this case, since it's not a fork). If you're watching the Checks tab expecting it to update on its own after the agent finishes, it won't — you have to go click the button yourself. Once you do, it runs and goes green immediately, since the implementation was already correct.
+
+---
+
+> **Verified local fallback:** the acceptance tests can run without GitHub or Copilot Agent. A local implementation satisfying the seven criteria passed all 7 tests, including same-account transfers, insufficient funds, non-positive and boolean amounts, balance mutation, transaction details, and two-decimal rounding. Use this local run to validate the specification before opening the PR.
+
+### Environment limits and mitigations
+
+- GitHub repository access, Actions, pull requests, internet access, and Copilot Agent entitlement are required for the full exercise.
+- Add `.gitignore` before the first commit so agent runs cannot accidentally commit `__pycache__` files.
+- Keep `test_bank.py` protected from agent edits and review the entire pull request diff.
+- Add tests for malformed accounts, missing keys, non-numeric values, and rounding boundaries; passing the initial seven tests is not proof of complete input validation.
 
 ---
 

@@ -18,6 +18,8 @@ You've inherited a shipping calculator with no documentation, no tests, and no o
 
 If Lab 1.1 was your first time in VS Code, this lab adds two new tools on top of that: **Java** (the language) and **Maven** (the tool that compiles the code and runs the tests). Here's everything needed before Step 1 makes sense.
 
+If you want to continue from Java unit testing into browser automation, use the [Beginner Setup: Java, Maven, Selenium, and Cucumber](https://derricksobrien.github.io/ALDOT-Courseware/ai-software-testing/java-selenium-cucumber-setup.html) guide. It explains the related tools and includes a first runnable browser scenario.
+
 ### 0a. Confirm Java and Maven are installed
 
 Open a terminal in VS Code (**Terminal → New Terminal**, same as Lab 1.1) and run:

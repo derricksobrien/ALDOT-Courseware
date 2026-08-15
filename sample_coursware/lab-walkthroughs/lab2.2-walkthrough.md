@@ -11,6 +11,39 @@
 You need realistic data to test an e-commerce platform before peak season, and production data is off-limits for privacy reasons. AI can generate synthetic data quickly — the point of this lab is that "quickly" and "trustworthy" are different properties, and you validate the second one before you rely on it in a test suite.
 
 ---
+## What is it? SQLite, FastAPI, Uvicorn, Faker, SQL, and curl
+
+This lab introduces several tools that work together:
+
+- **SQLite** is a small file-based database. The database is the `ecommerce.db` file; there is no separate database server to administer.
+- **SQL** is the language used to create tables, insert rows, and query data.
+- **FastAPI** is a Python web framework that turns Python functions into HTTP API endpoints and generates browser-based API documentation.
+- **Uvicorn** is the server process that runs the FastAPI application so another program can send it requests.
+- **Faker** is a Python library that creates realistic-looking synthetic names, emails, cities, and other test values. It does not copy production data.
+- **curl** is a command-line HTTP client. It is a quick way to call an API from a terminal.
+
+The smallest useful sequence looks like this:
+
+```sql
+CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT NOT NULL);
+INSERT INTO products VALUES (1, 'Keyboard');
+```
+
+Start a FastAPI app with Uvicorn:
+
+```bash
+uvicorn app:app --reload
+```
+
+Then ask the running API for data with curl:
+
+```bash
+curl http://localhost:8000/products
+```
+
+Read `app:app` as "load the `app` object from the Python file named `app.py`." The `--reload` option restarts the development server when you save a code change. It is useful for class exercises, but it is not a production hosting configuration.
+
+---
 
 ## Step 1 — Create `app.py` and the schema
 
@@ -92,6 +125,18 @@ The checks that mattered at 10 rows matter more at 10,000 — run them again:
 ![Terminal showing zero duplicate emails, a real country distribution, and zero referential integrity failures at scale](images/08-terminal-quality-at-scale.png)
 
 > **This is the actual pass/fail moment of the whole lab.** Every requirement from the Step 5 prompt is independently verifiable in this output: zero duplicate emails (the `fake.unique.email()` call worked), a country split that's visibly close to the requested 40/15/10/10/25 (419/147/96/91 out of 1,000 — within a few points of target on every major country), and zero orphaned orders (every `customer_id` and `product_id` in 10,000 generated orders correctly points at a real row). None of this was assumed — it was checked, the same way you'd check it if a human teammate handed you this dataset and said "trust me."
+
+---
+
+> **Verified on this machine:** the local SQLite/Faker path generated 1,000 customers, 50 products, and 10,000 orders. Duplicate-email, null-field, and orphan-record checks returned zero; `/products` returned 200 with 50 products; an unknown customer's orders returned 404; and placing a valid order returned 201. FastAPI's test client also emitted a Starlette deprecation warning about the installed `httpx` version, so pin compatible dependency versions in the lab requirements.
+
+### Mitigations and validation gaps
+
+- Enable SQLite foreign keys on every application connection, not only while creating the schema.
+- Validate that `customer_id` exists before inserting an order.
+- Check country, category, price, date-range, duplicate, null, and referential-integrity distributions in the validation script.
+- Use deterministic seeds for reproducible teaching runs and a separate random mode for exploratory testing.
+- Pin `fastapi`, `starlette`, `httpx`, `uvicorn`, and `faker` versions to avoid test-client compatibility warnings.
 
 ---
 
